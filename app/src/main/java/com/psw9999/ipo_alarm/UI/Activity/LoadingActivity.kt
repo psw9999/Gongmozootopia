@@ -25,6 +25,9 @@ class LoadingActivity : AppCompatActivity() {
     private val loginIntent by lazy {
         Intent(this, LoginActivity::class.java)
     }
+    private val mainIntent by lazy {
+        Intent(this, MainActivity::class.java)
+    }
     private val binding by lazy {ActivityLoadingBinding.inflate(layoutInflater)}
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -63,7 +66,8 @@ class LoadingActivity : AppCompatActivity() {
                 }else{
                     Thread {
                         Thread.sleep(500)
-                        startActivity(loginIntent)
+                        startActivity(mainIntent)
+                        //startActivity(loginIntent)
                         //TODO : 수정 필요
                         finish()
                     }.start()

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id= "@+id/mainView"
+        android:title="홈"
+        android:icon="@drawable/home_icon" />
+    <item android:id="@+id/calendar"
+        android:title="캘린더"
+        android:icon="@drawable/calender_icon"/>
+    <item android:id="@+id/setting"
+        android:title="세팅"
+        android:icon="@drawable/setting_icon"/>
+    <item android:id="@+id/notification"
+        android:title="알람"
+        android:icon="@drawable/notification_icon" />
+</menu>
