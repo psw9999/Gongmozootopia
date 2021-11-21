@@ -1,0 +1,4 @@
+rootProject.name = "IPO_Alarm"
+
+include ':app'
+
