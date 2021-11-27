@@ -11,7 +11,6 @@ import java.lang.Exception
 import kotlin.system.exitProcess
 
 class NetworkStatus(val context : Context) {
-
     // 클래스 객체 해제 전까지 메모리에 남아있음..
     var msgDlg : AlertDialog? = null
 

@@ -7,7 +7,7 @@ import com.psw9999.ipo_alarm.Adapter.MainViewPager
 import com.psw9999.ipo_alarm.R
 import com.psw9999.ipo_alarm.UI.Fragment.MainFragment
 import com.psw9999.ipo_alarm.UI.Fragment.NotificationFragment
-import com.psw9999.ipo_alarm.UI.Fragment.SecondFragment
+import com.psw9999.ipo_alarm.UI.Fragment.CalendarFragment
 import com.psw9999.ipo_alarm.UI.Fragment.ThirdFragment
 import com.psw9999.ipo_alarm.databinding.ActivityMainBinding
 
@@ -24,21 +24,21 @@ class MainActivity : AppCompatActivity() {
     private fun initViewPager() {
         viewPager2 = binding.viewPager2Main
         val pagerAdapter = MainViewPager(this)
-        pagerAdapter.fragmentList = listOf(MainFragment(),SecondFragment(),ThirdFragment(),NotificationFragment())
+        pagerAdapter.fragmentList = listOf(MainFragment(),CalendarFragment(),ThirdFragment(),NotificationFragment())
         viewPager2.adapter = pagerAdapter
         // 유저 스크롤 방지, 네비게이션을 통해서만 제어
         viewPager2.isUserInputEnabled = false
+        //TEST
+        createBadge(R.id.notification)
     }
 
     private fun initBottomNavigation() {
-        //TODO : TEST
-        createBadge(R.id.notification)
         //TODO : OnNavigationItemSelectedListener 왜 Deprecated?
         binding.bottomNavigationMain.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.notification -> {
                     setPageIndex(3)
-                    createBadge(R.id.notification)
+                    closeBadge(R.id.notification)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.setting -> {
@@ -64,6 +64,14 @@ class MainActivity : AppCompatActivity() {
     //TEST
     private fun createBadge(itemID : Int) {
         var badge = binding.bottomNavigationMain.getOrCreateBadge(itemID)
-        badge.isVisible = !(badge.isVisible)
+        badge.isVisible = true
+        badge.number = 999
     }
+
+    //TEST
+    private fun closeBadge(itemID : Int) {
+        var badge = binding.bottomNavigationMain.getOrCreateBadge(itemID)
+        badge.isVisible = false
+    }
+
 }
