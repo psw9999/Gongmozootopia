@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="135dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView_stock"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/selector_card"
+        app:strokeWidth="1dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView_marketKinds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/bg_textview_ipo"
+                android:text="코스피"
+                android:textColor="#FF5722"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/imageView_favorit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imageView_favorit" />
+
+            <TextView
+                android:id="@+id/textView_stockKinds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_textview_spac"
+                android:text="공모주"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/textView_marketKinds"
+                app:layout_constraintTop_toTopOf="@id/textView_marketKinds" />
+
+            <ImageView
+                android:id="@+id/imageView_notification"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/imgbtn_alarm_states" />
+
+            <ImageView
+                android:id="@+id/imageView_favorit"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/imageView_notification"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/imgbtn_favorit_states" />
+
+            <TextView
+                android:id="@+id/textView_stockName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="7dp"
+                android:text="LG에너지솔루션"
+                android:textColor="#232F34"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView_stockKinds" />
+
+            <TextView
+                android:id="@+id/textView_endDayTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="청약일"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@+id/textView_stockName"
+                app:layout_constraintTop_toBottomOf="@+id/textView_stockName" />
+
+            <TextView
+                android:id="@+id/textView_endDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="1월 11일"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@+id/textView_endDayTitle"
+                app:layout_constraintTop_toTopOf="@+id/textView_endDayTitle" />
+
+            <TextView
+                android:id="@+id/textView_Dday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_textview_emergency"
+                android:gravity="center"
+                android:lines="2"
+                android:text=" 청약 \n D-15 "
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/imageView_notification"
+                app:layout_constraintStart_toStartOf="@id/imageView_favorit"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView_underwriter"
+                app:layout_constraintStart_toStartOf="@id/textView_stockName"
+                app:layout_constraintEnd_toEndOf="@id/textView_Dday"
+                app:layout_constraintTop_toBottomOf="@id/textView_endDayTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup_alarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_margin="0dp"
+                    app:chipSpacingHorizontal="3dp"
+                    app:singleLine="true">
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

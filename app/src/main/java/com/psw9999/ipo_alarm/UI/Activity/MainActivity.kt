@@ -10,6 +10,7 @@ import com.psw9999.ipo_alarm.UI.Fragment.NotificationFragment
 import com.psw9999.ipo_alarm.UI.Fragment.CalendarFragment
 import com.psw9999.ipo_alarm.UI.Fragment.ThirdFragment
 import com.psw9999.ipo_alarm.databinding.ActivityMainBinding
+import com.psw9999.ipo_alarm.base.BaseApplication.Companion.stockListKey
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy {ActivityMainBinding.inflate(layoutInflater)}
@@ -21,10 +22,18 @@ class MainActivity : AppCompatActivity() {
         initViewPager()
         initBottomNavigation()
     }
-    private fun initViewPager() {
+
+    private fun initViewPager()
+    {
         viewPager2 = binding.viewPager2Main
         val pagerAdapter = MainViewPager(this)
-        pagerAdapter.fragmentList = listOf(MainFragment(),CalendarFragment(),ThirdFragment(),NotificationFragment())
+        pagerAdapter.fragmentList = listOf(
+            MainFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(stockListKey,intent.getParcelableArrayListExtra(stockListKey))
+                }
+            }
+            ,CalendarFragment(),ThirdFragment(),NotificationFragment())
         viewPager2.adapter = pagerAdapter
         // 유저 스크롤 방지, 네비게이션을 통해서만 제어
         viewPager2.isUserInputEnabled = false
@@ -73,5 +82,4 @@ class MainActivity : AppCompatActivity() {
         var badge = binding.bottomNavigationMain.getOrCreateBadge(itemID)
         badge.isVisible = false
     }
-
 }

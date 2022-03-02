@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="textView_KOSDAQ">#775603</color>
+    <color name="textView_KOSPI">#53B3CB</color>
+    <color name="textView_IPO">#F15946</color>
+    <color name="textView_rightIssue">#E01A4F</color>
+    <color name="textView_SPAC">#0C090D</color>
+
+    <color name="chip_underwriter">#023047</color>
+
+
+    <color name="barGrayColor">#E2E1DD</color>
+
+
 </resources>

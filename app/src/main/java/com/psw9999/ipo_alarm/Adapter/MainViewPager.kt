@@ -13,6 +13,6 @@ class MainViewPager(fragmentActivity : FragmentActivity) : FragmentStateAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList.get(position)
+        return fragmentList[position]
     }
 }
