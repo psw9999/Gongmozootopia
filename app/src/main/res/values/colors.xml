@@ -8,16 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="textView_KOSDAQ">#775603</color>
-    <color name="textView_KOSPI">#53B3CB</color>
-    <color name="textView_IPO">#F15946</color>
-    <color name="textView_rightIssue">#E01A4F</color>
-    <color name="textView_SPAC">#0C090D</color>
-
+    <color name="textView_KOSDAQ">#3F51B5</color>
+    <color name="textView_KOSPI">#E91E63</color>
+    <color name="textView_IPO">#F44336</color>
+    <color name="textView_rightIssue">#FF9800</color>
+    <color name="textView_SPAC">#FF6422</color>
+    <color name="seekbar_color">#F40000</color>
     <color name="chip_underwriter">#023047</color>
 
-
     <color name="barGrayColor">#E2E1DD</color>
+    <color name="baseColor">#8C8C8C</color>
 
 
 </resources>

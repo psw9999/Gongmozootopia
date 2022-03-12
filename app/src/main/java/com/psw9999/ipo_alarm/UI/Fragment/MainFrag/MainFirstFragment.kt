@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.psw9999.ipo_alarm.Adapter.FollowingAdapter
 import com.psw9999.ipo_alarm.UI.BottomSheet.LoginBottomSheet
-import com.psw9999.ipo_alarm.data.FollowingData
+import com.psw9999.ipo_alarm.data.FollowingResponse
 import com.psw9999.ipo_alarm.data.StockListResponse
 import com.psw9999.ipo_alarm.databinding.FragmentMainFirstBinding
 import com.psw9999.ipo_alarm.util.sqliteHelper
@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.EventBus
  class MainFirstFragment : Fragment() {
 
     var stockList : MutableList<StockListResponse> = mutableListOf()
-    var testFollowingList : MutableList<FollowingData> = mutableListOf()
+    var testFollowingList : MutableList<FollowingResponse> = mutableListOf()
 
     private lateinit var binding : FragmentMainFirstBinding
     private lateinit var helper : sqliteHelper

@@ -3,48 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="135dp">
+    android:layout_height="143dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_stock"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="3dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/selector_card"
-        app:strokeWidth="1dp">
-
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView_marketKinds"
+                android:id="@+id/textView_dDay2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:background="@drawable/bg_textview_ipo"
-                android:text="코스피"
-                android:textColor="#FF5722"
-                android:textSize="12sp"
+                android:background="@drawable/bg_textview_spacioustime"
+                android:text="수요예측"
+                android:textSize="13dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/imageView_favorit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageView_favorit" />
 
             <TextView
+                android:id="@+id/textView_marketKinds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/bg_textview_ipo"
+                android:text="코스피"
+                android:textColor="#FF5722"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/textView_dDay2"
+                app:layout_constraintTop_toTopOf="@id/textView_dDay2" />
+
+            <TextView
                 android:id="@+id/textView_stockKinds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="7dp"
                 android:background="@drawable/bg_textview_spac"
                 android:text="공모주"
-                android:textSize="12sp"
+                android:textSize="13dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/textView_marketKinds"
                 app:layout_constraintTop_toTopOf="@id/textView_marketKinds" />
@@ -75,7 +87,7 @@
                 android:layout_marginTop="7dp"
                 android:text="LG에너지솔루션"
                 android:textColor="#232F34"
-                android:textSize="20sp"
+                android:textSize="22dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView_stockKinds" />
@@ -84,9 +96,10 @@
                 android:id="@+id/textView_endDayTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="청약일"
-                android:textSize="13sp"
+                android:layout_marginTop="5dp"
+                android:text="청약시작일"
+                android:textSize="14dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView_stockName"
                 app:layout_constraintTop_toBottomOf="@+id/textView_stockName" />
 
@@ -96,35 +109,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:text="1월 11일"
-                android:textSize="13sp"
+                android:textSize="14dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/textView_endDayTitle"
                 app:layout_constraintTop_toTopOf="@+id/textView_endDayTitle" />
 
             <TextView
-                android:id="@+id/textView_Dday"
+                android:id="@+id/textView_dDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_textview_emergency"
-                android:gravity="center"
-                android:lines="2"
-                android:text=" 청약 \n D-15 "
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/bg_textview_spacioustime"
+                android:text="D-7"
+                android:textSize="11dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/imageView_notification"
-                app:layout_constraintStart_toStartOf="@id/imageView_favorit"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/textView_endDay"
+                app:layout_constraintStart_toEndOf="@id/textView_endDay"
+                app:layout_constraintTop_toTopOf="@id/textView_endDay" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView_underwriter"
-                app:layout_constraintStart_toStartOf="@id/textView_stockName"
-                app:layout_constraintEnd_toEndOf="@id/textView_Dday"
-                app:layout_constraintTop_toBottomOf="@id/textView_endDayTitle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="0dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView_stockName"
+                app:layout_constraintTop_toBottomOf="@id/textView_endDayTitle">
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup_alarm"

@@ -78,13 +78,13 @@ class StockInformationActivity : BaseActivity() {
             }
         }
         // 로딩 완료 후 추가
-//        with(binding.stockInfoTabLayout) {
-//            addTab(this.newTab().setText("회사정보"))
-//            addTab(this.newTab().setText("공모정보"))
-//            addTab(this.newTab().setText("수요예측"))
-//            addTab(this.newTab().setText("주간사"))
-//        }
-        //initViewPager()
+        with(binding.stockInfoTabLayout) {
+            addTab(this.newTab().setText("회사정보"))
+            addTab(this.newTab().setText("공모정보"))
+            addTab(this.newTab().setText("수요예측"))
+            addTab(this.newTab().setText("주간사"))
+        }
+        initViewPager()
     }
 
     private fun initViewPager(){
@@ -182,15 +182,15 @@ class StockInformationActivity : BaseActivity() {
         val ipoDebutDate = ipoDebutDate?.let {
             LocalDate.parse(ipoDebutDate)
         } ?: now.plusDays(5)
-        when {
-            now.isBefore(ipoForecastDate) -> return 0
-            now.isEqual(ipoForecastDate) -> return 1
-            now.isBefore(ipoStartDate) -> return 2
-            now.isBefore(ipoEndDate) || now.isEqual(ipoEndDate) -> return 3
-            now.isBefore(ipoRefundDate) -> return 4
-            now.isEqual(ipoRefundDate) -> return 5
-            now.isBefore(ipoDebutDate) -> return 6
-            else -> return 7
+        return when {
+            now.isBefore(ipoForecastDate) -> 0
+            now.isEqual(ipoForecastDate) -> 1
+            now.isBefore(ipoStartDate) -> 2
+            now.isBefore(ipoEndDate) || now.isEqual(ipoEndDate) -> 3
+            now.isBefore(ipoRefundDate) -> 4
+            now.isEqual(ipoRefundDate) -> 5
+            now.isBefore(ipoDebutDate) -> 6
+            else -> 7
         }
     }
 

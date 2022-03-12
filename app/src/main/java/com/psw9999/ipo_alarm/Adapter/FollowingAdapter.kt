@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.ipo_alarm.R
-import com.psw9999.ipo_alarm.data.FollowingData
+import com.psw9999.ipo_alarm.data.FollowingResponse
 import com.psw9999.ipo_alarm.databinding.ItemFollowingListBinding
 import com.psw9999.ipo_alarm.databinding.ItemFollowingTabBinding
 
@@ -17,8 +17,8 @@ class FollowingAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val TYPE_FOOTER : Int = 2
     }
 
-    var followingData = mutableListOf<FollowingData>()
-    var unvisibleData = mutableListOf<FollowingData>()
+    var followingData = mutableListOf<FollowingResponse>()
+    var unvisibleData = mutableListOf<FollowingResponse>()
 
     override fun getItemViewType(position: Int): Int {
         if (position == 0)
@@ -80,7 +80,7 @@ class FollowingAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class FollowingListViewHolder(val binding : ItemFollowingListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun onBinding(followingData: FollowingData) {
+        fun onBinding(followingData: FollowingResponse) {
             binding.textViewFollowingDday.text = followingData.stockDday
             binding.textViewFollowingStockName.text = followingData.stockName
         }

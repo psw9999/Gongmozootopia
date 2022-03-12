@@ -78,8 +78,8 @@
         android:layout_marginEnd="10dp"
         android:max="7"
         android:padding="8dp"
-        android:progress="0"
-        android:progressTint="@color/textView_rightIssue"
+        android:progress="7"
+        android:progressTint="@color/seekbar_color"
         android:thumb="@drawable/schedule_seekbar_thumb"
         android:tickMark="@drawable/bg_schedule_tickmark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +162,7 @@
         android:id="@+id/division_stockInfoTitle"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/textView_rightIssue"
+        android:background="@color/seekbar_color"
         app:layout_constraintBottom_toTopOf="@id/stockInfo_tabLayout" />
 
     <com.google.android.material.tabs.TabLayout

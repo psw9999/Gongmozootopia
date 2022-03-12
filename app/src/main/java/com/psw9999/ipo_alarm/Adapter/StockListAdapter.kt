@@ -1,7 +1,6 @@
 package com.psw9999.ipo_alarm.Adapter
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -19,42 +18,58 @@ import com.psw9999.ipo_alarm.databinding.ItemStockBinding
 
 class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(), Filterable {
 
-    var stockData = mutableListOf<StockListResponse>()
-    private var filteredList = stockData
-    var unfilteredStockData = stockData
+    var stockList = ArrayList<StockListResponse>()
+    //private var filteredList = stockList
+    private var filteredList : ArrayList<StockListResponse>? = null
 
     lateinit var mContext : Context
     lateinit var mStockClickListener : OnStockClickListener
 
     fun setNewData(pos : Int, updateData : StockListResponse) {
         if (pos != RecyclerView.NO_POSITION) {
-            stockData[pos] = updateData
+            stockList[pos] = updateData
         }
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charString = constraint.toString()
-                Log.d("charString","$charString")
-                filteredList = if (charString.isEmpty()) {
-                    unfilteredStockData
+            override fun performFiltering(constraint: CharSequence): FilterResults {
+                val charString : List<String> = constraint.split(',')
+                var filteringList = ArrayList<StockListResponse>()
+                Log.d("charString",charString[2])
+                //TODO : 추후 진짜 데이터 업로드되면 그때 수정하기
+//                filteringList = if (charString[0].isEmpty()) {
+//                    stockList
+//                } else {
+//                    stockList
+//                }
+//
+                if (charString[1].isEmpty()) {
+                    filteringList = stockList
                 } else {
-                    val filteringList = mutableListOf<StockListResponse>()
-                    for (item in unfilteredStockData!!) {
-                        if(item!!.stockState == charString) filteringList.add(item)
+                    val filteringWord = charString[1]
+                    for (item in stockList) {
+                        if(filteringWord == item.stockKinds) filteringList.add(item)
                     }
-                    filteringList
                 }
-                Log.d("filterResult","$filteredList")
+
+                if (charString[2] == "true") {
+                    var temp = ArrayList<StockListResponse>()
+                    for (item in filteringList) {
+                        if(item.isFollowing) temp.add(item)
+                    }
+                    filteringList = temp
+                }
+
                 val filterResults = FilterResults()
-                filterResults.values = filteredList
+                filterResults.values = filteringList
                 return filterResults
             }
 
+
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredList = results?.values as MutableList<StockListResponse>
-                Log.d("publishResults","$stockData")
+                filteredList = results?.values as ArrayList<StockListResponse>
+                Log.d("publishResults","$stockList")
                 notifyDataSetChanged()
             }
         }
@@ -77,12 +92,21 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
     }
 
     override fun getItemCount(): Int {
-        return stockData.size
+        return if (filteredList == null) {
+            stockList.size
+        }else{
+            filteredList!!.size
+        }
     }
 
     override fun onBindViewHolder(holder: StockListAdapter.StockViewHolder, position: Int) {
-        val date = stockData[position]
-        holder.setTest(date)
+        if (filteredList == null) {
+            //val date = stockList[position]
+            holder.setTest(stockList[position])
+        }else{
+            holder.setTest(filteredList!![position])
+        }
+        //val date = stockList[position]
     }
 
 //    override fun onBindViewHolder(
@@ -173,7 +197,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
                             mContext.resources.displayMetrics
                         )
                     }
-
+                    chipGroupAlarm.removeAllViews()
                     //TODO : underwriter가 null일 수도 있으므로 대처 코드 넣기
                     //TODO : this.setChipDrawable(chipDrawable) 활용하여 한줄로 쇼부보기
                     for(name in underwriter!!.split(',')) {
@@ -193,66 +217,9 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
                                 this.setTextAppearance(R.style.Chip_underwriter_TextTheme)
                         })
                     }
-
-
-                    if (stockDday == 0) {
-                        var day = ipoEndDate!!.split('-')
-                        textViewEndDayTitle.text = "청약 마감일"
-                        textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        textViewDday.text = " ${stockState} \n 진행중 "
-                    }
-                    else if(stockDday < 0) {
-                        var day = ipoDebutDate!!.split('-')
-                        textViewEndDayTitle.text = "상장일"
-                        textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        textViewDday.text = " ${stockState} \n D+${(stockDday)*-1} "
-                    }
-                    else if(stockDday > 99) {
-                        var day = ipoStartDate!!.split('-')
-                        textViewEndDayTitle.text = "청약 시작일"
-                        textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        textViewDday.text = " ${stockState} \n D-99 "
-                    }
-                    else if(stockDday >= 7) {
-                        lateinit var day : List<String>
-                        if (stockState == "청약") {
-                            day = ipoStartDate!!.split('-')
-                            textViewEndDayTitle.text = "청약 시작일"
-                            textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        }
-                        else if(stockState == "환불") {
-                            day = ipoRefundDate!!.split('-')
-                            textViewEndDayTitle.text = "환불일"
-                        }
-                        else {
-                            day = ipoRefundDate!!.split('-')
-                            textViewEndDayTitle.text = "상장일"
-                        }
-                        textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        textViewDday.text = " ${stockState} \n D-${stockDday} "
-                        textViewDday.setBackgroundResource(R.drawable.bg_textview_nonemergency)
-                    }
-                    else {
-                        lateinit var day : List<String>
-                        if (stockState == "청약") {
-                            day = ipoStartDate!!.split('-')
-                            textViewEndDayTitle.text = "청약 시작일"
-                            textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        }
-                        else if(stockState == "환불") {
-                            day = ipoRefundDate!!.split('-')
-                            textViewEndDayTitle.text = "환불일"
-                        }
-                        else {
-                            day = ipoRefundDate!!.split('-')
-                            textViewEndDayTitle.text = "상장일"
-                        }
-                        textViewEndDay.text = "${day[1]}월 ${day[2]}일"
-                        textViewDday.text = " ${stockState} \n D-${stockDday} "
-                    }
                 }
             }
-
         }
+
     }
 }

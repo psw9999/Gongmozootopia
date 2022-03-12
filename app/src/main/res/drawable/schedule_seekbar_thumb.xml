@@ -5,7 +5,7 @@
     android:useLevel="true"  >
     <!-- 배경 색상 -->
     <solid
-        android:color="@color/textView_rightIssue"/>
+        android:color="@color/seekbar_color"/>
     <!-- 크기 -->
     <size
         android:width="15dp"

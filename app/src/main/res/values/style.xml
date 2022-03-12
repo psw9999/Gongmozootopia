@@ -71,4 +71,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Calendar"/>
+
+    <style name="Calendar.CalendarViewStyle">
+        <item name="dayHeight">44dp</item>
+    </style>
+
 </resources>

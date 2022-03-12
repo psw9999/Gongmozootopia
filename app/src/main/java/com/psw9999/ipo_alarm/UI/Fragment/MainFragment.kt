@@ -19,28 +19,27 @@ import com.psw9999.ipo_alarm.UI.Activity.StockInformationActivity
 import com.psw9999.ipo_alarm.UI.BottomSheet.LoginBottomSheet
 import com.psw9999.ipo_alarm.base.BaseApplication
 import com.psw9999.ipo_alarm.base.BaseApplication.Companion.helper
-import com.psw9999.ipo_alarm.base.BaseApplication.Companion.stockInfoKey
 import com.psw9999.ipo_alarm.base.BaseApplication.Companion.stockListKey
-import com.psw9999.ipo_alarm.communication.ServerImpl
 import com.psw9999.ipo_alarm.data.KakaoLoginStatus
 import com.psw9999.ipo_alarm.data.StockListResponse
-import com.psw9999.ipo_alarm.data.StockInfoResponse
 import com.psw9999.ipo_alarm.databinding.FragmentMainBinding
 import com.psw9999.ipo_alarm.util.GridViewDecoration
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class MainFragment : Fragment() {
     private lateinit var binding : FragmentMainBinding
-    private lateinit var stockList : ArrayList<StockListResponse>
     private lateinit var stockAdapter : StockListAdapter
     private lateinit var mContext: Context
+    private lateinit var stockList : ArrayList<StockListResponse>
+
+    //var filterString : List<String> = listOf("", "", "")
+    var followingFilter : Boolean = false
+    var stockTypeFilter : String = ""
+    var stockStateFilter : String = ""
 
     private val stockInfoIntent by lazy {
         Intent(mContext, StockInformationActivity::class.java)
@@ -76,7 +75,6 @@ class MainFragment : Fragment() {
                     stockList[i].stockDday = temp[1].toInt()
                 }
             }
-
         }
     }
 
@@ -112,30 +110,13 @@ class MainFragment : Fragment() {
     private fun initTabLayout() {
         with(binding.tabLayoutMainFragment) {
             addTab(binding.tabLayoutMainFragment.newTab().setText("전체"))
+            addTab(binding.tabLayoutMainFragment.newTab().setText("수요예측"))
             addTab(binding.tabLayoutMainFragment.newTab().setText("청약예정"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("청약임박"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("청약환불"))
+            addTab(binding.tabLayoutMainFragment.newTab().setText("환불"))
             addTab(binding.tabLayoutMainFragment.newTab().setText("상장"))
 
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when(tab!!.position) {
-                        0 -> {
-                            stockAdapter.filter.filter("")
-                        }
-                        1 -> {
-                            stockAdapter.filter.filter("청약")
-                        }
-                        2 -> {
-                            stockAdapter.filter.filter("청약")
-                        }
-                        3 -> {
-                            stockAdapter.filter.filter("환불")
-                        }
-                        4 -> {
-                            stockAdapter.filter.filter("상장")
-                        }
-                    }
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -185,37 +166,65 @@ class MainFragment : Fragment() {
                 }
             }
         })
+
+        binding.chipFollowing.setOnClickListener {
+            followingFilter = !(followingFilter)
+            // 필터링 메서드 수행
+            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
+        }
+        binding.chipGroupStockType.setOnCheckedChangeListener { chipgroup, checkedId ->
+            stockTypeFilter = when (checkedId) {
+                R.id.chip_IPO -> {
+                    "공모주"
+                }
+                R.id.chip_SPAC -> {
+                    "스팩주"
+                }
+                R.id.chip_rightIssue -> {
+                    "실권주"
+                }
+                else -> {
+                    ""
+                }
+
+            }
+            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
+            Log.d("checkChip",stockTypeFilter)
+        }
+
     }
 
     //TODO : onKakaoLoginDoneEvent 함수와 합치기
     private fun kakaoLoginCheck() {
         if(BaseApplication.preferences.isUserLogined) {
-            binding.recyclerViewFollowing.visibility = View.VISIBLE
+            //binding.recyclerViewFollowing.visibility = View.VISIBLE
             binding.cardViewLogin.visibility = View.GONE
         }else{
             binding.cardViewLogin.visibility = View.VISIBLE
-            binding.recyclerViewFollowing.visibility = View.GONE
+            //binding.recyclerViewFollowing.visibility = View.GONE
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onKakaoLoginDoneEvent(kakaoLoginStatus : KakaoLoginStatus) {
         if (kakaoLoginStatus.isKakaoLogined){
-            binding.recyclerViewFollowing.visibility = View.VISIBLE
+            //binding.recyclerViewFollowing.visibility = View.VISIBLE
             binding.cardViewLogin.visibility = View.GONE
         }else{
             binding.cardViewLogin.visibility = View.VISIBLE
-            binding.recyclerViewFollowing.visibility = View.GONE
+            //binding.recyclerViewFollowing.visibility = View.GONE
         }
     }
 
     private fun initStockRecyclerView() {
         stockAdapter = StockListAdapter()
-        stockAdapter.stockData = stockList
+        stockAdapter.stockList = stockList
+        if (stockAdapter.stockList === stockList) {
+            Log.d("isSame","isSame")
+        }
         binding.recyclerViewStock.adapter = stockAdapter
         binding.recyclerViewStock.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewStock.addItemDecoration(GridViewDecoration(30))
-
     }
 
     private fun stockScheduleCheck(ipoStartDate : String, ipoEndDate : String, ipoRefundDate : String?, ipoDebutDate : String?) : String {
@@ -242,5 +251,7 @@ class MainFragment : Fragment() {
             }
         }
     }
+
+
 
 }
