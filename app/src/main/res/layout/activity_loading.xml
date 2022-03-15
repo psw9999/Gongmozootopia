@@ -6,26 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".UI.Activity.LoadingActivity">
 
-<!--    <com.google.android.material.slider.Slider-->
-<!--        android:id="@+id/slider"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginEnd="25dp"-->
-<!--        android:layout_marginBottom="200dp"-->
-<!--        android:stepSize="10.0"-->
-<!--        android:valueFrom="0.0"-->
-<!--        android:valueTo="80.0"-->
-<!--        app:labelBehavior="withinBounds"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/textView_loadingText"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:tickVisible="true"-->
-<!--        app:trackHeight="20dp">-->
-
-<!--    </com.google.android.material.slider.Slider>-->
-
-
     <TextView
         android:id="@+id/textView_loadingText"
         android:layout_width="wrap_content"
@@ -46,6 +26,6 @@
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

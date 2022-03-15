@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.psw9999.ipo_alarm.Adapter.CalendarAdapter
 import com.psw9999.ipo_alarm.Adapter.MainViewPager
 import com.psw9999.ipo_alarm.R
+import com.psw9999.ipo_alarm.UI.Fragment.CalendarFragment
 import com.psw9999.ipo_alarm.UI.Fragment.MainFragment
 import com.psw9999.ipo_alarm.UI.Fragment.NotificationFragment
 import com.psw9999.ipo_alarm.UI.Fragment.ThirdFragment
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                     putParcelableArrayList(stockListKey,intent.getParcelableArrayListExtra(stockListKey))
                 }
             }
-            ,ThirdFragment(),ThirdFragment(),NotificationFragment())
+            ,CalendarFragment(),ThirdFragment(),NotificationFragment())
         viewPager2.adapter = pagerAdapter
         // 유저 스크롤 방지, 네비게이션을 통해서만 제어
         viewPager2.isUserInputEnabled = false
