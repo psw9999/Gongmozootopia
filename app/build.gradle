@@ -11,10 +11,11 @@ android {
 
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 
     defaultConfig {
-        applicationId "com.psw9999.ipo_alarm"
+        applicationId "com.psw9999.gongmozootopia"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

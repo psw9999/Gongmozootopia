@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">IPO_Alarm</string>
+    <string name="app_name">Gomozootopia</string>
 
     <string name="autoLogin">AUTO_LOGIN</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

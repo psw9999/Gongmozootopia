@@ -19,5 +19,8 @@
     <color name="barGrayColor">#E2E1DD</color>
     <color name="baseColor">#8C8C8C</color>
 
+    <color name="calendar_weekday">#FF000000</color>
+    <color name="calendar_sunday">#FF1744</color>
+    <color name="calendar_saturday">#2979FF</color>
 
 </resources>

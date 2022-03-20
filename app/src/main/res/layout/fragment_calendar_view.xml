@@ -101,7 +101,7 @@
                 android:textColor="#2196F3" />
         </LinearLayout>
 
-    <com.psw9999.ipo_alarm.CustomView.CalendarView
+    <com.psw9999.gongmozootopia.CustomView.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

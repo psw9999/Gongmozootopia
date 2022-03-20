@@ -73,17 +73,42 @@
 
     <style name="Calendar"/>
 
-    <style name="Calendar.HeaderDateText">
-        <item name="android:textSize">20dp</item>
-        <item name="android:textColor">#263238</item>
-    </style>
+        <style name="Calendar.HeaderDateText">
+            <item name="android:textSize">20dp</item>
+            <item name="android:textColor">#263238</item>
+        </style>
 
-    <style name="Calendar.CalendarViewStyle">
-        <item name="dayHeight">80dp</item>
-    </style>
+        <style name="Calendar.CalendarViewStyle">
+            <item name="dayHeight">80dp</item>
+        </style>
 
-    <style name="Calendar.ItemViewStyle">
-        <item name="dayTextSize">12dp</item>
-    </style>
+        <style name="Calendar.ItemViewStyle">
+            <item name="dayTextSize">12dp</item>
+        </style>
+
+        <style name="Calendar.HeadTextView" parent="Widget.MaterialComponents.TextView">
+            <item name="android:textColor">@color/black</item>
+            <item name="android:textSize">20dp</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textAlignment">center</item>
+        </style>
+
+        <style name="Calendar.WeekItem" parent="Widget.MaterialComponents.TextView">
+            <item name="android:textStyle">bold</item>
+            <item name="android:textAlignment">center</item>
+        </style>
+
+        <style name="Calendar.WeekItem.WeekDay" parent="Calendar.WeekItem">
+            <item name="android:textColor">@color/black</item>
+        </style>
+
+        <style name="Calendar.WeekItem.Saturday" parent="Calendar.WeekItem">
+            <item name="android:textColor">@color/calendar_saturday</item>
+        </style>
+
+        <style name="Calendar.WeekItem.SunDay" parent="Calendar.WeekItem">
+            <item name="android:textColor">@color/calendar_sunday</item>
+        </style>
+
 
 </resources>
