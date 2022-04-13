@@ -3,16 +3,19 @@ package com.psw9999.gongmozootopia.UI.Activity
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.adapter.MainViewPager
+import com.psw9999.gongmozootopia.Adapter.MainViewPager
+import com.psw9999.gongmozootopia.Data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
-import com.psw9999.gongmozootopia.UI.Fragment.StockInfo.CompanyInfoFragment
 import com.psw9999.gongmozootopia.base.BaseActivity
-import com.psw9999.gongmozootopia.base.BaseApplication
-import com.psw9999.gongmozootopia.data.StockInfo
+import com.psw9999.gongmozootopia.Data.StockInfoResponse
+import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,166 +26,92 @@ import java.time.LocalDate
 class StockInformationActivity : BaseActivity() {
 
     val binding by lazy { ActivityStockInformationBinding.inflate(layoutInflater)}
-    lateinit var stockInfo : StockInfo
-    lateinit var viewPager2 : ViewPager2
-    var itemPos : Int = 0
+    val stockFollowingViewModel : StockFollowingViewModel by viewModels()
+    lateinit var stockInfo : StockInfoResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        intent?.let { intent ->
-            intent.getLongExtra("ipoIndex",-1)?.let { ipoIndex ->
-                loadingOn()
-                CoroutineScope(Dispatchers.IO).launch() {
-                    launch{
-                        stockInfo = StockInfoRepository().getStockInfo(ipoIndex)
-                        Log.d("StockInfoRepository","OK")
-                        true
-                    }.join()
-                    withContext(Dispatchers.Main) {
-                        with(stockInfo)
-                        {
-                            if (stockInfo.ipoPrice == 0L) {
-                                binding.textViewStockPrice.text =
-                                    "- 원 [${ipoPriceLow} ~ ${ipoPriceHigh}원]"
-                            } else {
-                                binding.textViewStockPrice.text =
-                                    "${ipoPrice} 원 ${ipoPriceLow} ~ ${ipoPriceHigh}"
-                            }
-                            var stockState = stockScheduleCheck(ipoForecastDate, ipoStartDate, ipoEndDate, ipoRefundDate, ipoDebutDate)
-                            binding.slider.progress = stockState
-                            when(stockState) {
-                                1 -> binding.textViewForecastDay.setTextAppearance(R.style.textView_stockState)
-                                3 -> binding.textViewIpoDay.setTextAppearance(R.style.textView_stockState)
-                                5 -> binding.textViewRefundDay.setTextAppearance(R.style.textView_stockState)
-                                7 -> binding.textViewDebutDay.setTextAppearance(R.style.textView_stockState)
-                            }
-                        }
-                        stockInfo.isFollowing = intent.getBooleanExtra("isFollowing",false)
-                        stockInfo.isAlarm = intent.getBooleanExtra("isAlarm",false)
-                        itemPos = intent.getIntExtra("itemPos",0)
-                        initToolbar()
-                        loadingOff()
+        loadingOn()
+        CoroutineScope(Dispatchers.IO).launch() {
+            launch {
+                stockInfo =
+                    StockInfoRepository().getStockInfo(intent!!.getLongExtra("ipoIndex", -1))
+                true
+            }.join()
+            withContext(Dispatchers.Main) {
+                with(stockInfo) {
+                    isFollowing = intent!!.getBooleanExtra("isFollowing", false)
+                    initToolbar()
+                    if (ipoPrice == 0L) binding.textViewConfirmStockPrice.text = "미정"
+                    else binding.textViewConfirmStockPrice.text = "${ipoPrice}원"
+                    binding.textViewStockPriceBand.text = "${ipoPriceLow} ~ ${ipoPriceHigh}원"
+                    binding.textViewIpoForecastDay.text = ipoForecastDate
+                    binding.textViewIpoStartDay.text = ipoStartDate
+                    binding.textViewIpoDebutDay.text = ipoDebutDate
+                    binding.textViewIpoRefundDay.text = ipoRefundDate
+                    if (stockKinds == "스팩주") binding.cardViewCompanyInfo.visibility = View.GONE
+                    else {
+                        if (sales == 0L) binding.textViewCompanySales.text = "확인필요"
+                        else binding.textViewCompanySales.text = unitCalculate(sales)
+                        if (profits == 0L) binding.textViewCompanyProfit.text = "확인필요"
+                        else binding.textViewCompanyProfit.text = unitCalculate(profits)
                     }
+                    binding.textViewSector.text = sector
+                    binding.textViewStockMarket.text = stockExchange
+                    loadingOff()
                 }
             }
         }
-        // 로딩 완료 후 추가
-        with(binding.stockInfoTabLayout) {
-            addTab(this.newTab().setText("회사정보"))
-            addTab(this.newTab().setText("공모정보"))
-            addTab(this.newTab().setText("수요예측"))
-            addTab(this.newTab().setText("주간사"))
-        }
-        initViewPager()
     }
 
-    private fun initViewPager(){
-        viewPager2 = binding.viewPager2StockInfo
-        val pagerAdapter = MainViewPager(this)
-        pagerAdapter.fragmentList = listOf(CompanyInfoFragment(),CompanyInfoFragment(),CompanyInfoFragment(),CompanyInfoFragment())
-        viewPager2.adapter = pagerAdapter
-
-        // 유저 스크롤 방지, 네비게이션을 통해서만 제어
-        viewPager2.isUserInputEnabled = false
+    private fun unitCalculate(value : Long) : String {
+        var tempStr : String = ""
+        var value = value
+        var share = 1000000000000L
+        val unitArray = arrayOf<String>("조","억","만")
+        // 조, 억, 만원까지 표시
+        repeat(3) { i ->
+            var temp = value/share
+            if(temp != 0L) {
+                tempStr += " ${temp}${unitArray[i]}"
+                value %= share
+                if (value < 0) value *= -1
+            }
+            share /= 10000L
+        }
+        tempStr += "원"
+        return tempStr
     }
 
     private fun initToolbar() {
         with(binding.stockInfoAppbar) {
             inflateMenu(R.menu.appbar_stock_info)
             navigationIcon = getDrawable(R.drawable.baseline_navigate_before_24)
-
+            setNavigationOnClickListener {
+                finish()
+            }
+            title = stockInfo.stockName
+            isTitleCentered = true
             with(menu.findItem(R.id.action_following).actionView) {
                 this as ImageButton
                 this.setImageResource(R.drawable.imgbtn_favorit_states)
                 this.setBackgroundResource(R.color.white)
-                //TODO : 다른 사이즈의 화면에서도 정상적으로 적용되는지 체크..
-                this.setPadding(20,0,20,0)
                 if (stockInfo.isFollowing) this.isSelected = true
                 setOnClickListener {
                     this.isSelected = (!this.isSelected)
                     stockInfo.isFollowing = (!stockInfo.isFollowing)
-                    BaseApplication.helper.updateSQLiteDB(stockIndex = stockInfo.ipoIndex, isFollowing = stockInfo.isFollowing, isAlarm = stockInfo.isAlarm)
                     if (stockInfo.isFollowing) {
-                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 설정하였습니다.",
-                            Snackbar.LENGTH_SHORT).show()
+                        this.isSelected = true
+                        stockFollowingViewModel.addStock(StockFollowingResponse(ipoIndex = stockInfo.ipoIndex, stockName = stockInfo.stockName, isFollowing = true))
+                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 설정하였습니다.", Snackbar.LENGTH_SHORT).show()
                     }else{
-                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 해제하였습니다.",
-                            Snackbar.LENGTH_SHORT).show()
+                        this.isSelected = false
+                        stockFollowingViewModel.deleteStock(stockInfo.ipoIndex)
+                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 해제하였습니다.", Snackbar.LENGTH_SHORT).show()
                     }
-                }
-            }
-
-            title = stockInfo.stockName
-            with(menu.findItem(R.id.action_alarm).actionView) {
-                this as ImageButton
-                this.setImageResource(R.drawable.imgbtn_alarm_states)
-                this.setBackgroundResource(R.color.white)
-                this.setPadding(20,0,0,0)
-                if (stockInfo.isAlarm) this.isSelected = true
-                setOnClickListener {
-                    this.isSelected = (!this.isSelected)
-                    stockInfo.isAlarm = (!stockInfo.isAlarm)
-                    BaseApplication.helper.updateSQLiteDB(stockIndex = stockInfo.ipoIndex, isFollowing = stockInfo.isFollowing, isAlarm = stockInfo.isAlarm)
-                    if (stockInfo.isAlarm) {
-                        Snackbar.make(this, "${stockInfo.stockName}의 알람을 설정하였습니다.",
-                            Snackbar.LENGTH_SHORT).show()
-                    }else{
-                        Snackbar.make(this, "${stockInfo.stockName}의 알람을 해제하였습니다.",
-                            Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-            setNavigationOnClickListener {
-                intent.putExtra("itemPos",itemPos)
-                intent.putExtra("isFollowing",stockInfo.isFollowing)
-                intent.putExtra("isAlarm",stockInfo.isAlarm)
-                setResult(Activity.RESULT_OK, intent);
-                finish()
-            }
-
-            setOnMenuItemClickListener { menuItem ->
-                when(menuItem.itemId) {
-                    R.id.action_following -> {
-                        menuItem as ImageButton
-                        menuItem.isSelected = (!menuItem.isSelected)
-                        true
-                    }
-                    else -> false
                 }
             }
         }
     }
-    private fun stockScheduleCheck(ipoForecastDate : String?, ipoStartDate : String?, ipoEndDate : String?, ipoRefundDate : String?, ipoDebutDate : String?) : Int {
-        val now = LocalDate.now()
-
-        val ipoForecastDate = ipoForecastDate?.let {
-            LocalDate.parse(ipoForecastDate)
-        } ?: now.plusDays(1)
-        val ipoStartDate = ipoStartDate?.let{
-            LocalDate.parse(ipoStartDate)
-        } ?: now.plusDays(2)
-        val ipoEndDate = ipoEndDate?.let{
-            LocalDate.parse(ipoEndDate)
-        } ?: now.plusDays(3)
-        val ipoRefundDate = ipoRefundDate?.let{
-            LocalDate.parse(ipoRefundDate)
-        } ?: now.plusDays(4)
-        val ipoDebutDate = ipoDebutDate?.let {
-            LocalDate.parse(ipoDebutDate)
-        } ?: now.plusDays(5)
-        return when {
-            now.isBefore(ipoForecastDate) -> 0
-            now.isEqual(ipoForecastDate) -> 1
-            now.isBefore(ipoStartDate) -> 2
-            now.isBefore(ipoEndDate) || now.isEqual(ipoEndDate) -> 3
-            now.isBefore(ipoRefundDate) -> 4
-            now.isEqual(ipoRefundDate) -> 5
-            now.isBefore(ipoDebutDate) -> 6
-            else -> 7
-        }
-    }
-
 }

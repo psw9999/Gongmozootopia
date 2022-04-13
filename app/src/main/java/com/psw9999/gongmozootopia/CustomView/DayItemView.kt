@@ -73,7 +73,6 @@ class DayItemView @JvmOverloads constructor(
                 (height/4).toFloat(),
                 textPaint
             )
-            Log.d("canvas","height : $height, bound : ${bounds.height()}")
             drawLine(
                 0F,
                 height.toFloat(),

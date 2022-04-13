@@ -6,39 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.kakao.sdk.common.KakaoSdk
-import com.psw9999.gongmozootopia.Repository.AccountRepository
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.helper
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockListKey
-import com.psw9999.gongmozootopia.data.StockListResponse
+import com.psw9999.gongmozootopia.Repository.StockRepository
+import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockDatabase
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
+import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.util.NetworkStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import kotlinx.coroutines.withContext
+import org.joda.time.Days
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 class LoadingActivity : AppCompatActivity() {
 
-    private val mainIntent by lazy {
-        Intent(this, MainActivity::class.java)
-    }
-    //test
-    private val infoIntent by lazy {
-        Intent(this, StockInformationActivity::class.java)
-    }
-    private val binding by lazy {ActivityLoadingBinding.inflate(layoutInflater)}
-
-    lateinit var stockListResponse: ArrayList<StockListResponse>
+    private val mainIntent by lazy { Intent(this, MainActivity::class.java) }
+    lateinit var stockData : ArrayList<StockResponse>
+    lateinit var stockFollowingIndex : List<Long>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //TODO : supportActionBar와 actionBar의 차이?
-        //액션바 숨기기
-        supportActionBar?.hide()
+        val binding = ActivityLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 카카오 로그인 SDK 초기화
         KakaoSdk.init(this, "f23fe6f5f5fc7a04094619143ffa9832")
-        testMode()
+
         // 네트워크 상태 즉시 체크
         val connectivityManager = getSystemService(ConnectivityManager::class.java)
         val currentNetwork = connectivityManager.activeNetwork
@@ -47,17 +42,32 @@ class LoadingActivity : AppCompatActivity() {
         // 네트워크 연결 정보를 획득하는 부분으로 미연결시 null을 반환함.
         val linkProperties = connectivityManager.getLinkProperties(currentNetwork)
         if(linkProperties != null){
-            stockListResponse = ArrayList<StockListResponse>()
-            CoroutineScope(Dispatchers.IO).launch() {
-                launch{
-                    stockListResponse = AccountRepository().getStockList()
-                    Log.d("deferred1","$stockListResponse")
+            CoroutineScope(Dispatchers.IO).launch {
+                launch {
+                    stockData = StockRepository().getStockData()
+//                    stockData.forEach { stock ->
+//                        Log.d("stock","$stock")
+//                    }
                     true
                 }.join()
+
                 launch {
-                    stockListResponse = helper.selectSQLiteDB(stockListResponse)
+                    stockFollowingIndex = stockDatabase.stockFollowingDAO().getAllFollowingIndex()
+                    stockData.forEach { data ->
+                        if (data.ipoIndex in stockFollowingIndex) {
+                            data.isFollowing = true
+                        }
+                    }
+                    true
+                }.join()
+
+                withContext(Dispatchers.Main) {
+                    stockData.forEach { data ->
+                        scheduleCheck(data)
+                    }
+                    //Log.d("stockData","$stockData")
                     mainIntent.apply {
-                        putParcelableArrayListExtra(stockListKey,stockListResponse)
+                        putExtra(STOCK_DATA,stockData)
                     }
                     startActivity(mainIntent)
                     finish()
@@ -66,35 +76,50 @@ class LoadingActivity : AppCompatActivity() {
         }else{
             networkStatus.showNetworkDialog()
         }
-
         // 네트워크 상태를 체크하는 콜백 등록
         networkStatus.registerNetworkCallback()
     }
 
-    private fun testMode() {
-        binding.textViewLoadingText.setOnClickListener {
-//            val testList : ArrayList<StockData> = arrayListOf()
-//            testList.add(StockData(
-//                ipoIndex = 20,
-//                stockName = "테스트테스트",
-//                stockExchange = "코스닥",
-//                stockKinds = "공모주",
-//                ipoStartDate = "2022-02-18",
-//                ipoEndDate = "2022-02-20",
-//                ipoRefundDate = "2022-02-22",
-//                ipoDebutDate = "2022-02-24",
-//                underwriter = "KB증권,삼성증권,미래에셋증권,카카오증권",
-//                tag = null,
-//                isFollowing = false,
-//                stockDday = 5,
-//                stockState = "청약",
-//                isAlarm = false))
-//            mainIntent.apply {
-//                putParcelableArrayListExtra(stockListKey,testList)
-//            }
-//            startActivity(mainIntent)
-            startActivity(infoIntent)
-            finish()
+    fun scheduleCheck(stockData : StockResponse){
+        var fmt : DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+        val ipoStartDday : Int =
+            stockData.ipoStartDate?.let {Days.daysBetween(today, fmt.parseDateTime(stockData.ipoStartDate)).days}?:-1
+        val ipoEndDday : Int =
+            stockData.ipoEndDate?.let {Days.daysBetween(today, fmt.parseDateTime(stockData.ipoEndDate)).days}?:-1
+        val refundDday : Int =
+            stockData.ipoRefundDate?.let{Days.daysBetween(today, fmt.parseDateTime(stockData.ipoRefundDate)).days}?:-1
+        val debutDday : Int =
+            stockData.ipoDebutDate?.let {Days.daysBetween(today, fmt.parseDateTime(stockData.ipoDebutDate)).days}?:-1
+
+        if (ipoStartDday == -1) {
+            stockData.currentSchedule = "청약시작일 미정"
+            stockData.scheduleDday = ""
         }
+        else if (ipoStartDday > 0) {
+            stockData.currentSchedule = "청약시작일 ${stockData.ipoStartDate.slice(5..6)}월 ${stockData.ipoStartDate.slice(8..9)}일"
+            stockData.scheduleDday = "D-$ipoStartDday"
+        }
+        else if (ipoEndDday >= 0) {
+            stockData.currentSchedule = "청약마감일 ${stockData.ipoEndDate!!.slice(5..6)}월 ${stockData.ipoEndDate!!.slice(8..9)}일"
+            stockData.scheduleDday = "진행중"
+        }
+        else if (refundDday >= 0) {
+            stockData.currentSchedule = "환불일 ${stockData.ipoRefundDate!!.slice(5..6)}월 ${stockData.ipoRefundDate!!.slice(8..9)}일"
+            if (refundDday == 0) stockData.scheduleDday = "D-day"
+            else stockData.scheduleDday = "D-$refundDday"
+        }
+        else if (debutDday >= 0) {
+            stockData.currentSchedule = "상장일 ${stockData.ipoDebutDate!!.slice(5..6)}월 ${stockData.ipoDebutDate!!.slice(8..9)}일"
+            if (refundDday == 0) stockData.scheduleDday = "D-day"
+            else stockData.scheduleDday = "D-$debutDday"
+        }
+        else {
+            stockData.currentSchedule = "상장완료"
+            stockData.scheduleDday = ""
+        }
+    }
+
+    companion object {
+        val STOCK_DATA : String = "STOCK_DATA"
     }
 }

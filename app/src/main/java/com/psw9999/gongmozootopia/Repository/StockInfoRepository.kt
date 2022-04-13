@@ -1,22 +1,28 @@
 package com.psw9999.gongmozootopia.Repository
 
 import android.util.Log
+import com.psw9999.gongmozootopia.Data.*
 import com.psw9999.gongmozootopia.communication.ServerImpl
-import com.psw9999.gongmozootopia.data.StockInfo
 import kotlinx.coroutines.runBlocking
 import retrofit2.await
 
 class StockInfoRepository {
     private val dbsgAPI = ServerImpl.APIService
-    private lateinit var stockInfo : StockInfo
+    private lateinit var stockInfo : StockInfoResponse
 
-    // TODO : run, catch문 사용하기
-    fun getStockInfo(ipoIndex : Long) : StockInfo  {
+    fun getStockInfo(ipoIndex : Long) : StockInfoResponse  {
         runBlocking {
             val request = dbsgAPI.getStockInfo(ipoIndex)
-            val response = request.await()
-            Log.d("getStockList",response.stockInfo.toString())
-            stockInfo = response.stockInfo
+            var response = request.await()
+            with(response) {
+                if (ipoForecastDate == null) ipoForecastDate = "미정"
+                if (ipoStartDate == null) ipoStartDate = "미정"
+                if (ipoEndDate == null) ipoEndDate = "미정"
+                if (ipoRefundDate == null) ipoRefundDate = "미정"
+                if (ipoDebutDate == null) ipoDebutDate = "미정"
+                if (sector == null) sector = "확인필요"
+            }
+            stockInfo = response
         }
         return stockInfo
     }

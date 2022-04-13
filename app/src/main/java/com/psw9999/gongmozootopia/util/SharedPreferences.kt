@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPreferences(context: Context) {
-    private val preferenceFileName = "IPOAlarm"
+    private val preferenceFileName = "gomozootopia"
     private val preferencesKakaoIdToken = "kakaoIdToken"
     private val preferencesJWS = "JWS"
     private val preferencesKakaoUserLogined = "kakaouserLogined"
+
     private val preferences: SharedPreferences? =
         context.getSharedPreferences(preferenceFileName, 0)
     /* 파일 이름과 EditText를 저장할 Key 값을 만들고 prefs 인스턴스 초기화 */

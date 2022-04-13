@@ -3,19 +3,19 @@ package com.psw9999.gongmozootopia.UI.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
-import com.psw9999.gongmozootopia.adapter.CalendarAdapter
-import com.psw9999.gongmozootopia.adapter.MainViewPager
+import com.psw9999.gongmozootopia.Adapter.MainViewPager
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Fragment.CalendarFragment
 import com.psw9999.gongmozootopia.UI.Fragment.MainFragment
 import com.psw9999.gongmozootopia.UI.Fragment.NotificationFragment
-import com.psw9999.gongmozootopia.UI.Fragment.ThirdFragment
+import com.psw9999.gongmozootopia.UI.Fragment.ConfigurationFragment
 import com.psw9999.gongmozootopia.databinding.ActivityMainBinding
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockListKey
+import com.psw9999.gongmozootopia.Data.StockFirmResponse
+import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
 
 class MainActivity : AppCompatActivity() {
     val binding by lazy {ActivityMainBinding.inflate(layoutInflater)}
-    private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var viewPager2 : ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,15 +32,13 @@ class MainActivity : AppCompatActivity() {
         pagerAdapter.fragmentList = listOf(
             MainFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(stockListKey,intent.getParcelableArrayListExtra(stockListKey))
+                    putParcelableArrayList(STOCK_DATA,
+                        intent.getParcelableArrayListExtra(STOCK_DATA))
                 }
             }
-            ,CalendarFragment(),ThirdFragment(),NotificationFragment())
+            ,NotificationFragment(),ConfigurationFragment(),CalendarFragment())
         viewPager2.adapter = pagerAdapter
-        // 유저 스크롤 방지, 네비게이션을 통해서만 제어
         viewPager2.isUserInputEnabled = false
-        //TEST
-        createBadge(R.id.notification)
     }
 
     private fun initBottomNavigation() {
@@ -49,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.notification -> {
                     setPageIndex(3)
-                    closeBadge(R.id.notification)
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.setting -> {
@@ -71,18 +68,4 @@ class MainActivity : AppCompatActivity() {
     private fun setPageIndex(index: Int) {
         viewPager2.currentItem = index
     }
-
-    //TEST
-    private fun createBadge(itemID : Int) {
-        var badge = binding.bottomNavigationMain.getOrCreateBadge(itemID)
-        badge.isVisible = true
-        badge.number = 999
-    }
-
-    //TEST
-    private fun closeBadge(itemID : Int) {
-        var badge = binding.bottomNavigationMain.getOrCreateBadge(itemID)
-        badge.isVisible = false
-    }
-
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6F6F6"
+    android:background="@color/background_color"
     android:fillViewport="true"
     android:orientation="vertical"
     tools:context=".UI.Fragment.MainFragment">
@@ -103,12 +103,13 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
+            android:visibility="gone"
             app:cardCornerRadius="10dp"
             app:cardElevation="1dp"
+            app:layout_constraintBottom_toTopOf="@id/recyclerView_stock"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chipGroup_stockType"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView_stock">
+            app:layout_constraintTop_toBottomOf="@+id/chipGroup_stockType">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.adapter
+package com.psw9999.gongmozootopia.Adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

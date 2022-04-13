@@ -10,7 +10,7 @@ class CalendarUtils {
     companion object {
 
         const val WEEKS_PER_MONTH = 6
-
+        val today = DateTime()
         /**
          * 선택된 날짜에 해당하는 월간 달력을 반환한다.
          */
@@ -46,6 +46,10 @@ class CalendarUtils {
          */
         fun isSameMonth(first: DateTime, second: DateTime): Boolean =
             first.year == second.year && first.monthOfYear == second.monthOfYear
+
+        fun isSameDay(first : DateTime) : Boolean =
+            first.year == today.year && first.monthOfYear == today.monthOfYear && first.dayOfMonth == today.dayOfMonth
+
 
         /**
          * 해당 요일의 색깔을 반환한다.

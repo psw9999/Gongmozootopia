@@ -22,10 +22,17 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Chip_underwriter_TextTheme" parent="TextAppearance.MaterialComponents.Chip">
+    <style name="Chip_Unregistered_StockFirm_TextTheme" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">11dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/chip_underwriter</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+    </style>
+
+    <style name="Chip_Registered_StockFirm_TextTheme" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">11dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
@@ -46,33 +53,28 @@
         <item name="backgroundColor">@color/white</item>
     </style>
 
-    <style name="textView_stockInfoTitle" parent="TextAppearance.AppCompat">
-        <item name="android:layout_marginTop">18dp</item>
-        <item name="android:textSize">16dp</item>
+
+    <style name="StockInfo"/>
+    <style name="StockInfo.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">18dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#8C8B87</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="textView_stockInfo" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">16dp</item>
+    <style name="StockInfo.secondTitle" parent="TextAppearance.AppCompat">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textStyle">bold</item>
-    </style>
-    
-    <style name = "SeekBarwithoutSteps" parent="Widget.AppCompat.SeekBar.Discrete">
-        <item name="tickMark">@null</item>
-        <item name="colorControlActivated">@color/textView_rightIssue</item>
-        <item name="colorControlNormal">@color/textView_rightIssue</item>
-        <item name="colorOnSecondary">@color/textView_rightIssue</item>
-        <item name="colorPrimary">@color/textView_rightIssue</item>
+        <item name="android:textColor">@color/baseColor</item>
     </style>
 
-    <style name="textView_stockState" parent="TextAppearance.AppCompat">
+    <style name="StockInfo.content" parent="TextAppearance.AppCompat">
         <item name="android:textSize">15dp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Calendar"/>
-
         <style name="Calendar.HeaderDateText">
             <item name="android:textSize">20dp</item>
             <item name="android:textColor">#263238</item>
@@ -110,5 +112,14 @@
             <item name="android:textColor">@color/calendar_sunday</item>
         </style>
 
+    <style name="Configuration"/>
+
+        <style name="Configuration.HeadText" parent="TextAppearance.AppCompat">
+            <item name="android:textSize">14dp</item>
+            <item name="android:textColor">@color/configuration_head</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:layout_marginTop">10dp</item>
+            <item name="android:layout_marginStart">20dp</item>
+        </style>
 
 </resources>

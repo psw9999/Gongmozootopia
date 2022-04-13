@@ -1,6 +1,6 @@
-package com.psw9999.gongmozootopia.adapter
+package com.psw9999.gongmozootopia.Adapter
 
-import android.util.TypedValue
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +9,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
+import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
 import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.getMonthList
+import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.isSameDay
 import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.isSameMonth
 import org.joda.time.DateTime
-import java.util.*
 
 class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
 
@@ -38,6 +39,7 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         var millis = getItemId(position)
+        Log.d("onBindViewHolder",DateTime(millis).toString("MM월 yyyy"))
         holder.onBind(DateTime(millis), getMonthList(DateTime(millis)))
     }
 
@@ -52,40 +54,30 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
             }
 
         fun onBind(firstDayOfMonth: DateTime, dateList : List<DateTime>) {
-            for (gridLayout in rows) {
-                for (i in 0 until 7) {
-                    for(j in 0 until 7) {
-                        with((gridLayout[i] as LinearLayout)[0] as TextView) {
-                            setDayView(this,dateList[(i*7)+j],firstDayOfMonth)
+            binding.textViewCalendarHeadTextView.text = DateTime(firstDayOfMonth).toString("MM월 yyyy")
+            for ((i,gridLayout) in rows.withIndex()) {
+                gridLayout.removeViews(7,gridLayout.childCount-7)
+                for (j in 0 until 6) {
+                        with((gridLayout[j] as LinearLayout)[0] as TextView) {
+                            setDayView(this, dateList[(i * 7) + j], firstDayOfMonth)
+                            if (isSameDay(dateList[(i * 7) + j])) {
+                                gridLayout.addView(CalendarLabelView(context).apply { onBind(0, 2) })
+                                gridLayout.addView(CalendarLabelView(context).apply { onBind(2, 3) })
+                            }
                         }
                     }
                 }
             }
-        }
+
 
         private fun setDayView(view: TextView, date: DateTime, firstDayOfMonth: DateTime) {
             with(view) {
-                background = null
+                if (isSameDay(date)) setBackgroundResource(R.drawable.bg_circle_24)
+                else background = null
                 text = date.dayOfMonth.toString()
-                alpha = if (!isSameMonth(date, firstDayOfMonth)) 1.0F else 0.3F
-//                val outValue = TypedValue()
-//                setTextColor(context.getColor(when(date.dayOfWeek) {
-//                    Calendar.SATURDAY -> {
-//                        context.theme.resolveAttribute(R.attr.colorSaturday, outValue, true)
-//                        outValue.resourceId
-//                    }
-//                    Calendar.SUNDAY -> {
-//                        context.theme.resolveAttribute(R.attr.colorSunday, outValue, true)
-//                        outValue.resourceId
-//                    }
-//                    else -> {
-//                        context.theme.resolveAttribute(R.attr.colorWeek, outValue, true)
-//                        outValue.resourceId
-//                    }
-//                }))
+                alpha = if (!isSameMonth(date, firstDayOfMonth)) 0.3F else 1.0F
             }
         }
-
     }
 
     companion object {

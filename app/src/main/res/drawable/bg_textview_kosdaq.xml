@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid
-    android:color="#FFFFFF" />
+    android:color="@color/textView_KOSDAQ" />
 
     <padding
-        android:left="3dp"
+        android:left="4dp"
         android:top="1dp"
-        android:right="3dp"
+        android:right="4dp"
         android:bottom="1dp" />
 
     <corners
@@ -15,6 +15,5 @@
     <stroke
         android:width="1.5dp"
         android:color="@color/textView_KOSDAQ"></stroke>
-
 
 </shape>

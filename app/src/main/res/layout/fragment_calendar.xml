@@ -6,30 +6,4 @@
     android:layout_height="match_parent"
     tools:context=".UI.Fragment.CalendarFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/mainActivity_appbarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/mainActivity_appbar"
-            style="@style/AppTheme"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:title="진행일정"
-            app:titleTextAppearance="@style/AppBarTitleSize">
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager_calendar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/mainActivity_appbarLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </androidx.viewpager2.widget.ViewPager2>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

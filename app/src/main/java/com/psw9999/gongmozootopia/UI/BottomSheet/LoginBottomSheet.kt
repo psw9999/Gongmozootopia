@@ -11,8 +11,8 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.preferences
 import com.psw9999.gongmozootopia.communication.RetrofitService
-import com.psw9999.gongmozootopia.data.KakaoLoginStatus
-import com.psw9999.gongmozootopia.data.LoginData
+import com.psw9999.gongmozootopia.Data.KakaoLoginStatus
+import com.psw9999.gongmozootopia.Data.LoginData
 import com.psw9999.gongmozootopia.databinding.LoginBottomSheetBinding
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call

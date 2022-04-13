@@ -1,12 +1,12 @@
-package com.psw9999.gongmozootopia.data
+package com.psw9999.gongmozootopia.Data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class StockListResponse(
-    var ipoIndex : Long,
-    var stockName : String,
+data class StockResponse(
+    val ipoIndex : Long,
+    val stockName : String,
     var stockExchange : String,
     var stockKinds : String,
     var ipoStartDate : String,
@@ -14,9 +14,7 @@ data class StockListResponse(
     var ipoRefundDate : String?,
     var ipoDebutDate : String?,
     var underwriter : String?,
-    var tag : String?,
-    var stockState : String?,
-    var stockDday : Int,
     var isFollowing : Boolean = false,
-    var isAlarm : Boolean = false
+    var currentSchedule : String?,
+    var scheduleDday : String?
 ) : Parcelable

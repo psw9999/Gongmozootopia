@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="143dp">
+    android:layout_height="140dp">
+
+<!--    <data>-->
+<!--        <variable-->
+<!--            name = "stockData"-->
+<!--            type = "com."-->
+<!--            />-->
+<!--    </data>-->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView_stock"
@@ -24,37 +31,26 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView_dDay2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:background="@drawable/bg_textview_spacioustime"
-                android:text="수요예측"
-                android:textSize="13dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/imageView_favorit"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imageView_favorit" />
-
-            <TextView
                 android:id="@+id/textView_marketKinds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:background="@drawable/bg_textview_ipo"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/bg_textview_kosdaq"
                 android:text="코스피"
-                android:textColor="#FF5722"
+                android:textColor="@color/white"
                 android:textSize="13dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/textView_dDay2"
-                app:layout_constraintTop_toTopOf="@id/textView_dDay2" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/textView_stockKinds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
-                android:background="@drawable/bg_textview_spac"
+                android:background="@drawable/bg_textview_ipo"
+                android:textColor="@color/white"
                 android:text="공모주"
                 android:textSize="13dp"
                 android:textStyle="bold"
@@ -62,21 +58,12 @@
                 app:layout_constraintTop_toTopOf="@id/textView_marketKinds" />
 
             <ImageView
-                android:id="@+id/imageView_notification"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_margin="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/imgbtn_alarm_states" />
-
-            <ImageView
                 android:id="@+id/imageView_favorit"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_margin="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_notification"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/imgbtn_favorit_states" />
 
             <TextView
@@ -97,35 +84,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="청약시작일"
+                android:text="청약시작일 4월 17일"
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView_stockName"
                 app:layout_constraintTop_toBottomOf="@+id/textView_stockName" />
 
             <TextView
-                android:id="@+id/textView_endDay"
+                android:id="@+id/textView_Dday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:text="1월 11일"
-                android:textSize="14dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView_endDayTitle"
-                app:layout_constraintTop_toTopOf="@+id/textView_endDayTitle" />
-
-            <TextView
-                android:id="@+id/textView_dDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
                 android:background="@drawable/bg_textview_spacioustime"
+                android:layout_marginStart="3dp"
                 android:text="D-7"
+                android:textColor="#FFFFFF"
                 android:textSize="11dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_endDay"
-                app:layout_constraintStart_toEndOf="@id/textView_endDay"
-                app:layout_constraintTop_toTopOf="@id/textView_endDay" />
+                app:layout_constraintStart_toEndOf="@id/textView_endDayTitle"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_endDayTitle"
+                app:layout_constraintTop_toTopOf="@+id/textView_endDayTitle" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView_underwriter"

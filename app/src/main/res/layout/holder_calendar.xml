@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <TextView
             style="@style/Calendar.HeadTextView"
@@ -84,7 +82,7 @@
         <GridLayout
             android:id="@+id/GridLayout_week1"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="0dp"
             android:columnCount="100"
             android:contentDescription="row"
             android:minHeight="60dp"
@@ -96,112 +94,98 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
 
@@ -221,112 +205,98 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
 
@@ -346,112 +316,98 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
 
@@ -471,112 +427,98 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
 
@@ -596,112 +538,98 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
 
@@ -721,113 +649,99 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     style="@style/Calendar.WeekItem.SunDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="1" />
+                    android:text="1" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="2" />
+                    android:text="2" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="3" />
+                    android:text="3" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="4" />
+                    android:text="4" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="5" />
+                    android:text="5" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="16"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.WeekDay"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="6" />
+                    android:text="6" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="10"
+
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/Calendar.WeekItem.Saturday"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    tools:text="7" />
+                    android:text="7" />
             </LinearLayout>
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

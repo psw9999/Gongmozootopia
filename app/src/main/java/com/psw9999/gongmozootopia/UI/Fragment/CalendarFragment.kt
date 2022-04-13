@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.psw9999.gongmozootopia.adapter.CalendarAdapter
+import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding
 
 
@@ -19,13 +19,8 @@ class CalendarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCalendarBinding.inflate(inflater,container,false)
-        initCalendarAdapter()
+        //initCalendarAdapter()
         return binding.root
     }
 
-    private fun initCalendarAdapter() {
-        calendarAdapter = CalendarAdapter(this)
-        binding.viewPagerCalendar.adapter = calendarAdapter
-        binding.viewPagerCalendar.setCurrentItem(CalendarAdapter.START_POSITION, false)
-    }
 }

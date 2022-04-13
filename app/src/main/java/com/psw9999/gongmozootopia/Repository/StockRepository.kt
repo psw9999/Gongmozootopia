@@ -1,30 +1,31 @@
 package com.psw9999.gongmozootopia.Repository
 
+import android.util.Log
 import com.psw9999.gongmozootopia.communication.ServerImpl
-import com.psw9999.gongmozootopia.data.StockListResponse
+import com.psw9999.gongmozootopia.Data.StockResponse
 import kotlinx.coroutines.runBlocking
 import retrofit2.await
 import java.time.LocalDate
 
-class AccountRepository {
+class StockRepository {
     private val dbsgAPI = ServerImpl.APIService
-    private var stockList = arrayListOf<StockListResponse>()
+    private var stockData = arrayListOf<StockResponse>()
 
-    fun getStockList() : ArrayList<StockListResponse> {
+    fun getStockData() : ArrayList<StockResponse> {
         runBlocking {
             val request = dbsgAPI.getStockList()
             val response = request.await()
-            for (stock in response) {
-                if (stock.stockKinds == null) continue
+            for (data in response) {
+                if (data.stockKinds == null || data.ipoIndex == null) continue
 
                 // 날짜 형식에 맞지 않은 데이터가 들어온 경우 수정해주기
                 var index = 0
                 try {
                     val timeDate = arrayOf(
-                        stock.ipoStartDate,
-                        stock.ipoEndDate,
-                        stock.ipoDebutDate,
-                        stock.ipoRefundDate
+                        data.ipoStartDate,
+                        data.ipoEndDate,
+                        data.ipoDebutDate,
+                        data.ipoRefundDate
                     )
                     for (i in timeDate.indices) {
                         LocalDate.parse(timeDate[i])
@@ -35,18 +36,17 @@ class AccountRepository {
                         continue
                     }
                     else if (index == 2) {
-                        stock.ipoDebutDate = null
-                        stock.ipoRefundDate = null
+                        data.ipoDebutDate = null
+                        data.ipoRefundDate = null
                     }
                     else {
-                        stock.ipoDebutDate = null
+                        data.ipoDebutDate = null
                     }
-
                 }
-                stockList.add(stock)
+                stockData.add(data)
             }
         }
-        return stockList
+        return stockData
     }
 
 }

@@ -7,19 +7,4 @@
         android:id="@+id/action_following"
         android:title="following"
         app:showAsAction="always"></item>
-
-    <item
-        app:actionViewClass="android.widget.ImageButton"
-        android:id="@+id/action_alarm"
-        android:title="alarm"
-        app:showAsAction="always"></item>
-
-
-    <item
-        android:id="@+id/action_history"
-        android:icon="@drawable/baseline_history_24"
-        android:title="history"
-        app:showAsAction="always"></item>
-
-
 </menu>
