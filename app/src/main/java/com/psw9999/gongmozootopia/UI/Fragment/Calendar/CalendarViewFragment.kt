@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarViewBinding
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.getMonthList
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getMonthList
 import org.joda.time.DateTime
 
 class CalendarViewFragment : Fragment() {

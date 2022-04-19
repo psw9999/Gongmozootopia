@@ -74,6 +74,13 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="StockInfo.underwriter" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/chip_underwriter</item>
+        <item name="android:background">@drawable/bg_textview_register_underwriter</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Calendar"/>
         <style name="Calendar.HeaderDateText">
             <item name="android:textSize">20dp</item>
@@ -114,11 +121,19 @@
 
     <style name="Configuration"/>
 
-        <style name="Configuration.HeadText" parent="TextAppearance.AppCompat">
-            <item name="android:textSize">14dp</item>
+        <style name="Configuration.Title" parent="TextAppearance.AppCompat">
+            <item name="android:textSize">16dp</item>
             <item name="android:textColor">@color/configuration_head</item>
             <item name="android:textStyle">bold</item>
             <item name="android:layout_marginTop">10dp</item>
+            <item name="android:layout_marginStart">20dp</item>
+        </style>
+
+        <style name="Configuration.SecondTitle" parent="TextAppearance.AppCompat">
+            <item name="android:textSize">18dp</item>
+            <item name="android:textColor">@color/black</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:layout_marginTop">15dp</item>
             <item name="android:layout_marginStart">20dp</item>
         </style>
 

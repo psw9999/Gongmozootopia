@@ -1,8 +1,6 @@
 package com.psw9999.gongmozootopia.communication
 
-import com.psw9999.gongmozootopia.Data.LoginData
-import com.psw9999.gongmozootopia.Data.StockResponse
-import com.psw9999.gongmozootopia.Data.StockInfoResponse
+import com.psw9999.gongmozootopia.Data.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,4 +17,10 @@ interface dbsgAPI {
 
     @GET("/api/v1/ipo/detail/{ipoIndex}")
     fun getStockInfo(@Path("ipoIndex") ipoIndex : Long) : retrofit2.Call<StockInfoResponse>
+
+    @GET("/api/v1/ipo/underwriter/{ipoIndex}")
+    fun getUnderwriter(@Path("ipoIndex") ipoIndex : Long) : retrofit2.Call<ArrayList<UnderwriterResponse>>
+
+    @GET("/api/v1/ipo/schedule")
+    fun getStockSchedule(@Query("startDate") startDate : String,@Query("endDate") endDate : String) : retrofit2.Call<ArrayList<StockScheduleResponse>>
 }

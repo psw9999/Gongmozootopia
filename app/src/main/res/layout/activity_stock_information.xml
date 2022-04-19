@@ -1,342 +1,393 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UI.Activity.StockInformationActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/stockInfo_appbarLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingRight="10dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/stockInfo_appbar"
-            style="@style/AppTheme"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:titleTextAppearance="@style/AppBarTitleSize">
-
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <View
-        android:id="@+id/division_appbar"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/barGrayColor"
-        app:layout_constraintTop_toBottomOf="@id/stockInfo_appbarLayout" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView_stockPrice"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="3dp"
-        app:layout_constraintTop_toTopOf="@id/division_appbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/selector_card"
-        app:strokeWidth="0dp">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp">
+            tools:context=".UI.Activity.StockInformationActivity">
 
-            <TextView
-                android:id="@+id/textView_stockPriceTitle"
-                android:layout_width="wrap_content"
+<!--            <data>-->
+<!--                <variable-->
+<!--                    name="stockInfo"-->
+<!--                    type="com.psw9999.gongmozootopia.Data.StockInfoResponse" />-->
+<!--            </data>-->
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/stockInfo_appbarLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="공모가"
-                style="@style/StockInfo.Title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@color/white"
+                android:paddingRight="10dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/stockInfo_appbar"
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:titleTextAppearance="@style/AppBarTitleSize">
+
+                </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.AppBarLayout>
 
             <View
-                android:id="@+id/division_stockPrice"
+                android:id="@+id/division_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/barGrayColor"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/textView_stockPriceTitle" />
+                app:layout_constraintTop_toBottomOf="@id/stockInfo_appbarLayout" />
 
-            <TextView
-                android:id="@+id/textView_confirmStockPriceTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="확정공모가"
-                app:layout_constraintTop_toBottomOf="@id/division_stockPrice"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_stockPriceBandTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="공모가밴드"
-                app:layout_constraintTop_toBottomOf="@id/textView_confirmStockPriceTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_confirmStockPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                style="@style/StockInfo.content"
-                android:text="미정"
-                app:layout_constraintStart_toEndOf="@id/textView_confirmStockPriceTitle"
-                app:layout_constraintTop_toTopOf="@id/textView_confirmStockPriceTitle" />
-
-            <TextView
-                android:id="@+id/textView_stockPriceBand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text="[10000 ~ 20000원]"
-                app:layout_constraintStart_toStartOf="@id/textView_confirmStockPrice"
-                app:layout_constraintTop_toTopOf="@id/textView_stockPriceBandTitle" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView_ipoSchedule"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="3dp"
-        app:layout_constraintTop_toBottomOf="@id/cardView_stockPrice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/selector_card"
-        app:strokeWidth="0dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/textView_ipoScheduleTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="공모스케줄"
-                style="@style/StockInfo.Title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/division_ipoSchedule"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_stockPrice"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/barGrayColor"
-                android:layout_marginTop= "10dp"
-                app:layout_constraintTop_toBottomOf="@id/textView_ipoScheduleTitle" />
-
-            <TextView
-                android:id="@+id/textView_ipoForecastDayTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="수요예측일"
-                app:layout_constraintTop_toBottomOf="@id/division_ipoSchedule"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_ipoStartDayTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="청약일"
-                app:layout_constraintTop_toBottomOf="@id/textView_ipoForecastDayTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_ipoRefundDayTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="환불일"
-                app:layout_constraintTop_toBottomOf="@id/textView_ipoStartDayTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_ipoDebutDayTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="상장일"
-                app:layout_constraintTop_toBottomOf="@id/textView_ipoRefundDayTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/textView_ipoForecastDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_ipoForecastDayTitle"
-                app:layout_constraintStart_toEndOf="@id/textView_ipoForecastDayTitle"/>
-
-            <TextView
-                android:id="@+id/textView_ipoStartDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_ipoStartDayTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"/>
-
-            <TextView
-                android:id="@+id/textView_ipoRefundDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_ipoRefundDayTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"/>
-
-            <TextView
-                android:id="@+id/textView_ipoDebutDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_ipoDebutDayTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView_companyInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="3dp"
-        app:layout_constraintTop_toBottomOf="@id/cardView_ipoSchedule"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/selector_card"
-        app:strokeWidth="0dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/textView_companyInfoTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="기업정보"
-                style="@style/StockInfo.Title"
+                android:layout_height="140dp"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/division_appbar"
+                app:strokeColor="@color/selector_card"
+                app:strokeWidth="0dp">
 
-            <View
-                android:id="@+id/division_companyInfoTitle"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textView_stockPriceTitle"
+                        style="@style/StockInfo.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="공모가"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/division_stockPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/barGrayColor"
+                        app:layout_constraintTop_toBottomOf="@id/textView_stockPriceTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_confirmStockPriceTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="확정공모가"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/division_stockPrice" />
+
+                    <TextView
+                        android:id="@+id/textView_stockPriceBandTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="공모가밴드"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_confirmStockPriceTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_confirmStockPrice"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        app:layout_constraintStart_toEndOf="@id/textView_confirmStockPriceTitle"
+                        app:layout_constraintTop_toTopOf="@id/textView_confirmStockPriceTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_stockPriceBand"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textView_confirmStockPrice"
+                        app:layout_constraintTop_toTopOf="@id/textView_stockPriceBandTitle" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_ipoSchedule"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/barGrayColor"
-                android:layout_marginTop= "10dp"
-                app:layout_constraintTop_toBottomOf="@id/textView_companyInfoTitle" />
-
-            <TextView
-                android:id="@+id/textView_sectorTitle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="업종"
-                app:layout_constraintTop_toBottomOf="@id/division_companyInfoTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:layout_margin="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView_stockPrice"
+                app:strokeColor="@color/selector_card"
+                app:strokeWidth="0dp">
 
-            <TextView
-                android:id="@+id/textView_stockMarketTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="시장"
-                app:layout_constraintTop_toBottomOf="@id/textView_sectorTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
 
-            <TextView
-                android:id="@+id/textView_companySalesTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="매출액"
-                app:layout_constraintTop_toBottomOf="@id/textView_stockMarketTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
+                    <TextView
+                        android:id="@+id/textView_ipoScheduleTitle"
+                        style="@style/StockInfo.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="공모스케줄"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView_companyProfitTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.secondTitle"
-                android:text="영업이익"
-                app:layout_constraintTop_toBottomOf="@id/textView_companySalesTitle"
-                app:layout_constraintStart_toStartOf="parent"/>
+                    <View
+                        android:id="@+id/division_ipoSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/barGrayColor"
+                        app:layout_constraintTop_toBottomOf="@id/textView_ipoScheduleTitle" />
 
-            <TextView
-                android:id="@+id/textView_sector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_sectorTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_companyProfit"/>
+                    <TextView
+                        android:id="@+id/textView_ipoForecastDayTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="수요예측일"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/division_ipoSchedule" />
 
-            <TextView
-                android:id="@+id/textView_stockMarket"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_stockMarketTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_companyProfit"/>
+                    <TextView
+                        android:id="@+id/textView_ipoStartDayTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="청약일"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_ipoForecastDayTitle" />
 
-            <TextView
-                android:id="@+id/textView_companySales"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_companySalesTitle"
-                app:layout_constraintStart_toStartOf="@id/textView_companyProfit"/>
+                    <TextView
+                        android:id="@+id/textView_ipoRefundDayTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="환불일"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_ipoStartDayTitle" />
 
-            <TextView
-                android:id="@+id/textView_companyProfit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                style="@style/StockInfo.content"
-                android:text=""
-                app:layout_constraintTop_toTopOf="@id/textView_companyProfitTitle"
-                app:layout_constraintStart_toEndOf="@id/textView_companyProfitTitle"/>
+                    <TextView
+                        android:id="@+id/textView_ipoDebutDayTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상장일"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_ipoRefundDayTitle" />
 
-            <TextView
-                android:id="@+id/textView_Guidelines"
-                android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/textView_ipoForecastDay"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text=""
+                        app:layout_constraintStart_toEndOf="@id/textView_ipoForecastDayTitle"
+                        app:layout_constraintTop_toTopOf="@id/textView_ipoForecastDayTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_ipoStartDay"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"
+                        app:layout_constraintTop_toTopOf="@id/textView_ipoStartDayTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_ipoRefundDay"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"
+                        app:layout_constraintTop_toTopOf="@id/textView_ipoRefundDayTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_ipoDebutDay"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_ipoForecastDay"
+                        app:layout_constraintTop_toTopOf="@id/textView_ipoDebutDayTitle" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_companyInfo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="* 매출액과 영업이익은 올해 최근분기까지의 누적값입니다."
-                android:textSize="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/textView_sectorTitle"
-                app:layout_constraintTop_toBottomOf="@id/textView_companyProfitTitle" />
+                android:layout_margin="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView_ipoSchedule"
+                app:strokeColor="@color/selector_card"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textView_companyInfoTitle"
+                        style="@style/StockInfo.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기업정보"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/division_companyInfoTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/barGrayColor"
+                        app:layout_constraintTop_toBottomOf="@id/textView_companyInfoTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_sectorTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="업종"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/division_companyInfoTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_stockMarketTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="시장"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_sectorTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_companySalesTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매출액"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_stockMarketTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_companyProfitTitle"
+                        style="@style/StockInfo.secondTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="영업이익"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_companySalesTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_sector"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
+                        app:layout_constraintTop_toTopOf="@id/textView_sectorTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_stockMarket"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
+                        app:layout_constraintTop_toTopOf="@id/textView_stockMarketTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_companySales"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
+                        app:layout_constraintTop_toTopOf="@id/textView_companySalesTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_companyProfit"
+                        style="@style/StockInfo.content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text=""
+                        app:layout_constraintStart_toEndOf="@id/textView_companyProfitTitle"
+                        app:layout_constraintTop_toTopOf="@id/textView_companyProfitTitle" />
+
+                    <TextView
+                        android:id="@+id/textView_Guidelines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="* 매출액과 영업이익은 올해 최근분기까지의 누적값입니다."
+                        android:textSize="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/textView_sectorTitle"
+                        app:layout_constraintTop_toBottomOf="@id/textView_companyProfitTitle" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView_stockFirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView_companyInfo"
+                app:strokeColor="@color/selector_card"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout_underwriters"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/textView_stockFirmTitle"
+                        style="@style/StockInfo.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="배정수량"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/division_underwritersTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/barGrayColor"
+                        app:layout_constraintTop_toBottomOf="@id/textView_stockFirmTitle" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

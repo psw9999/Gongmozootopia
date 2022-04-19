@@ -7,15 +7,14 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.getDateColor
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.isSameMonth
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDateColor
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameMonth
 import org.joda.time.DateTime
 
 class DayItemView @JvmOverloads constructor(

@@ -6,8 +6,6 @@ data class StockInfoResponse(
     val stockExchange: String,
     val stockKinds: String,
     val stockCode: Long,
-        //val dartCode : Long,
-        //val sectorCode : Long,
     var sector : String?,
     val profits: Long,
     val sales: Long,
@@ -27,6 +25,5 @@ data class StockInfoResponse(
     val putBackOptionPrice: Long?,
     val putBackOptionDeadline: String?,
     var isFollowing : Boolean = false
-        //val tag: String?
 )
 

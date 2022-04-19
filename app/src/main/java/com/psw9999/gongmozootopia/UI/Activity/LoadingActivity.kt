@@ -4,18 +4,16 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.kakao.sdk.common.KakaoSdk
 import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.Data.StockResponse
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockDatabase
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.today
-import com.psw9999.gongmozootopia.util.NetworkStatus
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
+import com.psw9999.gongmozootopia.Util.NetworkStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import kotlinx.coroutines.withContext
 import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
@@ -61,7 +59,7 @@ class LoadingActivity : AppCompatActivity() {
                     true
                 }.join()
 
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Default) {
                     stockData.forEach { data ->
                         scheduleCheck(data)
                     }

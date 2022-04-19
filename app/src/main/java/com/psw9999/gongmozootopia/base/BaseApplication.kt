@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.util.TypedValue
+import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatDialog
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.SettingRepository
 import com.psw9999.gongmozootopia.Room.StockDatabase
-import com.psw9999.gongmozootopia.util.SharedPreferences
+import com.psw9999.gongmozootopia.Util.SharedPreferences
 
 class BaseApplication : Application(){
 
@@ -21,10 +21,8 @@ class BaseApplication : Application(){
         val stockDatabase by lazy {StockDatabase.getDatabase(instance.applicationContext)!!}
 
         fun dpToPx (context : Context, size : Float) : Float {
-            return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, size,
-                context.resources.displayMetrics
-            )
+            return (size * (context.resources
+                .displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT))
         }
 
         fun ApplicationContext() : Context {

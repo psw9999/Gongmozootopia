@@ -10,16 +10,23 @@ import android.widget.TextView
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
+import com.psw9999.gongmozootopia.Data.StockScheduleResponse
 import com.psw9999.gongmozootopia.R
+import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.getMonthList
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.isSameDay
-import com.psw9999.gongmozootopia.util.CalendarUtils.Companion.isSameMonth
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getMonthList
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameDay
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameMonth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
 class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
 
     private var start : Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
+    private val stockScheduleRepository = StockScheduleRepository()
+    lateinit var stockScheduleData : ArrayList<StockScheduleResponse>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewAdapter.CalendarViewHolder {
         return CalendarViewHolder(
@@ -39,8 +46,15 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         var millis = getItemId(position)
-        Log.d("onBindViewHolder",DateTime(millis).toString("MM월 yyyy"))
-        holder.onBind(DateTime(millis), getMonthList(DateTime(millis)))
+        var monthList = getMonthList(DateTime(millis))
+        CoroutineScope(Dispatchers.IO).launch {
+            launch {
+                stockScheduleData = stockScheduleRepository.getScheduleData(monthList[0].toString("yyyy-MM-dd"),monthList.last().toString("yyyy-MM-dd"))
+                Log.d("days","${monthList[0].toString("yyyy-MM-dd")}, ${monthList.last().toString("yyyy-MM-dd")}")
+                Log.d("stockScheduleData","$stockScheduleData")
+            }
+        }
+        holder.onBind(DateTime(millis), monthList)
     }
 
     inner class CalendarViewHolder(val binding : HolderCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -68,7 +82,6 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
                     }
                 }
             }
-
 
         private fun setDayView(view: TextView, date: DateTime, firstDayOfMonth: DateTime) {
             with(view) {

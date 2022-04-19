@@ -1,44 +1,44 @@
 package com.psw9999.gongmozootopia.UI.Activity
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
+import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.Adapter.MainViewPager
 import com.psw9999.gongmozootopia.Data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
 import com.psw9999.gongmozootopia.base.BaseActivity
 import com.psw9999.gongmozootopia.Data.StockInfoResponse
+import com.psw9999.gongmozootopia.Data.UnderwriterResponse
+import com.psw9999.gongmozootopia.Repository.UnderwriterRepository
 import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
+import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 
 class StockInformationActivity : BaseActivity() {
 
     val binding by lazy { ActivityStockInformationBinding.inflate(layoutInflater)}
     val stockFollowingViewModel : StockFollowingViewModel by viewModels()
     lateinit var stockInfo : StockInfoResponse
+    lateinit var underwriters : ArrayList<UnderwriterResponse>
+    private var ipoIndex : Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         loadingOn()
+        ipoIndex = intent!!.getLongExtra("ipoIndex", -1)
         CoroutineScope(Dispatchers.IO).launch() {
-            launch {
-                stockInfo =
-                    StockInfoRepository().getStockInfo(intent!!.getLongExtra("ipoIndex", -1))
-                true
-            }.join()
+            stockInfo = StockInfoRepository().getStockInfo(ipoIndex)
+            underwriters = UnderwriterRepository().getUnderwriters(ipoIndex)
+
             withContext(Dispatchers.Main) {
                 with(stockInfo) {
                     isFollowing = intent!!.getBooleanExtra("isFollowing", false)
@@ -59,10 +59,52 @@ class StockInformationActivity : BaseActivity() {
                     }
                     binding.textViewSector.text = sector
                     binding.textViewStockMarket.text = stockExchange
+                    addUnderwriterView(underwriters)
                     loadingOff()
                 }
             }
         }
+    }
+
+    private fun addUnderwriterView(underwriters : ArrayList<UnderwriterResponse>) {
+        val constraintSet = ConstraintSet()
+        var beforeUnderwriterID = binding.divisionUnderwritersTitle.id
+        var underwriterPair = Pair(0, -1)
+        // underwriters 데이터가 없는 경우 -> "업데이트 예정" textView 써주기
+
+        // 증권사 먼저 동적으로 생성 (문자열이 가장 긴 길이를 알아야 함.)
+        underwriters.forEach { underwriter ->
+            val underwriterName_textView = TextView(this)
+            underwriterName_textView.id = View.generateViewId()
+            underwriterName_textView.text = underwriter.underName
+            underwriterName_textView.setTextAppearance(R.style.StockInfo_underwriter)
+            underwriterName_textView.setBackgroundResource(R.drawable.bg_textview_register_underwriter)
+            binding.constraintLayoutUnderwriters.addView(underwriterName_textView)
+            constraintSet.clone(binding.constraintLayoutUnderwriters)
+            constraintSet.connect(underwriterName_textView.id, ConstraintSet.TOP, beforeUnderwriterID, ConstraintSet.BOTTOM, dpToPx(this, 15F).toInt())
+            beforeUnderwriterID = underwriterName_textView.id
+            if (underwriterPair.second < underwriter.underName.length) {
+                underwriterPair = Pair(underwriterName_textView.id, underwriter.underName.length)
+            }
+            constraintSet.applyTo(binding.constraintLayoutUnderwriters)
+        }
+
+        beforeUnderwriterID = binding.divisionUnderwritersTitle.id
+        
+        // 수량 동적 생성
+        underwriters.forEach { underwriter ->
+            val underwriterQuantity_textView = TextView(this)
+            underwriterQuantity_textView.id = View.generateViewId()
+            underwriterQuantity_textView.text = underwriter.indTotalMax.toString()
+            underwriterQuantity_textView.setTextAppearance(R.style.StockInfo_content)
+            binding.constraintLayoutUnderwriters.addView(underwriterQuantity_textView)
+            constraintSet.clone(binding.constraintLayoutUnderwriters)
+            constraintSet.connect(underwriterQuantity_textView.id, ConstraintSet.TOP, beforeUnderwriterID, ConstraintSet.BOTTOM, dpToPx(this, 15F).toInt())
+            constraintSet.connect(underwriterQuantity_textView.id, ConstraintSet.START, underwriterPair.first, ConstraintSet.END, dpToPx(this, 20F).toInt())
+            beforeUnderwriterID = underwriterQuantity_textView.id
+            constraintSet.applyTo(binding.constraintLayoutUnderwriters)
+        }
+
     }
 
     private fun unitCalculate(value : Long) : String {

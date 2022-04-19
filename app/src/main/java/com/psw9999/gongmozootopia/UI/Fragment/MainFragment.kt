@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,13 +19,11 @@ import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.UI.BottomSheet.LoginBottomSheet
 import com.psw9999.gongmozootopia.ViewModel.StockFirmViewModel
-import com.psw9999.gongmozootopia.base.BaseApplication
 import com.psw9999.gongmozootopia.Data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
 import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.settingsManager
 import com.psw9999.gongmozootopia.databinding.FragmentMainBinding
-import com.psw9999.gongmozootopia.util.GridViewDecoration
+import com.psw9999.gongmozootopia.Util.GridViewDecoration
 
 class MainFragment : Fragment() {
     private lateinit var binding : FragmentMainBinding

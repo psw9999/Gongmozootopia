@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.util
+package com.psw9999.gongmozootopia.Util
 
 import android.graphics.Rect
 import android.view.View

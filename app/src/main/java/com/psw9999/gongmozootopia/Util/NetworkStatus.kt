@@ -1,11 +1,10 @@
-package com.psw9999.gongmozootopia.util
+package com.psw9999.gongmozootopia.Util
 
 import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import java.lang.Exception
 import kotlin.system.exitProcess

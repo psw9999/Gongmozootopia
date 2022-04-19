@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.util
+package com.psw9999.gongmozootopia.Util
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
@@ -8,21 +8,18 @@ import org.joda.time.DateTimeConstants
 
 class CalendarUtils {
     companion object {
-
         const val WEEKS_PER_MONTH = 6
         val today = DateTime()
+
         /**
          * 선택된 날짜에 해당하는 월간 달력을 반환한다.
          */
         fun getMonthList(dateTime: DateTime): List<DateTime> {
             val list = mutableListOf<DateTime>()
-
             val date = dateTime.withDayOfMonth(1)
             val prev = getPrevOffSet(date)
             val startValue = date.minusDays(prev)
-
             val totalDay = DateTimeConstants.DAYS_PER_WEEK * WEEKS_PER_MONTH
-
             for (i in 0 until totalDay) {
                 list.add(DateTime(startValue.plusDays(i)))
             }
@@ -49,7 +46,6 @@ class CalendarUtils {
 
         fun isSameDay(first : DateTime) : Boolean =
             first.year == today.year && first.monthOfYear == today.monthOfYear && first.dayOfMonth == today.dayOfMonth
-
 
         /**
          * 해당 요일의 색깔을 반환한다.
