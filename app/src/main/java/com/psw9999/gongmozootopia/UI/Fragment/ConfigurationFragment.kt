@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.joda.time.DateTime
 
 class ConfigurationFragment : Fragment() {
 
@@ -134,18 +135,18 @@ class ConfigurationFragment : Fragment() {
             Toast.makeText(mContext, toastMessage, Toast.LENGTH_SHORT).show()
         }
         binding.checkBoxIpoStartDay.setOnCheckedChangeListener { _, isChecked ->
+            var testTime: Long = DateTime().plusMinutes(5).millis
             val toastMessage = if (isChecked) {
-                val triggerTime = (SystemClock.elapsedRealtime()
-                        + 10 * 1000)
+                val triggerTime = testTime
                 alarmManager.setExact(
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     triggerTime,
                     pendingIntent
                 )
-                "Onetime Alarm On"
+                "5분 후 알람 시작"
             } else {
                 alarmManager.cancel(pendingIntent)
-                "Onetime Alarm Off"
+                "5분 후 알람 삭제"
             }
             Log.d("AlarmTest", toastMessage)
             Toast.makeText(mContext, toastMessage, Toast.LENGTH_SHORT).show()

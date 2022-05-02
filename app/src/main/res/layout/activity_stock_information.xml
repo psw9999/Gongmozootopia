@@ -12,12 +12,6 @@
             android:layout_height="match_parent"
             tools:context=".UI.Activity.StockInformationActivity">
 
-<!--            <data>-->
-<!--                <variable-->
-<!--                    name="stockInfo"-->
-<!--                    type="com.psw9999.gongmozootopia.Data.StockInfoResponse" />-->
-<!--            </data>-->
-
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/stockInfo_appbarLayout"
                 android:layout_width="match_parent"

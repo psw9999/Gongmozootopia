@@ -5,6 +5,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
+import org.joda.time.Days
 
 class CalendarUtils {
     companion object {
@@ -32,9 +33,7 @@ class CalendarUtils {
          */
         private fun getPrevOffSet(dateTime: DateTime): Int {
             var prevMonthTailOffset = dateTime.dayOfWeek
-
             if (prevMonthTailOffset >= 7) prevMonthTailOffset %= 7
-
             return prevMonthTailOffset
         }
 
@@ -46,6 +45,10 @@ class CalendarUtils {
 
         fun isSameDay(first : DateTime) : Boolean =
             first.year == today.year && first.monthOfYear == today.monthOfYear && first.dayOfMonth == today.dayOfMonth
+
+        fun getDayIndex(startDay : DateTime, curDay : DateTime) : Int {
+            return Days.daysBetween(startDay,curDay).days
+        }
 
         /**
          * 해당 요일의 색깔을 반환한다.

@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 import com.psw9999.gongmozootopia.Adapter.StockListAdapter
 import com.psw9999.gongmozootopia.Data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
@@ -30,10 +29,6 @@ class MainFragment : Fragment() {
     private lateinit var stockAdapter : StockListAdapter
     private lateinit var mContext: Context
     private lateinit var stockData : ArrayList<StockResponse>
-
-    var followingFilter : Boolean = false
-    var stockTypeFilter : String = ""
-    var stockStateFilter : String = ""
 
     private val stockFirmViewModel : StockFirmViewModel by viewModels()
     private val stockFollowingViewModel : StockFollowingViewModel by viewModels()
@@ -59,8 +54,8 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater,container,false)
-        binding.mainActivityAppbar.inflateMenu(R.menu.appbar_action)
-        initTabLayout()
+        binding.mainActivityAppbar.inflateMenu(R.menu.appbar_main)
+        //initTabLayout()
         return binding.root
     }
 
@@ -79,26 +74,26 @@ class MainFragment : Fragment() {
         onClickSetting()
     }
 
-    private fun initTabLayout() {
-        with(binding.tabLayoutMainFragment) {
-            addTab(binding.tabLayoutMainFragment.newTab().setText("전체"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("수요예측"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("청약예정"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("환불"))
-            addTab(binding.tabLayoutMainFragment.newTab().setText("상장"))
-
-            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-            })
-        }
-    }
+//    private fun initTabLayout() {
+//        with(binding.tabLayoutMainFragment) {
+//            addTab(binding.tabLayoutMainFragment.newTab().setText("전체"))
+//            addTab(binding.tabLayoutMainFragment.newTab().setText("수요예측"))
+//            addTab(binding.tabLayoutMainFragment.newTab().setText("청약예정"))
+//            addTab(binding.tabLayoutMainFragment.newTab().setText("환불"))
+//            addTab(binding.tabLayoutMainFragment.newTab().setText("상장"))
+//
+//            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//                override fun onTabSelected(tab: TabLayout.Tab?) {
+//                }
+//
+//                override fun onTabReselected(tab: TabLayout.Tab?) {
+//                }
+//
+//                override fun onTabUnselected(tab: TabLayout.Tab?) {
+//                }
+//            })
+//        }
+//    }
 
     private fun onClickSetting() {
         binding.buttonLogin.setOnClickListener {
@@ -125,30 +120,24 @@ class MainFragment : Fragment() {
             }
         })
 
-        binding.chipFollowing.setOnClickListener {
-            followingFilter = !(followingFilter)
-            // 필터링 메서드 수행
-            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
-        }
-
-        binding.chipGroupStockType.setOnCheckedChangeListener { chipgroup, checkedId ->
-            stockTypeFilter = when (checkedId) {
-                R.id.chip_IPO -> {
-                    "공모주"
-                }
-                R.id.chip_SPAC -> {
-                    "스팩주"
-                }
-                R.id.chip_rightIssue -> {
-                    "실권주"
-                }
-                else -> {
-                    ""
-                }
-            }
-            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
-            Log.d("checkChip",stockTypeFilter)
-        }
+//        binding.chipGroupStockType.setOnCheckedChangeListener { chipgroup, checkedId ->
+//            stockTypeFilter = when (checkedId) {
+//                R.id.chip_IPO -> {
+//                    "공모주"
+//                }
+//                R.id.chip_SPAC -> {
+//                    "스팩주"
+//                }
+//                R.id.chip_rightIssue -> {
+//                    "실권주"
+//                }
+//                else -> {
+//                    ""
+//                }
+//            }
+//            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
+//            Log.d("checkChip",stockTypeFilter)
+//        }
 
     }
 

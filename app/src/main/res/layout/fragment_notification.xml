@@ -6,9 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".UI.Fragment.NotificationFragment">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/calendar_appbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/mainActivity_appbar"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:title="일정"
+                app:titleTextAppearance="@style/AppBarTitleSize">
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2_calendar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/calendar_appbarLayout"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.psw9999.gongmozootopia.Adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,20 +14,24 @@ import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
 import com.psw9999.gongmozootopia.Data.StockScheduleResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.WEEKS_PER_MONTH
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDayIndex
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getMonthList
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameDay
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameMonth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.joda.time.DateTime
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormatter
+import java.lang.Integer.max
+import java.time.format.DateTimeFormatter.ISO_DATE
 
-class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
+class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
 
     private var start : Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
     private val stockScheduleRepository = StockScheduleRepository()
-    lateinit var stockScheduleData : ArrayList<StockScheduleResponse>
+    lateinit var stockScheduleData : Array<MutableList<Pair<Int, String>>>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewAdapter.CalendarViewHolder {
         return CalendarViewHolder(
@@ -47,14 +52,61 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         var millis = getItemId(position)
         var monthList = getMonthList(DateTime(millis))
-        CoroutineScope(Dispatchers.IO).launch {
-            launch {
-                stockScheduleData = stockScheduleRepository.getScheduleData(monthList[0].toString("yyyy-MM-dd"),monthList.last().toString("yyyy-MM-dd"))
-                Log.d("days","${monthList[0].toString("yyyy-MM-dd")}, ${monthList.last().toString("yyyy-MM-dd")}")
-                Log.d("stockScheduleData","$stockScheduleData")
+
+        fun addStockSchedule(scheduleKinds : Int, stockName : String, scheduleTime: String){
+            if (scheduleTime == "0000-00-00") return
+            var index = getDayIndex(monthList[0],DateTime.parse(scheduleTime))
+            if( 0 <= index && index < stockScheduleData.size) {
+                stockScheduleData[index].add(Pair(scheduleKinds,stockName))
             }
         }
-        holder.onBind(DateTime(millis), monthList)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            var stockScheduleResponse = arrayListOf<StockScheduleResponse>()
+            launch {
+                stockScheduleResponse = stockScheduleRepository.getScheduleData(
+                    monthList[0].toString("yyyy-MM-dd"),
+                    monthList.last().toString("yyyy-MM-dd")
+                )
+                Log.d("dayRange","${monthList[0].toString("yyyy-MM-dd")} ~ ${monthList.last().toString("yyyy-MM-dd")}")
+                Log.d("stockScheduleResponse","$stockScheduleResponse")
+            }.join()
+            withContext(Dispatchers.Default) {
+                stockScheduleData = Array(WEEKS_PER_MONTH*7){mutableListOf()}
+                stockScheduleResponse.forEach { stockSchedule ->
+//                    stockSchedule.ipoForecastDate?.let {
+//                        addStockSchedule(0,stockSchedule.stockName,it)
+//                    }
+                    stockSchedule.ipoStartDate?.let {
+                        if (stockSchedule.ipoEndDate != null) {
+                            if (getDayIndex(DateTime.parse(it),DateTime.parse(stockSchedule.ipoEndDate)) > 1) {
+                                addStockSchedule(2,stockSchedule.stockName,it)
+                                addStockSchedule(2,stockSchedule.stockName,stockSchedule.ipoEndDate!!)
+                            }
+                            else {
+                                addStockSchedule(1,stockSchedule.stockName,it)
+                            }
+                        }
+                        else {
+                            addStockSchedule(0,stockSchedule.stockName,it)
+                        }
+                    }
+                    stockSchedule.ipoRefundDate?.let {
+                        addStockSchedule(3,stockSchedule.stockName,it)
+                    }
+                    stockSchedule.ipoDebutDate?.let {
+                        addStockSchedule(4,stockSchedule.stockName,it)
+                    }
+                }
+                stockScheduleData.forEach {
+                    it.sortBy{it.first}
+                }
+                Log.d("stockScheduleData","${stockScheduleData.contentDeepToString()}")
+            }
+            withContext(Dispatchers.Main){
+                holder.onBind(DateTime(millis), monthList)
+            }
+        }
     }
 
     inner class CalendarViewHolder(val binding : HolderCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -71,17 +123,37 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
             binding.textViewCalendarHeadTextView.text = DateTime(firstDayOfMonth).toString("MM월 yyyy")
             for ((i,gridLayout) in rows.withIndex()) {
                 gridLayout.removeViews(7,gridLayout.childCount-7)
-                for (j in 0 until 6) {
-                        with((gridLayout[j] as LinearLayout)[0] as TextView) {
-                            setDayView(this, dateList[(i * 7) + j], firstDayOfMonth)
-                            if (isSameDay(dateList[(i * 7) + j])) {
-                                gridLayout.addView(CalendarLabelView(context).apply { onBind(0, 2) })
-                                gridLayout.addView(CalendarLabelView(context).apply { onBind(2, 3) })
-                            }
-                        }
+                for (j in 0 until 7) {
+                    with((gridLayout[j] as LinearLayout)[0] as TextView) {
+                        setDayView(this, dateList[(i * 7) + j], firstDayOfMonth)
                     }
                 }
+                var maxScheduleCnt = 0
+                stockScheduleData.slice((i*7)..(i*7)+6).forEach {
+                    maxScheduleCnt = max(maxScheduleCnt, it.size)
+                }
+
+                var befLabelCnt = mutableListOf<Int>()
+                for(j in 0 until 7) {
+                    var cnt = 1
+                    var tempCntList = mutableListOf<Int>()
+                    stockScheduleData[(i*7)+j].forEach { scheduleData ->
+                        gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
+                            while (cnt in befLabelCnt) cnt++
+                            if(scheduleData.first != 1) {
+                                onBind(scheduleData.second, scheduleData.first, cnt, j, j)
+                            }
+                            else {
+                                onBind(scheduleData.second, scheduleData.first, cnt,j,j+1)
+                                tempCntList.add(cnt)
+                            }
+                            cnt++
+                        })
+                    }
+                    befLabelCnt = tempCntList
+                }
             }
+        }
 
         private fun setDayView(view: TextView, date: DateTime, firstDayOfMonth: DateTime) {
             with(view) {
@@ -96,6 +168,5 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
     companion object {
         const val START_POSITION = Int.MAX_VALUE / 2
     }
-
 
 }

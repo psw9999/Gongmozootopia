@@ -28,4 +28,9 @@
 
     <color name="configuration_head">#B4B4B4</color>
 
+    <color name="CalendarLabel.IpoForecastDay">#8C8C8C</color>
+    <color name="CalendarLabel.IpoDay">#E91E63</color>
+    <color name="CalendarLabel.IpoRefundDay">#FF9800</color>
+    <color name="CalendarLabel.IpoDebutDay">#3F51B5</color>
+
 </resources>

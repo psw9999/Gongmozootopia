@@ -4,9 +4,8 @@
 
     <item
         android:id="@+id/action_history"
-        android:icon="@drawable/baseline_history_24"
-        android:title="history"
+        android:icon="@drawable/ic_baseline_filter_alt_24"
+        android:title="filter"
         app:showAsAction="always"></item>
-
 
 </menu>
