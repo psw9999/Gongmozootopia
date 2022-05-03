@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Gomozootopia</string>
-
+    <string name="app_name">Gongmozootopia</string>
     <string name="autoLogin">AUTO_LOGIN</string>
 </resources>

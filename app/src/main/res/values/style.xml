@@ -2,11 +2,10 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="elevation">0dp</item>
         <item name="colorSurface">#FFFFFF</item>
-        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimary">@color/mainColor</item>
         <item name="colorPrimaryDark">#FFFFFF</item>
-        <item name="colorSecondary">#8C8C8C</item>
+        <item name="colorSecondary">@color/mainColor</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -122,7 +121,7 @@
     <style name="Configuration"/>
 
         <style name="Configuration.Title" parent="TextAppearance.AppCompat">
-            <item name="android:textSize">16dp</item>
+            <item name="android:textSize">14dp</item>
             <item name="android:textColor">@color/configuration_head</item>
             <item name="android:textStyle">bold</item>
             <item name="android:layout_marginTop">10dp</item>
@@ -130,7 +129,7 @@
         </style>
 
         <style name="Configuration.SecondTitle" parent="TextAppearance.AppCompat">
-            <item name="android:textSize">18dp</item>
+            <item name="android:textSize">16dp</item>
             <item name="android:textColor">@color/black</item>
             <item name="android:textStyle">bold</item>
             <item name="android:layout_marginTop">15dp</item>

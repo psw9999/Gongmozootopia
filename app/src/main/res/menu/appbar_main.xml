@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_history"
+        android:id="@+id/action_filter"
         android:icon="@drawable/ic_baseline_filter_alt_24"
         android:title="filter"
         app:showAsAction="always"></item>

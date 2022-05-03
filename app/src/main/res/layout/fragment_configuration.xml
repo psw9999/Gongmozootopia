@@ -35,55 +35,61 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@+id/configuration_appbarLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
 
                 <TextView
                     style="@style/Configuration.Title"
-                    android:id="@+id/textView_loginHead"
+                    android:id="@+id/textView_filteringHead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="로그인"
+                    android:text="종목 필터링"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/button_login_logout"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView_loginHead" />
-
-                <ImageView
-                    android:id="@+id/imageView_login_logout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/login"
-                    app:layout_constraintStart_toStartOf="@+id/button_login_logout"
-                    app:layout_constraintTop_toTopOf="@id/button_login_logout"
-                    app:layout_constraintBottom_toBottomOf="@id/button_login_logout"/>
-
                 <TextView
-                    android:id="@+id/textView_login_logout"
+                    style="@style/Configuration.SecondTitle"
+                    android:id="@+id/textView_forfeitedStockFiltering"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="로그인"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintBottom_toBottomOf="@id/button_login_logout"
-                    app:layout_constraintStart_toEndOf="@id/imageView_login_logout"
-                    app:layout_constraintTop_toTopOf="@id/button_login_logout" />
+                    android:text="실권주 보기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_filteringHead" />
+
+                <Switch
+                    android:id="@+id/switch_forfeitedStockFiltering"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:checked="false"
+                    app:layout_constraintBottom_toBottomOf="@id/textView_forfeitedStockFiltering"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textView_forfeitedStockFiltering" />
+
+                <TextView
+                    style="@style/Configuration.SecondTitle"
+                    android:id="@+id/textView_spacStockFiltering"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="스펙주 보기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_forfeitedStockFiltering" />
+
+                <Switch
+                    android:id="@+id/switch_spacStockFiltering"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toTopOf="@id/textView_spacStockFiltering"
+                    app:layout_constraintBottom_toBottomOf="@id/textView_spacStockFiltering"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -93,12 +99,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@+id/configuration_login">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
 
                 <TextView
                     style="@style/Configuration.Title"
@@ -248,12 +256,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@+id/configuration_stockFirm">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
 
                 <TextView
                     style="@style/Configuration.Title"

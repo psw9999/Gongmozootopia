@@ -12,28 +12,20 @@ import com.psw9999.gongmozootopia.Room.StockDatabase
 import com.psw9999.gongmozootopia.Util.SharedPreferences
 
 class BaseApplication : Application(){
-
     companion object {
-        lateinit var preferences : SharedPreferences
         lateinit var settingsManager : SettingRepository
         lateinit var loadingDialog : AppCompatDialog
         lateinit var instance : BaseApplication
         val stockDatabase by lazy {StockDatabase.getDatabase(instance.applicationContext)!!}
-
         fun dpToPx (context : Context, size : Float) : Float {
             return (size * (context.resources
                 .displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT))
-        }
-
-        fun ApplicationContext() : Context {
-            return instance.applicationContext
         }
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        preferences = SharedPreferences(applicationContext)
         settingsManager = SettingRepository(applicationContext)
     }
 

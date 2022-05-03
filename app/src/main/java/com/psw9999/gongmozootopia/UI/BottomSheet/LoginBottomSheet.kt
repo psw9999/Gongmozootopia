@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.preferences
 import com.psw9999.gongmozootopia.communication.RetrofitService
 import com.psw9999.gongmozootopia.Data.KakaoLoginStatus
 import com.psw9999.gongmozootopia.Data.LoginData
@@ -33,25 +32,25 @@ class LoginBottomSheet : BottomSheetDialogFragment() {
             .build()
 
         val service1: RetrofitService = retrofit.create(RetrofitService::class.java)
-        //TODO : 강제 형변환 하였는데 null일 경우가 있는지 검토 필요!
-        var call: Call<LoginData> = service1.getPost(preferences.kakaoIdToken as String)
-        call.enqueue(object : Callback<LoginData> {
-            override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
-                if (response.isSuccessful) {
-                    var result = response.body()
-                    preferences.JWS = result!!.jwt
-                    Log.d("Retrofit1", "onResponse : 성공, {${result!!.jwt}}")
-                    //initCommunication1()
-                } else {
-                    // 통신 실패한 경우 (응답코드 3xx, 4xx)
-                    Log.d("Retrofit1", "onResponse : 실패")
-                }
-            }
-            override fun onFailure(call: Call<LoginData>, t: Throwable) {
-                t.printStackTrace()
-                Log.d("Retrofit1", "onFailure : 실패")
-            }
-        })
+        // 추후 로그인 구현후 활성화 (Preferences -> DataStore)
+//        var call: Call<LoginData> = service1.getPost(preferences.kakaoIdToken as String)
+//        call.enqueue(object : Callback<LoginData> {
+//            override fun onResponse(call: Call<LoginData>, response: Response<LoginData>) {
+//                if (response.isSuccessful) {
+//                    var result = response.body()
+//                    preferences.JWS = result!!.jwt
+//                    Log.d("Retrofit1", "onResponse : 성공, {${result!!.jwt}}")
+//                    //initCommunication1()
+//                } else {
+//                    // 통신 실패한 경우 (응답코드 3xx, 4xx)
+//                    Log.d("Retrofit1", "onResponse : 실패")
+//                }
+//            }
+//            override fun onFailure(call: Call<LoginData>, t: Throwable) {
+//                t.printStackTrace()
+//                Log.d("Retrofit1", "onFailure : 실패")
+//            }
+//        })
     }
 
 //    private fun initCommunication1() {
@@ -111,9 +110,9 @@ class LoginBottomSheet : BottomSheetDialogFragment() {
                     Toast.makeText(requireContext(), "로그인 실패!", Toast.LENGTH_SHORT).show()
                 }
                 else if (token != null){
-                    preferences.kakaoIdToken = token.accessToken
-                    preferences.isUserLogined = true
-                    Log.d("token","${preferences.kakaoIdToken}")
+//                    preferences.kakaoIdToken = token.accessToken
+//                    preferences.isUserLogined = true
+//                    Log.d("token","${preferences.kakaoIdToken}")
                     initCommunication()
                     Toast.makeText(requireContext(), "로그인 성공!", Toast.LENGTH_SHORT).show()
                     EventBus.getDefault().post(KakaoLoginStatus(true))

@@ -3,11 +3,8 @@ package com.psw9999.gongmozootopia.UI.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +14,7 @@ import com.psw9999.gongmozootopia.Data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.UI.BottomSheet.LoginBottomSheet
-import com.psw9999.gongmozootopia.ViewModel.StockFirmViewModel
+import com.psw9999.gongmozootopia.ViewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.Data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
 import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
@@ -29,8 +26,10 @@ class MainFragment : Fragment() {
     private lateinit var stockAdapter : StockListAdapter
     private lateinit var mContext: Context
     private lateinit var stockData : ArrayList<StockResponse>
+    private lateinit var filterdStockData : ArrayList<StockResponse>
+    private var filteringList = arrayOf("공모주", "실권주", "스팩주")
 
-    private val stockFirmViewModel : StockFirmViewModel by viewModels()
+    private val configurationViewModel : ConfigurationViewModel by viewModels()
     private val stockFollowingViewModel : StockFollowingViewModel by viewModels()
 
     private val stockInfoIntent by lazy {
@@ -55,45 +54,35 @@ class MainFragment : Fragment() {
     ): View? {
         binding = FragmentMainBinding.inflate(inflater,container,false)
         binding.mainActivityAppbar.inflateMenu(R.menu.appbar_main)
-        //initTabLayout()
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        stockFirmViewModel.stockFirmData.observe(viewLifecycleOwner, Observer {
+        configurationViewModel.stockFirmData.observe(viewLifecycleOwner, Observer {
             stockAdapter.setAdapterStockFirmData(it)
         })
+
+        configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
+            if(it) filteringList[1] = "실권주"
+            else filteringList[1] = ""
+        })
+
+        configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
+            if(it) filteringList[2] = "스팩주"
+            else filteringList[1] = ""
+        })
+
         stockFollowingViewModel.stockFollowingIndexData.observe(viewLifecycleOwner, Observer { stockFollowingIndex ->
             stockData.forEach { data ->
                 data.isFollowing = data.ipoIndex in stockFollowingIndex
             }
             stockAdapter.setAdapterStockFollowingData(stockData)
         })
+
         initStockRecyclerView()
         onClickSetting()
     }
-
-//    private fun initTabLayout() {
-//        with(binding.tabLayoutMainFragment) {
-//            addTab(binding.tabLayoutMainFragment.newTab().setText("전체"))
-//            addTab(binding.tabLayoutMainFragment.newTab().setText("수요예측"))
-//            addTab(binding.tabLayoutMainFragment.newTab().setText("청약예정"))
-//            addTab(binding.tabLayoutMainFragment.newTab().setText("환불"))
-//            addTab(binding.tabLayoutMainFragment.newTab().setText("상장"))
-//
-//            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//                override fun onTabSelected(tab: TabLayout.Tab?) {
-//                }
-//
-//                override fun onTabReselected(tab: TabLayout.Tab?) {
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                }
-//            })
-//        }
-//    }
 
     private fun onClickSetting() {
         binding.buttonLogin.setOnClickListener {
@@ -120,25 +109,14 @@ class MainFragment : Fragment() {
             }
         })
 
-//        binding.chipGroupStockType.setOnCheckedChangeListener { chipgroup, checkedId ->
-//            stockTypeFilter = when (checkedId) {
-//                R.id.chip_IPO -> {
-//                    "공모주"
-//                }
-//                R.id.chip_SPAC -> {
-//                    "스팩주"
-//                }
-//                R.id.chip_rightIssue -> {
-//                    "실권주"
-//                }
-//                else -> {
-//                    ""
-//                }
-//            }
-//            stockAdapter.filter.filter("$stockStateFilter,$stockTypeFilter,$followingFilter")
-//            Log.d("checkChip",stockTypeFilter)
-//        }
-
+        binding.mainActivityAppbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_filter -> {
+                    true
+                }
+                else -> true
+            }
+        }
     }
 
     private fun initStockRecyclerView() {

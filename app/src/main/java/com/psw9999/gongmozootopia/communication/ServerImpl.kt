@@ -26,7 +26,8 @@ object ServerImpl {
 class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var req =
-            chain.request().newBuilder().addHeader("Authorization", "Bearer ${BaseApplication.preferences.JWS}").build()
+            //chain.request().newBuilder().addHeader("Authorization", "Bearer ${BaseApplication.preferences.JWS}").build()
+            chain.request().newBuilder().addHeader("Authorization", "Bearer ").build()
         return chain.proceed(req)
     }
 }

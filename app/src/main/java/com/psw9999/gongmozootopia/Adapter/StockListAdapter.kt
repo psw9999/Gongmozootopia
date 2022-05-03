@@ -11,55 +11,22 @@ import android.widget.Filterable
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.psw9999.gongmozootopia.Data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.Util.DiffUtilCallback
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.databinding.ItemStockBinding
 
-class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(), Filterable {
+class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>() {
 
-    private var filtered : MutableList<StockResponse>? = null
     var stockData = arrayListOf<StockResponse>()
     var stockFirmFollowing = mapOf<String,Boolean>()
     lateinit var mContext : Context
     lateinit var mStockClickListener : OnStockClickListener
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence): FilterResults {
-                val charString : List<String> = constraint.split(',')
-                var filteringList = arrayListOf<StockResponse>()
-                if (charString[1].isEmpty()) {
-                    filteringList = stockData
-                } else {
-                    val filteringWord = charString[1]
-                    for (item in stockData) {
-                        if(filteringWord == item.stockKinds) filteringList.add(item)
-                    }
-                }
-
-//                if (charString[2] == "true") {
-//                    var temp = ArrayList<StockListResponse>()
-//                    for (item in filteringList) {
-//                        if(item.isFollowing) temp.add(item)
-//                    }
-//                    filteringList = temp
-//                }
-
-                val filterResults = FilterResults()
-                filterResults.values = filteringList
-                return filterResults
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filtered = results?.values as ArrayList<StockResponse>
-                notifyDataSetChanged()
-            }
-        }
-    }
 
     interface OnStockClickListener {
         fun stockFollowingClick(stockFollowingResponse: StockFollowingResponse)
@@ -76,20 +43,10 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         return StockViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return if (filtered == null) {
-            stockData.size
-        }else{
-            filtered!!.size
-        }
-    }
+    override fun getItemCount(): Int = stockData.size
 
     override fun onBindViewHolder(holder: StockListAdapter.StockViewHolder, position: Int) {
-        if (filtered == null) {
-            holder.setTest(stockData[position])
-        }else{
-            holder.setTest(filtered!![position])
-        }
+        holder.binding(stockData[position])
     }
 
     fun setAdapterStockFirmData(stockFirmFollowing : Map<String,Boolean>) {
@@ -100,6 +57,19 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
     fun setAdapterStockFollowingData(stockData: ArrayList<StockResponse>) {
         this.stockData = stockData
         notifyDataSetChanged()
+    }
+
+    fun updateStockData(stockData : ArrayList<StockResponse>?) {
+        stockData?.let {
+            val diffCallback = DiffUtilCallback(this.stockData, stockData)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+            this.stockData.run {
+                clear()
+                addAll(stockData)
+                diffResult.dispatchUpdatesTo(this@StockListAdapter)
+            }
+        }
     }
 
     inner class StockViewHolder(val binding : ItemStockBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -117,7 +87,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
             }
         }
 
-        fun setTest(stockData : StockResponse) {
+        fun binding(stockData : StockResponse) {
             with(binding) {
                 with(stockData) {
                     //TODO : DataBinding으로 한번에 처리하기

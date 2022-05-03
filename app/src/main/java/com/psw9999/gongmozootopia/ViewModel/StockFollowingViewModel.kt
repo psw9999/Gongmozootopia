@@ -45,4 +45,5 @@ class StockFollowingViewModel(application: Application) : AndroidViewModel(appli
         }
         return isFollowing
     }
+
 }

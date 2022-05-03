@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 class SettingRepository(var context: Context) {
-    //val stockFirmList = listOf("Mirae", "Hankook", "Kiwoom", "NH", "Samsung", "Meritz", "Hana", "KB", "Daishin", "Shinyoung", "Shinhan", "IBK", "DB", "Hanhwa")
-    val stockFirmList = listOf("미래", "한국", "키움", "NH", "삼성", "메리츠", "하나", "KB", "대신", "신영", "신한", "IBK", "DB", "한화")
-
+    private val IS_FORFEITED_ENABLED = booleanPreferencesKey("forfeitedStock_Enabled")
+    private val IS_SPAC_ENABLED = booleanPreferencesKey("spacStock_Enabled")
+    private val stockFirmList = listOf("미래", "한국", "키움", "NH", "삼성", "메리츠", "하나", "KB", "대신", "신영", "신한", "IBK", "DB", "한화")
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     private fun isStockFirmRegistered(stockFirmName : String) : Preferences.Key<Boolean>
         = booleanPreferencesKey(stockFirmName)
 
-    var stockFirmFlow : Flow<Map<String,Boolean>> = context.dataStore.data
+    val stockFirmFlow : Flow<Map<String,Boolean>> = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) emit(emptyPreferences())
             else throw exception
@@ -40,10 +40,42 @@ class SettingRepository(var context: Context) {
             stockFirmMap
         }
 
-    suspend fun setStockFirmEnable(firmName : String, isEnabled : Boolean){
-            context.dataStore.edit { preferences ->
-                preferences[isStockFirmRegistered(firmName)] = isEnabled
-            }
+    suspend fun setStockFirmEnable(firmName : String, isEnabled : Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[isStockFirmRegistered(firmName)] = isEnabled
+        }
+    }
+
+    val forfeitedStockFlow : Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }
+        .map { preferences->
+            var isForfeitedEnabled =  preferences[IS_FORFEITED_ENABLED]?: false
+            isForfeitedEnabled
+        }
+
+    suspend fun setForfeitedEnabled(isEnabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_FORFEITED_ENABLED] = isEnabled
+        }
+    }
+
+    val spacStockFlow : Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) emit(emptyPreferences())
+            else throw exception
+        }
+        .map { preferences->
+            var isSpacEnabled = preferences[IS_SPAC_ENABLED]?: false
+            isSpacEnabled
+        }
+
+    suspend fun setSpacEnabled(isEnabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_SPAC_ENABLED] = isEnabled
+        }
     }
 }
 
