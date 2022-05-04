@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Data
+package com.psw9999.gongmozootopia.data
 
 data class StockScheduleResponse(
     val ipoIndex : Long,

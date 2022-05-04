@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Data
+package com.psw9999.gongmozootopia.data
 
 data class StockFirmResponse(val map : Map<String,Boolean>) {
     val Mirae : Boolean by map

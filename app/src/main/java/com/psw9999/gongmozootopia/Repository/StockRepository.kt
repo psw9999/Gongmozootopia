@@ -1,8 +1,7 @@
 package com.psw9999.gongmozootopia.Repository
 
-import android.util.Log
 import com.psw9999.gongmozootopia.communication.ServerImpl
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 import kotlinx.coroutines.runBlocking
 import retrofit2.await
 import java.time.LocalDate
@@ -42,6 +41,18 @@ class StockRepository {
                     else {
                         data.ipoDebutDate = null
                     }
+                }
+
+                // 증권사 데이터 체크 및 수정
+                data.underwriter?.let{ underwriter ->
+                    val words = Regex("증권|투자|금융")
+                    var sb = StringBuilder()
+                    underwriter.split(",").forEach { temp ->
+                        if (temp.contains(words)) {
+                            sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").plus(","))
+                        }
+                    }
+                    data.underwriter = sb.substring(0, sb.length-1)
                 }
                 stockData.add(data)
             }

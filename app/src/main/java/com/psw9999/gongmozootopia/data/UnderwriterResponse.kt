@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Data
+package com.psw9999.gongmozootopia.data
 
 data class UnderwriterResponse(
     val ipoIndex : Long,

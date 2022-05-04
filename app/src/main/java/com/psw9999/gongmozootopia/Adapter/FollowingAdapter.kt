@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.Data.FollowingResponse
+import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.databinding.ItemFollowingListBinding
 import com.psw9999.gongmozootopia.databinding.ItemFollowingTabBinding
 

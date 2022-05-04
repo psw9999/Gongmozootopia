@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kakao.sdk.common.KakaoSdk
 import com.psw9999.gongmozootopia.Repository.StockRepository
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockDatabase
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today

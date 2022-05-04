@@ -10,8 +10,6 @@ import com.psw9999.gongmozootopia.UI.Fragment.MainFragment
 import com.psw9999.gongmozootopia.UI.Fragment.NotificationFragment
 import com.psw9999.gongmozootopia.UI.Fragment.ConfigurationFragment
 import com.psw9999.gongmozootopia.databinding.ActivityMainBinding
-import com.psw9999.gongmozootopia.Data.StockFirmResponse
-import com.psw9999.gongmozootopia.Data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
 
 class MainActivity : AppCompatActivity() {

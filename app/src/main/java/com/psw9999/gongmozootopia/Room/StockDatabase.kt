@@ -5,8 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.psw9999.gongmozootopia.DAO.StockFollowingDAO
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 
 @Database(entities = [StockFollowingResponse::class], version = 1, exportSchema = false)
 abstract class StockDatabase : RoomDatabase() {

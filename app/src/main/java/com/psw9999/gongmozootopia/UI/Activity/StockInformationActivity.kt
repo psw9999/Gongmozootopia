@@ -7,12 +7,12 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
 import com.psw9999.gongmozootopia.base.BaseActivity
-import com.psw9999.gongmozootopia.Data.StockInfoResponse
-import com.psw9999.gongmozootopia.Data.UnderwriterResponse
+import com.psw9999.gongmozootopia.data.StockInfoResponse
+import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.Repository.UnderwriterRepository
 import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx

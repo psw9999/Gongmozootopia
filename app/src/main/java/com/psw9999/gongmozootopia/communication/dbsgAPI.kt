@@ -1,6 +1,6 @@
 package com.psw9999.gongmozootopia.communication
 
-import com.psw9999.gongmozootopia.Data.*
+import com.psw9999.gongmozootopia.data.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

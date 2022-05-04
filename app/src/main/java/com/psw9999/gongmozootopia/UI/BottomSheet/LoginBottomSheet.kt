@@ -10,13 +10,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.psw9999.gongmozootopia.communication.RetrofitService
-import com.psw9999.gongmozootopia.Data.KakaoLoginStatus
-import com.psw9999.gongmozootopia.Data.LoginData
+import com.psw9999.gongmozootopia.data.KakaoLoginStatus
 import com.psw9999.gongmozootopia.databinding.LoginBottomSheetBinding
 import org.greenrobot.eventbus.EventBus
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

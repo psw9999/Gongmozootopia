@@ -2,7 +2,7 @@ package com.psw9999.gongmozootopia.Repository
 
 import androidx.lifecycle.LiveData
 import com.psw9999.gongmozootopia.DAO.StockFollowingDAO
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 
 class StockFollowingRepository(private val stockFollowingDAO : StockFollowingDAO) {
 

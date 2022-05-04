@@ -27,9 +27,7 @@ class CalendarLabelView  : MaterialTextView {
         textSize = dpToPx(context, 3F)
         setTypeface(null, Typeface.BOLD)
         isSingleLine = true
-        //ellipsize = TextUtils.TruncateAt.MARQUEE
         isSelected = true
-
     }
 
     fun onBind(stockName : String, ipoKinds : Int, rowStart : Int, begin: Int, end: Int) {

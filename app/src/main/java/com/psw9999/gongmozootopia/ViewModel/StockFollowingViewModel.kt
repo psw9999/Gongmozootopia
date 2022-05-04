@@ -2,7 +2,7 @@ package com.psw9999.gongmozootopia.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.Repository.StockFollowingRepository
 import com.psw9999.gongmozootopia.Room.StockDatabase
 import kotlinx.coroutines.Dispatchers

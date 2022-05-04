@@ -1,29 +1,20 @@
 package com.psw9999.gongmozootopia.Adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.CustomView.UnderwriterView
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.Util.DiffUtilCallback
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
-import com.psw9999.gongmozootopia.databinding.ItemStockBinding
+import com.psw9999.gongmozootopia.databinding.HolderStockBinding
 
 class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>() {
 
-    var stockData = arrayListOf<StockResponse>()
+    var stockData = listOf<StockResponse>()
     var stockFirmFollowing = mapOf<String,Boolean>()
     lateinit var mContext : Context
     lateinit var mStockClickListener : OnStockClickListener
@@ -39,7 +30,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : StockListAdapter.StockViewHolder {
         mContext = parent.context
-        var binding = ItemStockBinding.inflate(LayoutInflater.from(mContext),parent,false)
+        var binding = HolderStockBinding.inflate(LayoutInflater.from(mContext),parent,false)
         return StockViewHolder(binding)
     }
 
@@ -59,20 +50,22 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         notifyDataSetChanged()
     }
 
-    fun updateStockData(stockData : ArrayList<StockResponse>?) {
+    fun updateStockData(stockData : List<StockResponse>?) {
         stockData?.let {
             val diffCallback = DiffUtilCallback(this.stockData, stockData)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-            this.stockData.run {
-                clear()
-                addAll(stockData)
-                diffResult.dispatchUpdatesTo(this@StockListAdapter)
-            }
+            this.stockData = stockData
+            diffResult.dispatchUpdatesTo(this@StockListAdapter)
+//            this.stockData.run {
+//                clear()
+//                addAll(stockData)
+//                diffResult.dispatchUpdatesTo(this@StockListAdapter)
+//            }
         }
     }
 
-    inner class StockViewHolder(val binding : ItemStockBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StockViewHolder(val binding : HolderStockBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.imageViewFavorit.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -89,35 +82,16 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
 
         fun binding(stockData : StockResponse) {
             with(binding) {
+                stockItem = stockData
                 with(stockData) {
-                    //TODO : DataBinding으로 한번에 처리하기
-                    textViewStockName.text = stockName
+                    //TODO : adapterBinding을 통해 xml내에서 해결하기
                     imageViewFavorit.isSelected = isFollowing
-                    textViewMarketKinds.text = stockExchange
-                    textViewStockKinds.text = stockKinds
-                    textViewEndDayTitle.text = currentSchedule
-                    textViewDday.text = scheduleDday
-                    if (scheduleDday == "") textViewDday.visibility = View.GONE
-                    else textViewDday.visibility = View.VISIBLE
-
                     chipGroupAlarm.removeAllViews()
-                    //TODO : this.setChipDrawable(chipDrawable) 활용하여 한줄로 줄이기 혹은 커스텀뷰 활용
                     underwriter?.let {
                         for(name in it.split(',')) {
-                            val temp = "${name.replace("증권","").replace("투자","").replace("금융","").replace("㈜","")}"
-                            chipGroupAlarm.addView(Chip(mContext).apply {
-                                this.text = temp
-                                this.setEnsureMinTouchTargetSize(false)
-                                this.chipStrokeWidth = dpToPx(mContext, 1.5F)
-                                this.isClickable = false
-                                this.chipCornerRadius = dpToPx(mContext,8F)
-                                this.minHeight = 0
-                                this.minWidth = 0
-                                this.textEndPadding = dpToPx(mContext,2F)
-                                this.textStartPadding = dpToPx(mContext,3F)
-                                this.updatePadding(0, 0, 0, 0)
-
-                                if (!stockFirmFollowing.containsKey(temp) || (!stockFirmFollowing[temp]!!)) {
+                            chipGroupAlarm.addView(UnderwriterView(mContext).apply {
+                                this.text = name
+                                if (!stockFirmFollowing.containsKey(name) || (!stockFirmFollowing[name]!!)) {
                                     this.setChipBackgroundColorResource(R.color.white)
                                     this.setChipStrokeColorResource(R.color.chip_underwriter)
                                     this.setTextAppearance(R.style.Chip_Unregistered_StockFirm_TextTheme)

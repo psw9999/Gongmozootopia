@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.Adapter.StockListAdapter
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.UI.BottomSheet.LoginBottomSheet
 import com.psw9999.gongmozootopia.ViewModel.ConfigurationViewModel
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
 import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentMainBinding
@@ -26,7 +26,7 @@ class MainFragment : Fragment() {
     private lateinit var stockAdapter : StockListAdapter
     private lateinit var mContext: Context
     private lateinit var stockData : ArrayList<StockResponse>
-    private lateinit var filterdStockData : ArrayList<StockResponse>
+    private lateinit var filterdStockData : List<StockResponse>
     private var filteringList = arrayOf("공모주", "실권주", "스팩주")
 
     private val configurationViewModel : ConfigurationViewModel by viewModels()
@@ -38,8 +38,9 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+        arguments?.let { it ->
             stockData = it.getParcelableArrayList<StockResponse>(STOCK_DATA) as ArrayList<StockResponse>
+            stockFitering()
         }
     }
 
@@ -66,18 +67,23 @@ class MainFragment : Fragment() {
         configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
             if(it) filteringList[1] = "실권주"
             else filteringList[1] = ""
+            stockFitering()
+            stockAdapter.updateStockData(filterdStockData)
         })
 
         configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
             if(it) filteringList[2] = "스팩주"
-            else filteringList[1] = ""
+            else filteringList[2] = ""
+            stockFitering()
+            stockAdapter.updateStockData(filterdStockData)
         })
 
         stockFollowingViewModel.stockFollowingIndexData.observe(viewLifecycleOwner, Observer { stockFollowingIndex ->
             stockData.forEach { data ->
                 data.isFollowing = data.ipoIndex in stockFollowingIndex
             }
-            stockAdapter.setAdapterStockFollowingData(stockData)
+            stockAdapter.updateStockData(stockData)
+            //stockAdapter.setAdapterStockFollowingData(stockData)
         })
 
         initStockRecyclerView()
@@ -111,7 +117,8 @@ class MainFragment : Fragment() {
 
         binding.mainActivityAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_filter -> {
+                R.id.action_followingFilter -> {
+                    //it.isChecked = true
                     true
                 }
                 else -> true
@@ -121,9 +128,15 @@ class MainFragment : Fragment() {
 
     private fun initStockRecyclerView() {
         stockAdapter = StockListAdapter()
-        stockAdapter.stockData = stockData
+        stockAdapter.stockData = filterdStockData
         binding.recyclerViewStock.adapter = stockAdapter
         binding.recyclerViewStock.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewStock.addItemDecoration(GridViewDecoration(30))
+    }
+
+    private fun stockFitering() {
+        filterdStockData = stockData.filter { data->
+            data.stockKinds in filteringList
+        }
     }
 }

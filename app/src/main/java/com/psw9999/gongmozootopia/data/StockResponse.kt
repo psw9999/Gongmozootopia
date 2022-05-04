@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Data
+package com.psw9999.gongmozootopia.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

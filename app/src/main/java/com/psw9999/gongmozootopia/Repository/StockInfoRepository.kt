@@ -1,7 +1,6 @@
 package com.psw9999.gongmozootopia.Repository
 
-import android.util.Log
-import com.psw9999.gongmozootopia.Data.*
+import com.psw9999.gongmozootopia.data.*
 import com.psw9999.gongmozootopia.communication.ServerImpl
 import kotlinx.coroutines.runBlocking
 import retrofit2.await

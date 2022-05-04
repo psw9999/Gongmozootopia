@@ -2,7 +2,7 @@ package com.psw9999.gongmozootopia.DAO
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.psw9999.gongmozootopia.Data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 
 @Dao
 interface StockFollowingDAO {

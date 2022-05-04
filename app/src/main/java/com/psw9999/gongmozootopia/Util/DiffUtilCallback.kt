@@ -1,7 +1,7 @@
 package com.psw9999.gongmozootopia.Util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.psw9999.gongmozootopia.Data.StockResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 
 class DiffUtilCallback(private val originalList : List<Any>, private val filteredList : List<Any>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = originalList.size
