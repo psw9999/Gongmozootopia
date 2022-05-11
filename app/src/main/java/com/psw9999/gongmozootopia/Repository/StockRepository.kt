@@ -52,7 +52,8 @@ class StockRepository {
                             sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").plus(","))
                         }
                     }
-                    data.underwriter = sb.substring(0, sb.length-1)
+                    if (sb.isEmpty()) data.underwriter = null
+                    else data.underwriter = sb.substring(0, sb.length-1)
                 }
                 stockData.add(data)
             }

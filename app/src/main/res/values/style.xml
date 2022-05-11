@@ -96,7 +96,7 @@
 
         <style name="Calendar.HeadTextView" parent="Widget.MaterialComponents.TextView">
             <item name="android:textColor">@color/black</item>
-            <item name="android:textSize">20dp</item>
+            <item name="android:textSize">22dp</item>
             <item name="android:textStyle">bold</item>
             <item name="android:textAlignment">center</item>
         </style>
@@ -116,6 +116,19 @@
 
         <style name="Calendar.WeekItem.SunDay" parent="Calendar.WeekItem">
             <item name="android:textColor">@color/calendar_sunday</item>
+        </style>
+
+        <style name="Calendar.FilterChip" parent="Widget.MaterialComponents.Chip.Action">
+            <item name="android:layout_width">wrap_content</item>
+            <item name="android:layout_height">20dp</item>
+            <item name="android:checkable">true</item>
+            <item name="checkedIcon">@drawable/ic_baseline_check_24</item>
+            <item name="chipBackgroundColor">@color/white</item>
+            <item name="rippleColor">@color/white</item>
+            <item name="ensureMinTouchTargetSize">false</item>
+            <item name="chipIcon">@drawable/bg_circle_24</item>
+            <item name="chipIconSize">15dp</item>
+            <item name="android:checked">true</item>
         </style>
 
     <style name="Configuration"/>

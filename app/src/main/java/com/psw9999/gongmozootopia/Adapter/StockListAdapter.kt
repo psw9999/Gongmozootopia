@@ -72,6 +72,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
                     mStockClickListener.stockFollowingClick(
                         StockFollowingResponse(stockData[adapterPosition].ipoIndex, stockData[adapterPosition].stockName, !stockData[adapterPosition].isFollowing))
                 }
+                binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
             }
             binding.cardViewStock.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {

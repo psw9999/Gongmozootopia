@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -27,7 +29,8 @@ class MainFragment : Fragment() {
     private lateinit var mContext: Context
     private lateinit var stockData : ArrayList<StockResponse>
     private lateinit var filterdStockData : List<StockResponse>
-    private var filteringList = arrayOf("공모주", "실권주", "스팩주")
+    private var kindFilteringList = arrayOf("공모주", "실권주", "스팩주")
+    private var followingFilterEnabled = false
 
     private val configurationViewModel : ConfigurationViewModel by viewModels()
     private val stockFollowingViewModel : StockFollowingViewModel by viewModels()
@@ -40,7 +43,6 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let { it ->
             stockData = it.getParcelableArrayList<StockResponse>(STOCK_DATA) as ArrayList<StockResponse>
-            stockFitering()
         }
     }
 
@@ -65,27 +67,25 @@ class MainFragment : Fragment() {
         })
 
         configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) filteringList[1] = "실권주"
-            else filteringList[1] = ""
-            stockFitering()
-            stockAdapter.updateStockData(filterdStockData)
+            if(it) kindFilteringList[1] = "실권주"
+            else kindFilteringList[1] = ""
+            stockFiltering()
         })
 
         configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) filteringList[2] = "스팩주"
-            else filteringList[2] = ""
-            stockFitering()
-            stockAdapter.updateStockData(filterdStockData)
+            if(it) kindFilteringList[2] = "스팩주"
+            else kindFilteringList[2] = ""
+            stockFiltering()
         })
 
+        //TODO : 필터링된 데이터에 팔로잉을 넣는게 맞는지 확인필요. (나중에 필터링 풀리면 팔로잉된게 안보일까봐)
         stockFollowingViewModel.stockFollowingIndexData.observe(viewLifecycleOwner, Observer { stockFollowingIndex ->
-            stockData.forEach { data ->
+            filterdStockData.forEach { data ->
                 data.isFollowing = data.ipoIndex in stockFollowingIndex
             }
-            stockAdapter.updateStockData(stockData)
+            stockAdapter.updateStockData(filterdStockData)
             //stockAdapter.setAdapterStockFollowingData(stockData)
         })
-
         initStockRecyclerView()
         onClickSetting()
     }
@@ -98,8 +98,8 @@ class MainFragment : Fragment() {
         stockAdapter.setOnStockClickListener(object : StockListAdapter.OnStockClickListener {
             override fun stockCardClick(pos: Int) {
                 stockInfoIntent.apply {
-                    putExtra("isFollowing",stockData[pos].isFollowing)
-                    putExtra("ipoIndex",stockData[pos].ipoIndex)
+                    putExtra("isFollowing",filterdStockData[pos].isFollowing)
+                    putExtra("ipoIndex",filterdStockData[pos].ipoIndex)
                 }
                 startActivity(stockInfoIntent)
             }
@@ -118,7 +118,10 @@ class MainFragment : Fragment() {
         binding.mainActivityAppbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_followingFilter -> {
-                    //it.isChecked = true
+                    followingFilterEnabled = !followingFilterEnabled
+                    if(followingFilterEnabled) it.setIcon(R.drawable.star_active)
+                    else it.setIcon(R.drawable.star_border)
+                    stockFiltering()
                     true
                 }
                 else -> true
@@ -128,15 +131,17 @@ class MainFragment : Fragment() {
 
     private fun initStockRecyclerView() {
         stockAdapter = StockListAdapter()
+        stockFiltering()
         stockAdapter.stockData = filterdStockData
         binding.recyclerViewStock.adapter = stockAdapter
         binding.recyclerViewStock.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewStock.addItemDecoration(GridViewDecoration(30))
     }
 
-    private fun stockFitering() {
+    private fun stockFiltering() {
         filterdStockData = stockData.filter { data->
-            data.stockKinds in filteringList
+            data.stockKinds in kindFilteringList && (data.isFollowing || !followingFilterEnabled)
         }
+        stockAdapter.updateStockData(filterdStockData)
     }
 }

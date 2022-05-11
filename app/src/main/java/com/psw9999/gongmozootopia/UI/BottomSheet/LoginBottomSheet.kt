@@ -10,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.psw9999.gongmozootopia.communication.RetrofitService
-import com.psw9999.gongmozootopia.data.KakaoLoginStatus
 import com.psw9999.gongmozootopia.databinding.LoginBottomSheetBinding
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
@@ -111,7 +110,7 @@ class LoginBottomSheet : BottomSheetDialogFragment() {
 //                    Log.d("token","${preferences.kakaoIdToken}")
                     initCommunication()
                     Toast.makeText(requireContext(), "로그인 성공!", Toast.LENGTH_SHORT).show()
-                    EventBus.getDefault().post(KakaoLoginStatus(true))
+                    //EventBus.getDefault().post(KakaoLoginStatus(true))
                     dismiss()
                 }
                 else {

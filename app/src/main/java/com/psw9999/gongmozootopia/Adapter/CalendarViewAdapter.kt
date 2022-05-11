@@ -28,12 +28,10 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
     private var start : Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
     private val stockScheduleRepository = StockScheduleRepository()
     lateinit var stockScheduleData : Array<MutableList<Pair<Int, String>>>
-
+    var filteringList = arrayOf(false,true,true,true,true)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewAdapter.CalendarViewHolder {
         return CalendarViewHolder(
-            HolderCalendarBinding.inflate(
-                LayoutInflater.from(parent.context),parent, false
-            )
+            HolderCalendarBinding.inflate(LayoutInflater.from(parent.context),parent, false)
         )
     }
 
@@ -50,7 +48,6 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
         var monthList = getMonthList(DateTime(millis))
 
         fun addStockSchedule(scheduleKinds : Int, stockName : String, scheduleTime: String){
-            if (scheduleTime == "0000-00-00") return
             var index = getDayIndex(monthList[0],DateTime.parse(scheduleTime))
             if( 0 <= index && index < stockScheduleData.size) {
                 stockScheduleData[index].add(Pair(scheduleKinds,stockName))
@@ -64,15 +61,10 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
                     monthList[0].toString("yyyy-MM-dd"),
                     monthList.last().toString("yyyy-MM-dd")
                 )
-                Log.d("dayRange","${monthList[0].toString("yyyy-MM-dd")} ~ ${monthList.last().toString("yyyy-MM-dd")}")
-                Log.d("stockScheduleResponse","$stockScheduleResponse")
             }.join()
             withContext(Dispatchers.Default) {
                 stockScheduleData = Array(WEEKS_PER_MONTH*7){mutableListOf()}
                 stockScheduleResponse.forEach { stockSchedule ->
-//                    stockSchedule.ipoForecastDate?.let {
-//                        addStockSchedule(0,stockSchedule.stockName,it)
-//                    }
                     stockSchedule.ipoStartDate?.let {
                         if (stockSchedule.ipoEndDate != null) {
                             if (getDayIndex(DateTime.parse(it),DateTime.parse(stockSchedule.ipoEndDate)) > 1) {
@@ -83,9 +75,6 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
                                 addStockSchedule(1,stockSchedule.stockName,it)
                             }
                         }
-                        else {
-                            addStockSchedule(0,stockSchedule.stockName,it)
-                        }
                     }
                     stockSchedule.ipoRefundDate?.let {
                         addStockSchedule(3,stockSchedule.stockName,it)
@@ -94,15 +83,18 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
                         addStockSchedule(4,stockSchedule.stockName,it)
                     }
                 }
-                stockScheduleData.forEach {
+                stockScheduleData.forEach { it ->
                     it.sortBy{it.first}
                 }
-                Log.d("stockScheduleData","${stockScheduleData.contentDeepToString()}")
-            }
-            withContext(Dispatchers.Main){
-                holder.onBind(DateTime(millis), monthList)
+                withContext(Dispatchers.Main){
+                    holder.onBind(DateTime(millis), monthList)
+                }
             }
         }
+    }
+
+    fun getCurrentMonth(position: Int) : String {
+        return DateTime(getItemId(position)).toString("yyyy년 MM월")
     }
 
     inner class CalendarViewHolder(val binding : HolderCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -116,7 +108,7 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
             }
 
         fun onBind(firstDayOfMonth: DateTime, dateList : List<DateTime>) {
-            binding.textViewCalendarHeadTextView.text = DateTime(firstDayOfMonth).toString("MM월 yyyy")
+            //binding.textViewCalendarHeadTextView.text = DateTime(firstDayOfMonth).toString("yyyy년 MM월")
             for ((i,gridLayout) in rows.withIndex()) {
                 gridLayout.removeViews(7,gridLayout.childCount-7)
                 for (j in 0 until 7) {
@@ -124,16 +116,13 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
                         setDayView(this, dateList[(i * 7) + j], firstDayOfMonth)
                     }
                 }
-                var maxScheduleCnt = 0
-                stockScheduleData.slice((i*7)..(i*7)+6).forEach {
-                    maxScheduleCnt = max(maxScheduleCnt, it.size)
-                }
 
                 var befLabelCnt = mutableListOf<Int>()
                 for(j in 0 until 7) {
                     var cnt = 1
                     var tempCntList = mutableListOf<Int>()
-                    stockScheduleData[(i*7)+j].forEach { scheduleData ->
+                    for (scheduleData in stockScheduleData[(i*7)+j]) {
+                        if (!filteringList[scheduleData.first]) continue
                         gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
                             while (cnt in befLabelCnt) cnt++
                             if(scheduleData.first != 1) {

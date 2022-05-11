@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/action_followingFilter"
-        android:icon="@drawable/imgbtn_favorit_states"
+        android:checkable="true"
+        android:icon="@drawable/star_border"
         android:title="followingFilter"
         app:showAsAction="always"></item>
-
 </menu>

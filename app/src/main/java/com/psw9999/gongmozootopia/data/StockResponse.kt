@@ -8,7 +8,7 @@ data class StockResponse(
     val ipoIndex : Long,
     val stockName : String,
     var stockExchange : String,
-    var stockKinds : String,
+    var stockKinds : String?,
     var ipoStartDate : String,
     var ipoEndDate : String?,
     var ipoRefundDate : String?,
