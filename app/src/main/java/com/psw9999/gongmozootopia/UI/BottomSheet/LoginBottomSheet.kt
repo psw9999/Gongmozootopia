@@ -9,9 +9,7 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
-import com.psw9999.gongmozootopia.communication.RetrofitService
 import com.psw9999.gongmozootopia.databinding.LoginBottomSheetBinding
-import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -26,7 +24,7 @@ class LoginBottomSheet : BottomSheetDialogFragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val service1: RetrofitService = retrofit.create(RetrofitService::class.java)
+        //val service1: RetrofitService = retrofit.create(RetrofitService::class.java)
         // 추후 로그인 구현후 활성화 (Preferences -> DataStore)
 //        var call: Call<LoginData> = service1.getPost(preferences.kakaoIdToken as String)
 //        call.enqueue(object : Callback<LoginData> {

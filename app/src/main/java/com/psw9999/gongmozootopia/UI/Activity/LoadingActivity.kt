@@ -11,10 +11,7 @@ import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockDatabase
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.Util.NetworkStatus
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -40,30 +37,27 @@ class LoadingActivity : AppCompatActivity() {
         // 네트워크 연결 정보를 획득하는 부분으로 미연결시 null을 반환함.
         val linkProperties = connectivityManager.getLinkProperties(currentNetwork)
         if(linkProperties != null){
-            CoroutineScope(Dispatchers.IO).launch {
-                launch {
-                    stockData = StockRepository().getStockData()
-//                    stockData.forEach { stock ->
-//                        Log.d("stock","$stock")
-//                    }
-                    true
-                }.join()
+            CoroutineScope(Dispatchers.Default).launch {
+                // 1. stockList 수신
+                val deferredStockData = async(Dispatchers.IO) {
+                    StockRepository().getStockData()
+                }
 
+                // 2. FollowingData 읽어오기
+                val deferredStockFollowing = async(Dispatchers.IO) {
+                    stockData = deferredStockData.await()
+                    stockDatabase.stockFollowingDAO().getAllFollowingIndex()
+                }
+
+                // 3. FollowingData 및 D-day 체크하기
                 launch {
-                    stockFollowingIndex = stockDatabase.stockFollowingDAO().getAllFollowingIndex()
+                    stockFollowingIndex = deferredStockFollowing.await()
                     stockData.forEach { data ->
+                        scheduleCheck(data)
                         if (data.ipoIndex in stockFollowingIndex) {
                             data.isFollowing = true
                         }
                     }
-                    true
-                }.join()
-
-                withContext(Dispatchers.Default) {
-                    stockData.forEach { data ->
-                        scheduleCheck(data)
-                    }
-                    //Log.d("stockData","$stockData")
                     mainIntent.apply {
                         putExtra(STOCK_DATA,stockData)
                     }
