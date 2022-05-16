@@ -23,13 +23,17 @@ import kotlinx.coroutines.*
 import org.joda.time.DateTime
 import java.lang.Integer.max
 
-class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
+class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
 
     private var start : Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
     private val stockScheduleRepository = StockScheduleRepository()
-    lateinit var stockScheduleData : Array<MutableList<Pair<Int, String>>>
-    var filteringList = arrayOf(false,true,true,true,true)
+    private lateinit var scheduleData : Array<MutableList<Pair<Int, String>>>
+
+    // 스케줄 필터링 (수요예측일, 청약일, 청약일, 환불일, 상장일)
+    var filteringList = arrayOf(true,true,true,true,true)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewAdapter.CalendarViewHolder {
+        Log.d("recyclerView","onCreateViewHolder")
         return CalendarViewHolder(
             HolderCalendarBinding.inflate(LayoutInflater.from(parent.context),parent, false)
         )
@@ -40,55 +44,67 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
     }
 
     override fun getItemId(position: Int): Long {
+        Log.d("recyclerView","getItemId")
         return DateTime(start).plusMonths(position - START_POSITION).millis
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         var millis = getItemId(position)
         var monthList = getMonthList(DateTime(millis))
-
-        fun addStockSchedule(scheduleKinds : Int, stockName : String, scheduleTime: String){
-            var index = getDayIndex(monthList[0],DateTime.parse(scheduleTime))
-            if( 0 <= index && index < stockScheduleData.size) {
-                stockScheduleData[index].add(Pair(scheduleKinds,stockName))
-            }
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            var stockScheduleResponse = arrayListOf<StockScheduleResponse>()
-            launch {
-                stockScheduleResponse = stockScheduleRepository.getScheduleData(
+        Log.d("recyclerView","onBindViewHolder")
+        CoroutineScope(Dispatchers.Main).launch {
+            // 1. 캘린더의 첫날부터 마지막날까지의 일정 조회
+            val deferredScheduleResponse = async(Dispatchers.IO) {
+                stockScheduleRepository.getScheduleData(
                     monthList[0].toString("yyyy-MM-dd"),
                     monthList.last().toString("yyyy-MM-dd")
                 )
-            }.join()
-            withContext(Dispatchers.Default) {
-                stockScheduleData = Array(WEEKS_PER_MONTH*7){mutableListOf()}
-                stockScheduleResponse.forEach { stockSchedule ->
-                    stockSchedule.ipoStartDate?.let {
-                        if (stockSchedule.ipoEndDate != null) {
-                            if (getDayIndex(DateTime.parse(it),DateTime.parse(stockSchedule.ipoEndDate)) > 1) {
-                                addStockSchedule(2,stockSchedule.stockName,it)
-                                addStockSchedule(2,stockSchedule.stockName,stockSchedule.ipoEndDate!!)
-                            }
-                            else {
-                                addStockSchedule(1,stockSchedule.stockName,it)
-                            }
-                        }
+            }
+
+            // 2. 캘린더 일정 분류
+            val updateScheduleJob = async(Dispatchers.Default) {
+                val scheduleResponse = deferredScheduleResponse.await()
+                updateSchedule(scheduleResponse, monthList[0])
+                scheduleData.forEach { it ->
+                    it.sortBy { it.first }
+                }
+                true
+            }
+
+            // 3. Bind 함수 실행
+            launch {
+                var temp = updateScheduleJob.await()
+                holder.onBind(DateTime(millis), monthList)
+            }
+        }
+    }
+
+    private fun addSchedule(scheduleKinds : Int, stockName : String, scheduleTime: String, firstDay : DateTime){
+        var index = getDayIndex(firstDay,DateTime.parse(scheduleTime))
+        if( 0 <= index && index < scheduleData.size) {
+            scheduleData[index].add(Pair(scheduleKinds,stockName))
+        }
+    }
+
+    private suspend fun updateSchedule(scheduleResponse : ArrayList<StockScheduleResponse>, firstDay : DateTime) {
+        scheduleData = Array(WEEKS_PER_MONTH*7){mutableListOf()}
+        scheduleResponse.forEach { stockSchedule ->
+            stockSchedule.ipoStartDate?.let { ipoStartDate->
+                stockSchedule.ipoEndDate?.let { ipoEndDate ->
+                    if (getDayIndex(DateTime.parse(ipoStartDate),DateTime.parse(stockSchedule.ipoEndDate)) > 1) {
+                        addSchedule(2,stockSchedule.stockName,ipoStartDate, firstDay)
+                        addSchedule(2,stockSchedule.stockName,ipoEndDate, firstDay)
                     }
-                    stockSchedule.ipoRefundDate?.let {
-                        addStockSchedule(3,stockSchedule.stockName,it)
-                    }
-                    stockSchedule.ipoDebutDate?.let {
-                        addStockSchedule(4,stockSchedule.stockName,it)
+                    else {
+                        addSchedule(1,stockSchedule.stockName,ipoStartDate, firstDay)
                     }
                 }
-                stockScheduleData.forEach { it ->
-                    it.sortBy{it.first}
-                }
-                withContext(Dispatchers.Main){
-                    holder.onBind(DateTime(millis), monthList)
-                }
+            }
+            stockSchedule.ipoRefundDate?.let { ipoRefundDate ->
+                addSchedule(3,stockSchedule.stockName,ipoRefundDate, firstDay)
+            }
+            stockSchedule.ipoDebutDate?.let { ipoDebutDate ->
+                addSchedule(4,stockSchedule.stockName,ipoDebutDate, firstDay)
             }
         }
     }
@@ -121,15 +137,15 @@ class CalendarViewAdapter() : RecyclerView.Adapter<CalendarViewAdapter.CalendarV
                 for(j in 0 until 7) {
                     var cnt = 1
                     var tempCntList = mutableListOf<Int>()
-                    for (scheduleData in stockScheduleData[(i*7)+j]) {
-                        if (!filteringList[scheduleData.first]) continue
+                    for (schedule in scheduleData[(i*7)+j]) {
+                        if (!filteringList[schedule.first]) continue
                         gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
                             while (cnt in befLabelCnt) cnt++
-                            if(scheduleData.first != 1) {
-                                onBind(scheduleData.second, scheduleData.first, cnt, j, j)
+                            if(schedule.first != 1) {
+                                onBind(schedule.second, schedule.first, cnt, j, j)
                             }
                             else {
-                                onBind(scheduleData.second, scheduleData.first, cnt,j,j+1)
+                                onBind(schedule.second, schedule.first, cnt,j,j+1)
                                 tempCntList.add(cnt)
                             }
                             cnt++

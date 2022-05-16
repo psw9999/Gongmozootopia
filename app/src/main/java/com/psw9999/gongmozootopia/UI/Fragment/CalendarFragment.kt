@@ -39,17 +39,17 @@ class CalendarFragment : Fragment() {
                 viewPager2Calendar.currentItem++
                 textViewCalendarHeadTextView.text = calendarViewAdapter.getCurrentMonth(viewPager2Calendar.currentItem)
             }
-            chipIpoFilter.setOnClickListener {
-                calendarViewAdapter.filteringList[1] = !calendarViewAdapter.filteringList[1]
-                calendarViewAdapter.filteringList[2] = !calendarViewAdapter.filteringList[2]
+            chipIpoFilter.setOnCheckedChangeListener { chip, isChecked ->
+                calendarViewAdapter.filteringList[1] = isChecked
+                calendarViewAdapter.filteringList[2] = isChecked
                 calendarViewAdapter.notifyDataSetChanged()
             }
-            chipRefundFilter.setOnClickListener {
-                calendarViewAdapter.filteringList[3] = !calendarViewAdapter.filteringList[3]
+            chipRefundFilter.setOnCheckedChangeListener { chip, isChecked ->
+                calendarViewAdapter.filteringList[3] = isChecked
                 calendarViewAdapter.notifyDataSetChanged()
             }
-            chipDebutFilter.setOnClickListener {
-                calendarViewAdapter.filteringList[4] = !calendarViewAdapter.filteringList[4]
+            chipDebutFilter.setOnCheckedChangeListener { chip, isChecked ->
+                calendarViewAdapter.filteringList[4] = isChecked
                 calendarViewAdapter.notifyDataSetChanged()
             }
         }
