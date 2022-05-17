@@ -22,5 +22,5 @@ interface dbsgAPI {
     fun getUnderwriter(@Path("ipoIndex") ipoIndex : Long) : retrofit2.Call<ArrayList<UnderwriterResponse>>
 
     @GET("/api/v1/ipo/schedule")
-    fun getStockSchedule(@Query("startDate") startDate : String,@Query("endDate") endDate : String) : retrofit2.Call<ArrayList<StockScheduleResponse>>
+    fun getStockSchedule(@Query("startDate") startDate : String, @Query("endDate") endDate : String) : retrofit2.Call<ArrayList<ScheduleResponse>>
 }

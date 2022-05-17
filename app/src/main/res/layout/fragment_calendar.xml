@@ -76,6 +76,7 @@
             android:id="@+id/chip_ipoFilter"
             style="@style/Calendar.FilterChip"
             android:layout_marginTop="10dp"
+            android:tag="1"
             android:text="청약"
             app:chipIconTint="@color/CalendarLabel.IpoDay" />
 
@@ -83,6 +84,7 @@
             android:id="@+id/chip_refundFilter"
             style="@style/Calendar.FilterChip"
             android:layout_marginTop="10dp"
+            android:tag="2"
             android:text="환불"
             app:chipIconTint="@color/CalendarLabel.IpoRefundDay" />
 
@@ -90,6 +92,7 @@
             android:id="@+id/chip_debutFilter"
             style="@style/Calendar.FilterChip"
             android:layout_marginTop="10dp"
+            android:tag="3"
             android:text="상장"
             app:chipIconTint="@color/CalendarLabel.IpoDebutDay" />
     </com.google.android.material.chip.ChipGroup>

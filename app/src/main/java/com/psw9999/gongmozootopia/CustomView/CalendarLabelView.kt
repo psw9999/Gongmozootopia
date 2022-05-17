@@ -30,7 +30,7 @@ class CalendarLabelView  : MaterialTextView {
         isSelected = true
     }
 
-    fun onBind(stockName : String, ipoKinds : Int, rowStart : Int, begin: Int, end: Int) {
+    fun addScheduleLabel(stockName : String, ipoKinds : Int, rowStart : Int, begin: Int, end: Int) {
         text = stockName
         when(ipoKinds) {
             0 -> setBackgroundColor(ContextCompat.getColor(context, R.color.CalendarLabel_IpoForecastDay))

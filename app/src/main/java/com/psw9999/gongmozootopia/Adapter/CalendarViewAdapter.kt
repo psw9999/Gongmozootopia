@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
-import com.psw9999.gongmozootopia.data.StockScheduleResponse
+import com.psw9999.gongmozootopia.data.ScheduleResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.WEEKS_PER_MONTH
@@ -21,7 +21,6 @@ import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameDay
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.isSameMonth
 import kotlinx.coroutines.*
 import org.joda.time.DateTime
-import java.lang.Integer.max
 
 class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarViewHolder>() {
 
@@ -32,7 +31,7 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
     // 스케줄 필터링 (수요예측일, 청약일, 청약일, 환불일, 상장일)
     var filteringList = arrayOf(true,true,true,true,true)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewAdapter.CalendarViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         Log.d("recyclerView","onCreateViewHolder")
         return CalendarViewHolder(
             HolderCalendarBinding.inflate(LayoutInflater.from(parent.context),parent, false)
@@ -86,7 +85,7 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
         }
     }
 
-    private suspend fun updateSchedule(scheduleResponse : ArrayList<StockScheduleResponse>, firstDay : DateTime) {
+    private fun updateSchedule(scheduleResponse : ArrayList<ScheduleResponse>, firstDay : DateTime) {
         scheduleData = Array(WEEKS_PER_MONTH*7){mutableListOf()}
         scheduleResponse.forEach { stockSchedule ->
             stockSchedule.ipoStartDate?.let { ipoStartDate->
@@ -109,10 +108,10 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
         }
     }
 
+    //TODO : LiveData로 수정
     fun getCurrentMonth(position: Int) : String {
         return DateTime(getItemId(position)).toString("yyyy년 MM월")
     }
-
     inner class CalendarViewHolder(val binding : HolderCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
         private val rows: List<GridLayout>
             get() {
