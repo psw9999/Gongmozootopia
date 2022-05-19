@@ -14,7 +14,7 @@ import com.psw9999.gongmozootopia.base.BaseActivity
 import com.psw9999.gongmozootopia.data.StockInfoResponse
 import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.Repository.UnderwriterRepository
-import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
+import com.psw9999.gongmozootopia.viewModel.StockFollowingViewModel
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
 import kotlinx.coroutines.CoroutineScope

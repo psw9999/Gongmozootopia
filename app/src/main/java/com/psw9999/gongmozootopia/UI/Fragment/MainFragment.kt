@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,10 +14,10 @@ import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.UI.BottomSheet.LoginBottomSheet
-import com.psw9999.gongmozootopia.ViewModel.ConfigurationViewModel
+import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
-import com.psw9999.gongmozootopia.ViewModel.StockFollowingViewModel
+import com.psw9999.gongmozootopia.viewModel.StockFollowingViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentMainBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 
@@ -62,6 +60,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         configurationViewModel.stockFirmData.observe(viewLifecycleOwner, Observer {
             stockAdapter.setAdapterStockFirmData(it)
         })
@@ -84,7 +83,6 @@ class MainFragment : Fragment() {
                 data.isFollowing = data.ipoIndex in stockFollowingIndex
             }
             stockAdapter.updateStockData(filterdStockData)
-            //stockAdapter.setAdapterStockFollowingData(stockData)
         })
         initStockRecyclerView()
         onClickSetting()

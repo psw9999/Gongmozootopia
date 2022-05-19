@@ -72,7 +72,7 @@ class LoadingActivity : AppCompatActivity() {
         networkStatus.registerNetworkCallback()
     }
 
-    fun scheduleCheck(stockData : StockResponse){
+    private fun scheduleCheck(stockData : StockResponse){
         var fmt : DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
         val ipoStartDday : Int =
             stockData.ipoStartDate?.let {Days.daysBetween(today, fmt.parseDateTime(stockData.ipoStartDate)).days}?:-1
@@ -88,7 +88,7 @@ class LoadingActivity : AppCompatActivity() {
             stockData.scheduleDday = ""
         }
         else if (ipoStartDday > 0) {
-            stockData.currentSchedule = "청약시작일 ${stockData.ipoStartDate.slice(5..6)}월 ${stockData.ipoStartDate.slice(8..9)}일"
+            stockData.currentSchedule = "청약시작일 ${stockData.ipoStartDate!!.slice(5..6)}월 ${stockData.ipoStartDate!!.slice(8..9)}일"
             stockData.scheduleDday = "D-$ipoStartDday"
         }
         else if (ipoEndDday >= 0) {

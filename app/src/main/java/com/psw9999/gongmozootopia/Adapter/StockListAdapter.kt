@@ -57,11 +57,6 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
 
             this.stockData = stockData
             diffResult.dispatchUpdatesTo(this@StockListAdapter)
-//            this.stockData.run {
-//                clear()
-//                addAll(stockData)
-//                diffResult.dispatchUpdatesTo(this@StockListAdapter)
-//            }
         }
     }
 

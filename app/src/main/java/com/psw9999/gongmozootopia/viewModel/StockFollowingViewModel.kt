@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.ViewModel
+package com.psw9999.gongmozootopia.viewModel
 
 import android.app.Application
 import androidx.lifecycle.*

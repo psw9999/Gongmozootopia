@@ -10,14 +10,16 @@ import android.widget.TextView
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
 import com.psw9999.gongmozootopia.Util.CalendarUtils
-import com.psw9999.gongmozootopia.ViewModel.ScheduleViewModel
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDayIndex
+import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
+import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import com.psw9999.gongmozootopia.data.ScheduleResponse
-import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
 import kotlinx.coroutines.*
 import org.joda.time.DateTime
@@ -34,7 +36,9 @@ class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
-    override fun getItemId(position: Int): Long = DateTime(start).plusMonths(position - START_POSITION).millis
+    override fun getItemId(position: Int): Long =
+        DateTime(start).plusMonths(position - START_POSITION).millis
+
 
     override fun containsItem(itemId: Long): Boolean {
         val date = DateTime(itemId)
@@ -48,10 +52,14 @@ class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 
 class CalendarFragment : Fragment() {
     private var millis : Long = 0L
-    private val scheduleArray = arrayOf<MutableList<Pair<Int,ScheduleResponse>>>()
+    private val scheduleArray = Array(CalendarUtils.WEEKS_PER_MONTH *7){mutableListOf<Pair<Int,ScheduleResponse>>()}
     private lateinit var rows: List<GridLayout>
     private lateinit var monthList : List<DateTime>
+
     private val scheduleViewModel : ScheduleViewModel by viewModels()
+    private val configurationViewModel : ConfigurationViewModel by viewModels()
+
+    private var kindFilteringList = arrayOf("공모주", "실권주", "스팩주")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,14 +106,26 @@ class CalendarFragment : Fragment() {
             launch {
                 var temp = updateScheduleJob.await()
                 onBindDay()
+                onBindLabel()
             }
         }
 
+        configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
+            if(it) kindFilteringList[1] = "실권주"
+            else kindFilteringList[1] = ""
+            onBindLabel()
+        })
+
+        configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
+            if(it) kindFilteringList[2] = "스팩주"
+            else kindFilteringList[2] = ""
+            onBindLabel()
+        })
+
         return viewBinding.root
     }
-
     private fun addSchedule(scheduleKinds : Int, scheduleTime : String, scheduleData : ScheduleResponse){
-        var index = CalendarUtils.getDayIndex(DateTime(millis), DateTime.parse(scheduleTime))
+        var index = getDayIndex(monthList.first(), DateTime.parse(scheduleTime))
         if( 0 <= index && index < scheduleArray.size) {
             scheduleArray[index].add(Pair(scheduleKinds, scheduleData))
         }
@@ -114,10 +134,17 @@ class CalendarFragment : Fragment() {
     private fun updateSchedule(scheduleResponse : ArrayList<ScheduleResponse>) {
         scheduleResponse.forEach { scheduleData ->
             scheduleData.ipoStartDate?.let { ipoStartDate ->
-                addSchedule(1, ipoStartDate, scheduleData)
-            }
-            scheduleData.ipoEndDate?.let { ipoEndDate ->
-                addSchedule(2, ipoEndDate, scheduleData)
+                scheduleData.ipoEndDate?.let { ipoEndDate ->
+                    // 청약 시작일과 청약 마감일이 하루 이상인 경우 분리하여 표시
+                    if (getDayIndex(DateTime.parse(ipoStartDate), DateTime.parse(ipoEndDate)) > 1) {
+                        addSchedule(2, ipoStartDate, scheduleData)
+                        addSchedule(2, ipoEndDate, scheduleData)
+                    }
+                    else {
+                        addSchedule(1, ipoStartDate, scheduleData)
+                        addSchedule(1, ipoEndDate, scheduleData)
+                    }
+                }
             }
             scheduleData.ipoDebutDate?.let { ipoDebutDate ->
                 addSchedule(3, ipoDebutDate, scheduleData)
@@ -131,7 +158,6 @@ class CalendarFragment : Fragment() {
 
     // 달력 일자 Bind
     private fun onBindDay() {
-        var firstDayOfMonth = DateTime(millis)
         for ((i, gridLayout) in rows.withIndex()) {
             for (j in 0 until 7) {
                 with((gridLayout[j] as LinearLayout)[0] as TextView) {
@@ -142,28 +168,57 @@ class CalendarFragment : Fragment() {
     }
 
     // 스케줄 라벨 Bind
-    private fun onBindLabelView() {
+    private fun onBindLabel() {
         for ((i, gridLayout) in rows.withIndex()) {
             // 갱신시 이전 라벨뷰 삭제 (달력 일자 View 제외)
             gridLayout.removeViews(7,gridLayout.childCount-7)
+            var befLabelView = Array<Long>(6){-1L}
             // 월요일부터 금요일까지의 스케줄 라벨만 추가
             for(j in 1 until 6) {
                 var cnt = 1
-                for (scheduleData in scheduleArray[i*7+j]) {
-                    gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
-                        // 1. 청약 일 추가
-                        if (scheduleViewModel.scheduleFilteringList.value!![1]) {
+                var tempLabelView = Array<Long>(6){-1L}
+                for ((scheduleKinds, scheduleData) in listFiltering(scheduleArray[i*7+j])) {
+                    while (befLabelView[cnt] != -1L) {
+                        cnt++
+                        if (cnt >= 5) break
+                    }
+                    if (cnt >= 5) break
+                    // 필터링이 안된 경우에만 진행
+                    if (scheduleViewModel.scheduleFilteringList.value!![scheduleKinds]) {
+                        if (scheduleKinds == 1) {
+                            if (!befLabelView.contains(scheduleData.ipoIndex)) {
+                                gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
+                                    addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j+1)
+                                })
+                                tempLabelView[cnt] = scheduleData.ipoIndex
+                            }
+                            else continue
                         }
-                        addScheduleLabel(scheduleData.second, scheduleData.first, cnt, j, j)
+                        else {
+                            gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
+                                addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j)
+                            })
+                        }
+                        cnt++
                     }
                 }
+                befLabelView = tempLabelView
             }
         }
     }
 
+    private fun listFiltering(befData : MutableList<Pair<Int, ScheduleResponse>>) : MutableList<Pair<Int, ScheduleResponse>>{
+        return befData.filter { data ->
+            data.second.stockKinds in kindFilteringList
+        }.toMutableList()
+    }
+
     private fun setDayView(view: TextView, date: DateTime, firstDayOfMonth: DateTime) {
         with(view) {
-            if (CalendarUtils.isSameDay(date)) setBackgroundResource(R.drawable.bg_circle_24)
+            if (CalendarUtils.isSameDay(date)) {
+                view.setTextColor(context.getColor(R.color.white))
+                setBackgroundResource(R.drawable.bg_circle_24)
+            }
             else background = null
             text = date.dayOfMonth.toString()
             alpha = if (!CalendarUtils.isSameMonth(date, firstDayOfMonth)) 0.3F else 1.0F

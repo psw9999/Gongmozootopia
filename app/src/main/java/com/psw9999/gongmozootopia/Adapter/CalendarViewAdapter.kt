@@ -133,25 +133,25 @@ class CalendarViewAdapter : RecyclerView.Adapter<CalendarViewAdapter.CalendarVie
                 }
 
                 var befLabelCnt = mutableListOf<Int>()
-                for(j in 0 until 7) {
-                    var cnt = 1
-                    var tempCntList = mutableListOf<Int>()
-                    for (schedule in scheduleData[(i*7)+j]) {
-                        if (!filteringList[schedule.first]) continue
-                        gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
-                            while (cnt in befLabelCnt) cnt++
-                            if(schedule.first != 1) {
-                                onBind(schedule.second, schedule.first, cnt, j, j)
-                            }
-                            else {
-                                onBind(schedule.second, schedule.first, cnt,j,j+1)
-                                tempCntList.add(cnt)
-                            }
-                            cnt++
-                        })
-                    }
-                    befLabelCnt = tempCntList
-                }
+//                for(j in 0 until 7) {
+//                    var cnt = 1
+//                    var tempCntList = mutableListOf<Int>()
+//                    for (schedule in scheduleData[(i*7)+j]) {
+//                        if (!filteringList[schedule.first]) continue
+//                        gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
+//                            while (cnt in befLabelCnt) cnt++
+//                            if(schedule.first != 1) {
+//                                onBind(schedule.second, schedule.first, cnt, j, j)
+//                            }
+//                            else {
+//                                onBind(schedule.second, schedule.first, cnt, j, j+1)
+//                                tempCntList.add(cnt)
+//                            }
+//                            cnt++
+//                        })
+//                    }
+//                    befLabelCnt = tempCntList
+//                }
             }
         }
 

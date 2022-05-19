@@ -19,12 +19,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
-import com.psw9999.gongmozootopia.ViewModel.ConfigurationViewModel
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.settingsManager
+import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.Util.AlarmReceiver
 import com.psw9999.gongmozootopia.databinding.FragmentConfigurationBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
 class ConfigurationFragment : Fragment() {

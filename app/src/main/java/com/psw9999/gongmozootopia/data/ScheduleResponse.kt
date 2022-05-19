@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ScheduleResponse(
     @SerializedName("ipoIndex") val ipoIndex : Long,
-    @SerializedName("ipoIndex") val stockName : String,
+    @SerializedName("stockName") val stockName : String,
     @SerializedName("stockExchange") var stockExchange : String?,
     @SerializedName("stockKinds") var stockKinds : String?,
     @SerializedName("ipoForecastEnd") var ipoForecastDate : String?,
