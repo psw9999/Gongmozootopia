@@ -1,11 +1,13 @@
 package com.psw9999.gongmozootopia.UI.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
 import com.psw9999.gongmozootopia.Adapter.CalendarViewAdapter
@@ -18,7 +20,7 @@ import org.joda.time.DateTime
 class TempFragment : Fragment() {
     lateinit var binding : FragmentCalendarBinding
     lateinit var calendarAdapter: CalendarAdapter
-    private val scheduleViewModel : ScheduleViewModel by viewModels()
+    private val scheduleViewModel : ScheduleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,15 +53,13 @@ class TempFragment : Fragment() {
             }
 
             chipIpoFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.scheduleFilteringList.value!![1] = isChecked
-                scheduleViewModel.scheduleFilteringList.value!![2] = isChecked
-                scheduleViewModel.scheduleFilteringList.postValue(scheduleViewModel.scheduleFilteringList.value)
+                scheduleViewModel.isIpoDayEnabled.value = isChecked
             }
             chipRefundFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.scheduleFilteringList.value!![3] = isChecked
+                scheduleViewModel.isRefundDayEnabled.value = isChecked
             }
             chipDebutFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.scheduleFilteringList.value!![4] = isChecked
+                scheduleViewModel.isDebutDayEnabled.value = isChecked
             }
         }
     }

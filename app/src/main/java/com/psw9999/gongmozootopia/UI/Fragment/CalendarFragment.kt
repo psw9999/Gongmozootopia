@@ -5,53 +5,77 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
+import com.psw9999.gongmozootopia.Adapter.CalendarListAdapter
 import com.psw9999.gongmozootopia.Adapter.CalendarViewAdapter
+import com.psw9999.gongmozootopia.R
+import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding
+import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import org.joda.time.DateTime
 
 class CalendarFragment : Fragment() {
+    lateinit var binding : FragmentCalendarBinding
+    lateinit var calendarAdapter: CalendarAdapter
+    lateinit var calendarListAdapter: CalendarListAdapter
+    private val scheduleViewModel : ScheduleViewModel by activityViewModels()
 
-    lateinit var viewBinding : FragmentCalendarBinding
-    lateinit var calendarViewAdapter: CalendarViewAdapter
     override fun onCreateView(
-        inflater: LayoutInflater, parent: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewBinding = FragmentCalendarBinding.inflate(inflater,parent,false)
-        calendarViewAdapter = CalendarViewAdapter()
-        with(viewBinding) {
-            viewPager2Calendar.adapter = calendarViewAdapter
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
+        calendarAdapter = CalendarAdapter(this)
+        with(binding) {
+            lifecycleOwner = this@CalendarFragment
+            binding.viewModel = scheduleViewModel
+            viewPager2Calendar.adapter = calendarAdapter
             viewPager2Calendar.isUserInputEnabled = false
             viewPager2Calendar.setCurrentItem(CalendarViewAdapter.START_POSITION, false)
-            textViewCalendarHeadTextView.text = calendarViewAdapter.getCurrentMonth(viewPager2Calendar.currentItem)
         }
         onClickSetting()
-        return viewBinding.root
+        initScheduleRecyclerView()
+        scheduleViewModel.selectedDay.observe(viewLifecycleOwner, Observer {
+            calendarListAdapter.selectedDay = it
+            calendarListAdapter.notifyDataSetChanged()
+        })
+        return binding.root
     }
 
     private fun onClickSetting() {
-        with(viewBinding) {
+        with(binding) {
             imgBtnPriviousBtn.setOnClickListener {
                 viewPager2Calendar.currentItem--
-                textViewCalendarHeadTextView.text = calendarViewAdapter.getCurrentMonth(viewPager2Calendar.currentItem)
+                scheduleViewModel.currentScheduleMoth.value =
+                    (DateTime(CalendarUtils.today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
             }
             imgBtnNextBtn.setOnClickListener {
                 viewPager2Calendar.currentItem++
-                textViewCalendarHeadTextView.text = calendarViewAdapter.getCurrentMonth(viewPager2Calendar.currentItem)
+                scheduleViewModel.currentScheduleMoth.value =
+                    (DateTime(CalendarUtils.today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
             }
+
             chipIpoFilter.setOnCheckedChangeListener { chip, isChecked ->
-                calendarViewAdapter.filteringList[1] = isChecked
-                calendarViewAdapter.filteringList[2] = isChecked
-                calendarViewAdapter.notifyDataSetChanged()
+                scheduleViewModel.isIpoDayEnabled.value = isChecked
             }
             chipRefundFilter.setOnCheckedChangeListener { chip, isChecked ->
-                calendarViewAdapter.filteringList[3] = isChecked
-                calendarViewAdapter.notifyDataSetChanged()
+                scheduleViewModel.isRefundDayEnabled.value = isChecked
             }
             chipDebutFilter.setOnCheckedChangeListener { chip, isChecked ->
-                calendarViewAdapter.filteringList[4] = isChecked
-                calendarViewAdapter.notifyDataSetChanged()
+                scheduleViewModel.isDebutDayEnabled.value = isChecked
             }
+        }
+    }
+
+    private fun initScheduleRecyclerView() {
+        calendarListAdapter = CalendarListAdapter()
+        with(binding.recyclerViewScheduleList) {
+            adapter = calendarListAdapter
+            binding.recyclerViewScheduleList.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 }

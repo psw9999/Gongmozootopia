@@ -8,7 +8,12 @@
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/fragment_calendar.xml" value="0.2677083333333333" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/fragment_configuration.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/fragment_main.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/fragment_temp.xml" value="0.1921875" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/holder_calendar.xml" value="0.2677083333333333" />
+        <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/holder_schedule_list_header.xml" value="0.24322916666666666" />
+        <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/holder_schedule_list_item.xml" value="0.24322916666666666" />
+        <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/item_following_list.xml" value="0.34193840579710144" />
+        <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/item_following_tab.xml" value="0.34193840579710144" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/layout/loading_animation.xml" value="0.1921875" />
       </map>
     </option>

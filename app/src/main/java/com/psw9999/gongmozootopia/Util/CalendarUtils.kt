@@ -12,9 +12,6 @@ class CalendarUtils {
         const val WEEKS_PER_MONTH = 6
         val today = DateTime()
 
-        /**
-         * 선택된 날짜에 해당하는 월간 달력을 반환한다.
-         */
         fun getMonthList(dateTime: DateTime): List<DateTime> {
             val list = mutableListOf<DateTime>()
             val date = dateTime.withDayOfMonth(1)
@@ -28,18 +25,12 @@ class CalendarUtils {
             return list
         }
 
-        /**
-         * 해당 calendar 의 이전 달의 일 갯수를 반환한다.
-         */
         private fun getPrevOffSet(dateTime: DateTime): Int {
             var prevMonthTailOffset = dateTime.dayOfWeek
             if (prevMonthTailOffset >= 7) prevMonthTailOffset %= 7
             return prevMonthTailOffset
         }
 
-        /**
-         * 같은 달인지 체크
-         */
         fun isSameMonth(first: DateTime, second: DateTime): Boolean =
             first.year == second.year && first.monthOfYear == second.monthOfYear
 
@@ -49,13 +40,6 @@ class CalendarUtils {
         fun getDayIndex(startDay : DateTime, curDay : DateTime) : Int {
             return Days.daysBetween(startDay,curDay).days
         }
-
-        /**
-         * 해당 요일의 색깔을 반환한다.
-         * 일요일 -> 빨간색
-         * 토요일 -> 파란색
-         * 나머지 -> 검정색
-         */
 
         @ColorInt
         fun getDateColor(@IntRange(from=1, to=7) dayOfWeek: Int): Int {

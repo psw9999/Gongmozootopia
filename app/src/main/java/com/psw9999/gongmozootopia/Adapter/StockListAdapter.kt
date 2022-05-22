@@ -45,11 +45,6 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         notifyDataSetChanged()
     }
 
-    fun setAdapterStockFollowingData(stockData: ArrayList<StockResponse>) {
-        this.stockData = stockData
-        notifyDataSetChanged()
-    }
-
     fun updateStockData(stockData : List<StockResponse>?) {
         stockData?.let {
             val diffCallback = DiffUtilCallback(this.stockData, stockData)

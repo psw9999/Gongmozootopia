@@ -1,14 +1,15 @@
 package com.psw9999.gongmozootopia.Adapter
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -28,7 +29,6 @@ import java.util.ArrayList
 class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 
     private var start: Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
-
     override fun createFragment(position: Int): Fragment {
         val millis = getItemId(position)
         return CalendarFragment.newInstance(millis)
@@ -56,10 +56,10 @@ class CalendarFragment : Fragment() {
     private lateinit var rows: List<GridLayout>
     private lateinit var monthList : List<DateTime>
 
-    private val scheduleViewModel : ScheduleViewModel by viewModels()
+    private val scheduleViewModel : ScheduleViewModel by activityViewModels()
     private val configurationViewModel : ConfigurationViewModel by viewModels()
-
-    private var kindFilteringList = arrayOf("공모주", "실권주", "스팩주")
+    private var kindFilteringArray = arrayOf("공모주", "실권주", "스팩주")
+    private var scheduleFilteringArray = arrayOf(true,true,true,true,true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +82,6 @@ class CalendarFragment : Fragment() {
             viewBinding.GridLayoutWeek5,
             viewBinding.GridLayoutWeek6
         )
-
         CoroutineScope(Dispatchers.Main).launch {
             // 1. 캘린더의 첫날부터 마지막날까지의 일정 조회
             val deferredScheduleResponse = async(Dispatchers.IO) {
@@ -110,20 +109,72 @@ class CalendarFragment : Fragment() {
             }
         }
 
+        scheduleViewModel.isIpoDayEnabled.observe(viewLifecycleOwner, Observer {
+            scheduleFilteringArray[1] = it
+            scheduleFilteringArray[2] = it
+            onBindLabel()
+        })
+
+        scheduleViewModel.isRefundDayEnabled.observe(viewLifecycleOwner, Observer {
+            scheduleFilteringArray[3] = it
+            onBindLabel()
+        })
+
+        scheduleViewModel.isDebutDayEnabled.observe(viewLifecycleOwner, Observer {
+            scheduleFilteringArray[4] = it
+            onBindLabel()
+        })
+
         configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) kindFilteringList[1] = "실권주"
-            else kindFilteringList[1] = ""
+            if(it) kindFilteringArray[1] = "실권주"
+            else kindFilteringArray[1] = ""
             onBindLabel()
         })
 
         configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) kindFilteringList[2] = "스팩주"
-            else kindFilteringList[2] = ""
+            if(it) kindFilteringArray[2] = "스팩주"
+            else kindFilteringArray[2] = ""
             onBindLabel()
         })
-
+        setOnClickListener()
         return viewBinding.root
     }
+
+    private fun setOnClickListener() {
+        rows.forEachIndexed { y, view ->
+            val detector = GestureDetector(context, object : GestureDetector.OnGestureListener {
+                override fun onDown(e: MotionEvent?): Boolean {
+                    return true
+                }
+
+                override fun onSingleTapUp(e: MotionEvent): Boolean {
+                    val x = (e.x / (view.width / 7)).toInt()
+                    scheduleViewModel.selectedDay.value = monthList[(y*7)+x].toString("yyyy년 MM월 dd일")
+                    Log.d("selectedDay","${monthList[(y*7)+x].toString("yyyy년 MM월 dd일")}")
+                    return true
+                }
+
+                override fun onFling(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+                    return true
+                }
+
+                override fun onLongPress(e: MotionEvent?) {
+                }
+
+                override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+                    return true
+                }
+
+                override fun onShowPress(e: MotionEvent?) {
+                }
+            })
+            view.setOnTouchListener { _, event ->
+                view.performClick()
+                detector.onTouchEvent(event)
+            }
+        }
+    }
+
     private fun addSchedule(scheduleKinds : Int, scheduleTime : String, scheduleData : ScheduleResponse){
         var index = getDayIndex(monthList.first(), DateTime.parse(scheduleTime))
         if( 0 <= index && index < scheduleArray.size) {
@@ -184,7 +235,7 @@ class CalendarFragment : Fragment() {
                     }
                     if (cnt >= 5) break
                     // 필터링이 안된 경우에만 진행
-                    if (scheduleViewModel.scheduleFilteringList.value!![scheduleKinds]) {
+                    if (scheduleFilteringArray[scheduleKinds]) {
                         if (scheduleKinds == 1) {
                             if (!befLabelView.contains(scheduleData.ipoIndex)) {
                                 gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
@@ -209,7 +260,7 @@ class CalendarFragment : Fragment() {
 
     private fun listFiltering(befData : MutableList<Pair<Int, ScheduleResponse>>) : MutableList<Pair<Int, ScheduleResponse>>{
         return befData.filter { data ->
-            data.second.stockKinds in kindFilteringList
+            data.second.stockKinds in kindFilteringArray
         }.toMutableList()
     }
 
