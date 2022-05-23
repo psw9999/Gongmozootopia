@@ -1,6 +1,8 @@
 package com.psw9999.gongmozootopia.Adapter
 
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.widget.GridLayout
@@ -21,17 +23,21 @@ import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDayIndex
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import com.psw9999.gongmozootopia.data.ScheduleResponse
+import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
 import kotlinx.coroutines.*
+import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 import java.util.ArrayList
 
 class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 
     private var start: Long = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
+    lateinit var mScheduleClickListener: OnScheduleClickListener
+
     override fun createFragment(position: Int): Fragment {
         val millis = getItemId(position)
-        return CalendarFragment.newInstance(millis)
+        return CalendarFragment.newInstance(millis, mScheduleClickListener)
     }
 
     override fun getItemCount(): Int = Int.MAX_VALUE
@@ -45,6 +51,15 @@ class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
         return date.dayOfMonth == 1 && date.millisOfDay == 0
     }
 
+    interface OnScheduleClickListener : Parcelable {
+        var temp : Int
+        fun dayClick(clickedDay : MutableList<Pair<Int, ScheduleResponse>>)
+    }
+
+    fun setOnScheduleClickListener (mListener : OnScheduleClickListener) {
+        this.mScheduleClickListener = mListener
+    }
+
     companion object {
         const val START_POSITION = Int.MAX_VALUE / 2
     }
@@ -55,6 +70,7 @@ class CalendarFragment : Fragment() {
     private val scheduleArray = Array(CalendarUtils.WEEKS_PER_MONTH *7){mutableListOf<Pair<Int,ScheduleResponse>>()}
     private lateinit var rows: List<GridLayout>
     private lateinit var monthList : List<DateTime>
+    private lateinit var mClickListener: CalendarAdapter.OnScheduleClickListener
 
     private val scheduleViewModel : ScheduleViewModel by activityViewModels()
     private val configurationViewModel : ConfigurationViewModel by viewModels()
@@ -65,6 +81,7 @@ class CalendarFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let { it ->
             millis = it.getLong(MILLIS)
+            mClickListener = it.getParcelable(SCHEDULE_CLICK)!!
             monthList = CalendarUtils.getMonthList(DateTime(millis))
         }
     }
@@ -150,7 +167,7 @@ class CalendarFragment : Fragment() {
                 override fun onSingleTapUp(e: MotionEvent): Boolean {
                     val x = (e.x / (view.width / 7)).toInt()
                     scheduleViewModel.selectedDay.value = monthList[(y*7)+x].toString("yyyy년 MM월 dd일")
-                    Log.d("selectedDay","${monthList[(y*7)+x].toString("yyyy년 MM월 dd일")}")
+                    mClickListener.dayClick(listFiltering(scheduleArray[y*7+x]))
                     return true
                 }
 
@@ -235,23 +252,20 @@ class CalendarFragment : Fragment() {
                     }
                     if (cnt >= 5) break
                     // 필터링이 안된 경우에만 진행
-                    if (scheduleFilteringArray[scheduleKinds]) {
-                        if (scheduleKinds == 1) {
-                            if (!befLabelView.contains(scheduleData.ipoIndex)) {
-                                gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
-                                    addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j+1)
-                                })
-                                tempLabelView[cnt] = scheduleData.ipoIndex
-                            }
-                            else continue
-                        }
-                        else {
+                    if (scheduleKinds == 1) {
+                        if (!befLabelView.contains(scheduleData.ipoIndex)) {
                             gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
-                                addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j)
+                                addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j + 1)
                             })
-                        }
-                        cnt++
+                            tempLabelView[cnt] = scheduleData.ipoIndex
+                        } else continue
+                    } else {
+                        gridLayout.addView(CalendarLabelView(gridLayout.context).apply {
+                            addScheduleLabel(scheduleData.stockName, scheduleKinds, cnt, j, j)
+                        })
                     }
+                    cnt++
+
                 }
                 befLabelView = tempLabelView
             }
@@ -260,7 +274,7 @@ class CalendarFragment : Fragment() {
 
     private fun listFiltering(befData : MutableList<Pair<Int, ScheduleResponse>>) : MutableList<Pair<Int, ScheduleResponse>>{
         return befData.filter { data ->
-            data.second.stockKinds in kindFilteringArray
+            data.second.stockKinds in kindFilteringArray && scheduleFilteringArray[data.first]
         }.toMutableList()
     }
 
@@ -278,12 +292,12 @@ class CalendarFragment : Fragment() {
 
     companion object {
         private const val MILLIS = "MILLIS"
-        fun newInstance(millis: Long) = CalendarFragment().apply {
+        private const val SCHEDULE_CLICK = "SCHEDULE_CLICK"
+        fun newInstance(millis: Long, scheduleClickListener: CalendarAdapter.OnScheduleClickListener) = CalendarFragment().apply {
             arguments = Bundle().apply {
                 putLong(MILLIS, millis)
+                putParcelable(SCHEDULE_CLICK, scheduleClickListener)
             }
         }
     }
 }
-
-

@@ -1,6 +1,7 @@
 package com.psw9999.gongmozootopia.data
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class ScheduleResponse(
     @SerializedName("ipoIndex") val ipoIndex : Long,
@@ -12,4 +13,4 @@ data class ScheduleResponse(
     @SerializedName("ipoEndDate") var ipoEndDate : String?,
     @SerializedName("ipoRefundDate") var ipoRefundDate : String?,
     @SerializedName("ipoDebutDate") var ipoDebutDate : String?
-)
+) : Serializable

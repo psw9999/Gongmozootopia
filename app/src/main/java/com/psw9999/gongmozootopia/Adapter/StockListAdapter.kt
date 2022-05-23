@@ -13,7 +13,6 @@ import com.psw9999.gongmozootopia.Util.DiffUtilCallback
 import com.psw9999.gongmozootopia.databinding.HolderStockBinding
 
 class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>() {
-
     var stockData = listOf<StockResponse>()
     var stockFirmFollowing = mapOf<String,Boolean>()
     lateinit var mContext : Context
@@ -49,7 +48,6 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         stockData?.let {
             val diffCallback = DiffUtilCallback(this.stockData, stockData)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
-
             this.stockData = stockData
             diffResult.dispatchUpdatesTo(this@StockListAdapter)
         }

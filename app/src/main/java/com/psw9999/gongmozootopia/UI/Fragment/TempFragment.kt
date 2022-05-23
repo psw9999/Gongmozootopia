@@ -15,53 +15,18 @@ import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding
+import com.psw9999.gongmozootopia.databinding.FragmentMainBinding
+import com.psw9999.gongmozootopia.databinding.FragmentTempBinding
 import org.joda.time.DateTime
 
 class TempFragment : Fragment() {
-    lateinit var binding : FragmentCalendarBinding
-    lateinit var calendarAdapter: CalendarAdapter
-    private val scheduleViewModel : ScheduleViewModel by activityViewModels()
+    lateinit var binding : FragmentTempBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
-        calendarAdapter = CalendarAdapter(this)
-        with(binding) {
-            lifecycleOwner = this@TempFragment
-            binding.viewModel = scheduleViewModel
-            viewPager2Calendar.adapter = calendarAdapter
-            viewPager2Calendar.isUserInputEnabled = false
-            viewPager2Calendar.setCurrentItem(CalendarViewAdapter.START_POSITION, false)
-        }
-        onClickSetting()
+        binding = FragmentTempBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    private fun onClickSetting() {
-        with(binding) {
-            imgBtnPriviousBtn.setOnClickListener {
-                viewPager2Calendar.currentItem--
-                scheduleViewModel.currentScheduleMoth.value =
-                    (DateTime(today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
-            }
-            imgBtnNextBtn.setOnClickListener {
-                viewPager2Calendar.currentItem++
-                scheduleViewModel.currentScheduleMoth.value =
-                    (DateTime(today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
-            }
-
-            chipIpoFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.isIpoDayEnabled.value = isChecked
-            }
-            chipRefundFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.isRefundDayEnabled.value = isChecked
-            }
-            chipDebutFilter.setOnCheckedChangeListener { chip, isChecked ->
-                scheduleViewModel.isDebutDayEnabled.value = isChecked
-            }
-        }
-    }
-
 }
