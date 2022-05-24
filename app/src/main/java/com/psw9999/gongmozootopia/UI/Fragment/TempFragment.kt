@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
-import com.psw9999.gongmozootopia.Adapter.CalendarViewAdapter
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel

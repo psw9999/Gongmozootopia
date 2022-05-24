@@ -1,5 +1,7 @@
 package com.psw9999.gongmozootopia.UI.Fragment
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
 import androidx.fragment.app.Fragment
@@ -14,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
 import com.psw9999.gongmozootopia.Adapter.CalendarListAdapter
-import com.psw9999.gongmozootopia.Adapter.CalendarViewAdapter
 import com.psw9999.gongmozootopia.R
+import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.data.ScheduleResponse
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding
@@ -23,10 +25,15 @@ import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import org.joda.time.DateTime
 
 class CalendarFragment : Fragment() {
+    private lateinit var mContext: Context
     lateinit var binding : FragmentCalendarBinding
     lateinit var calendarAdapter: CalendarAdapter
     lateinit var calendarListAdapter: CalendarListAdapter
     private val scheduleViewModel : ScheduleViewModel by activityViewModels()
+
+    private val stockInfoIntent by lazy {
+        Intent(mContext, StockInformationActivity::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,32 +46,20 @@ class CalendarFragment : Fragment() {
             binding.viewModel = scheduleViewModel
             viewPager2Calendar.adapter = calendarAdapter
             viewPager2Calendar.isUserInputEnabled = false
-            viewPager2Calendar.setCurrentItem(CalendarViewAdapter.START_POSITION, false)
+            viewPager2Calendar.setCurrentItem(CalendarAdapter.START_POSITION, false)
         }
-        onClickSetting()
         initScheduleRecyclerView()
-        calendarAdapter.setOnScheduleClickListener(object : CalendarAdapter.OnScheduleClickListener {
-            override var temp: Int
-                get() = TODO("Not yet implemented")
-                set(value) {}
-
-            override fun describeContents(): Int {
-                return 0
-            }
-
-            override fun writeToParcel(dest : Parcel?, flags : Int) {
-                dest?.writeInt(1)
-            }
-
-            override fun dayClick(clickedDay: MutableList<Pair<Int, ScheduleResponse>>) {
-                calendarListAdapter.scheduleDataList = clickedDay
-            }
-        })
+        onClickSetting()
         scheduleViewModel.selectedDay.observe(viewLifecycleOwner, Observer {
             calendarListAdapter.selectedDay = it
             calendarListAdapter.notifyDataSetChanged()
         })
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
     }
 
     private fun onClickSetting() {
@@ -90,6 +85,32 @@ class CalendarFragment : Fragment() {
                 scheduleViewModel.isDebutDayEnabled.value = isChecked
             }
         }
+
+        calendarAdapter.setOnScheduleClickListener(object : CalendarAdapter.OnScheduleClickListener {
+            override var temp: Int
+                get() = TODO("Not yet implemented")
+                set(value) {}
+
+            override fun describeContents(): Int {
+                return 0
+            }
+
+            override fun writeToParcel(dest : Parcel?, flags : Int) {
+                dest?.writeInt(1)
+            }
+
+            override fun dayClick(clickedDay: MutableList<Pair<Int, ScheduleResponse>>) {
+                calendarListAdapter.scheduleDataList = clickedDay
+            }
+        })
+        calendarListAdapter.setOnClickListener(object : CalendarListAdapter.StockOnClickListener {
+            override fun stockClick(ipoIndex: Long) {
+                stockInfoIntent.apply {
+                    putExtra("ipoIndex", ipoIndex)
+                }
+                startActivity(stockInfoIntent)
+            }
+        })
     }
 
     private fun initScheduleRecyclerView() {

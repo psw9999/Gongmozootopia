@@ -12,119 +12,156 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".UI.Fragment.CalendarFragment">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/calendar_appbarLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            tools:context=".UI.Fragment.CalendarFragment">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/mainActivity_appbar"
-                style="@style/AppTheme"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/calendar_appbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:title="일정"
-                app:titleTextAppearance="@style/AppBarTitleSize"></com.google.android.material.appbar.MaterialToolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            style="@style/Calendar.HeadTextView"
-            android:id="@+id/textView_calendarHeadTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/calendar_appbarLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@{viewModel.currentScheduleMoth}" />
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/mainActivity_appbar"
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:title="일정"
+                    app:titleTextAppearance="@style/AppBarTitleSize"></com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageButton
-            android:id="@+id/imgBtn_PriviousBtn"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
-            android:background="#00000000"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/textView_calendarHeadTextView"
-            app:layout_constraintEnd_toStartOf="@id/textView_calendarHeadTextView"
-            app:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView"
-            app:srcCompat="@drawable/ic_baseline_chevron_left_24" />
-
-        <ImageButton
-            android:id="@+id/imgBtn_NextBtn"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:background="#00000000"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/textView_calendarHeadTextView"
-            app:layout_constraintStart_toEndOf="@id/textView_calendarHeadTextView"
-            app:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView"
-            app:srcCompat="@drawable/ic_baseline_chevron_right_24"
-            tools:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView" />
-
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup_filterChipGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            app:chipSpacing="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_calendarHeadTextView">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_ipoFilter"
-                style="@style/Calendar.FilterChip"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_Calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:tag="1"
-                android:text="청약"
-                app:chipIconTint="@color/CalendarLabel.IpoDay" />
+                android:layout_marginEnd="10dp"
+                android:padding="5dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintTop_toBottomOf="@id/calendar_appbarLayout"
+                tools:layout_editor_absoluteX="5dp">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_refundFilter"
-                style="@style/Calendar.FilterChip"
-                android:layout_marginTop="10dp"
-                android:tag="2"
-                android:text="환불"
-                app:chipIconTint="@color/CalendarLabel.IpoRefundDay" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:padding="10dp">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_debutFilter"
-                style="@style/Calendar.FilterChip"
-                android:layout_marginTop="10dp"
-                android:tag="3"
-                android:text="상장"
-                app:chipIconTint="@color/CalendarLabel.IpoDebutDay" />
-        </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup_filterChipGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:chipSpacing="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_calendarHeadTextView">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager2_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintTop_toBottomOf="@id/chipGroup_filterChipGroup" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_ipoFilter"
+                            style="@style/Calendar.FilterChip"
+                            android:layout_marginTop="10dp"
+                            android:tag="1"
+                            android:text="청약"
+                            app:chipIconTint="@color/CalendarLabel.IpoDay" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_scheduleList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/viewPager2_calendar" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_refundFilter"
+                            style="@style/Calendar.FilterChip"
+                            android:layout_marginTop="10dp"
+                            android:tag="2"
+                            android:text="환불"
+                            app:chipIconTint="@color/CalendarLabel.IpoRefundDay" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_debutFilter"
+                            style="@style/Calendar.FilterChip"
+                            android:layout_marginTop="10dp"
+                            android:tag="3"
+                            android:text="상장"
+                            app:chipIconTint="@color/CalendarLabel.IpoDebutDay" />
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/textView_calendarHeadTextView"
+                        style="@style/Calendar.HeadTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@{viewModel.currentScheduleMoth}"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/imgBtn_NextBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="0dp"
+                        android:background="#00000000"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/textView_calendarHeadTextView"
+                        app:layout_constraintStart_toEndOf="@id/textView_calendarHeadTextView"
+                        app:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView"
+                        app:srcCompat="@drawable/ic_baseline_chevron_right_24"
+                        tools:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView" />
+
+                    <ImageButton
+                        android:id="@+id/imgBtn_PriviousBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="0dp"
+                        android:background="#00000000"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/textView_calendarHeadTextView"
+                        app:layout_constraintEnd_toStartOf="@id/textView_calendarHeadTextView"
+                        app:layout_constraintTop_toTopOf="@id/textView_calendarHeadTextView"
+                        app:srcCompat="@drawable/ic_baseline_chevron_left_24" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager2_calendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@id/textView_calendarHeadTextView"
+                        app:layout_constraintTop_toBottomOf="@id/chipGroup_filterChipGroup">
+
+                    </androidx.viewpager2.widget.ViewPager2>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_scheduleRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_Calendar"
+                tools:layout_editor_absoluteX="10dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_scheduleList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp" />
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
 

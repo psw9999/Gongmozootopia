@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.R
@@ -16,7 +15,16 @@ import org.joda.time.DateTime
 class CalendarListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var scheduleDataList = mutableListOf<Pair<Int, ScheduleResponse>>()
     var selectedDay: String = DateTime().toString("YYYY년 MM월 dd일")
+    private lateinit var mClickListener : StockOnClickListener
     private lateinit var mContext : Context
+
+    interface StockOnClickListener {
+        fun stockClick(ipoIndex : Long)
+    }
+
+    fun setOnClickListener(mListener : StockOnClickListener) {
+        mClickListener = mListener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -37,6 +45,7 @@ class CalendarListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ScheduleHeaderViewHolder -> {
                 holder.binding.textViewSelectedDay.text = selectedDay
+                holder.binding.textViewScheduleCnt.text = "${scheduleDataList.size}"
             }
             is ScheduleItemViewHolder -> {
                 with(scheduleDataList[position-1]) {
@@ -53,6 +62,11 @@ class CalendarListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         3 -> "환불일"
                         4 -> "상장일"
                         else -> "수요예측일"
+                    }
+                    holder.binding.holderScheduleListItem.setOnClickListener {
+                        if (position != RecyclerView.NO_POSITION) {
+                            mClickListener.stockClick(second.ipoIndex)
+                        }
                     }
                 }
             }
