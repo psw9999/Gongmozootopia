@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.psw9999.gongmozootopia.Adapter.MainViewPager
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.UI.Fragment.TempFragment
+import com.psw9999.gongmozootopia.UI.Fragment.CommentFragment
 import com.psw9999.gongmozootopia.UI.Fragment.MainFragment
 import com.psw9999.gongmozootopia.UI.Fragment.CalendarFragment
 import com.psw9999.gongmozootopia.UI.Fragment.ConfigurationFragment
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                         intent.getParcelableArrayListExtra(STOCK_DATA))
                 }
             }
-            ,CalendarFragment(),ConfigurationFragment(),TempFragment())
+            ,CalendarFragment(),ConfigurationFragment(),CommentFragment())
         viewPager2.adapter = pagerAdapter
         viewPager2.isUserInputEnabled = false
     }

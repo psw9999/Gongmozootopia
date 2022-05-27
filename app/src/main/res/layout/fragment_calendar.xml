@@ -29,12 +29,13 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/mainActivity_appbar"
+                    android:id="@+id/calendarFragment_appbar"
                     style="@style/AppTheme"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     app:title="일정"
-                    app:titleTextAppearance="@style/AppBarTitleSize"></com.google.android.material.appbar.MaterialToolbar>
+                    app:titleTextAppearance="@style/AppBarTitleSize">
+                </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.cardview.widget.CardView

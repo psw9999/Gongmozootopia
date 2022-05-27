@@ -23,4 +23,8 @@ interface dbsgAPI {
 
     @GET("/api/v1/ipo/schedule")
     fun getStockSchedule(@Query("startDate") startDate : String, @Query("endDate") endDate : String) : retrofit2.Call<ArrayList<ScheduleResponse>>
+
+    @GET("/api/v1/ipo/comment")
+    fun getComments() : retrofit2.Call<ArrayList<CommentResponse>>
+
 }
