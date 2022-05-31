@@ -5,7 +5,5 @@ data class UnderwriterResponse(
     val updateDate : String,
     val underName : String,
     val indTotalMax : Long?,
-    val indTotalMin : Long?,
-    val indCanMax : Long?,
-    val indCanMin : Long?
+    val indTotalMin : Long?
 )

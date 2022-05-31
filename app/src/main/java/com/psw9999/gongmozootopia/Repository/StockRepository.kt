@@ -49,7 +49,7 @@ class StockRepository {
                     var sb = StringBuilder()
                     underwriter.split(",").forEach { temp ->
                         if (temp.contains(words)) {
-                            sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").plus(","))
+                            sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").replace("(주)","").plus(","))
                         }
                     }
                     if (sb.isEmpty()) data.underwriter = null

@@ -6,24 +6,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.psw9999.gongmozootopia.Adapter.CommentAdapter
 import com.psw9999.gongmozootopia.Repository.CommentRepository
+import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.data.CommentListItem
 import com.psw9999.gongmozootopia.databinding.FragmentCommentBinding
 import kotlinx.coroutines.*
 
 class CommentFragment : Fragment() {
     lateinit var binding : FragmentCommentBinding
-
+    lateinit var commentAdapter: CommentAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommentBinding.inflate(inflater, container, false)
         val comment = deferredComment.getCompleted()
+        Log.d("comment","$comment")
+        initRecyclerView(comment)
         return binding.root
     }
 
-    val deferredComment = CoroutineScope(Dispatchers.Default).async {
+    private val deferredComment = CoroutineScope(Dispatchers.Default).async {
         // 1. 최근 코멘트 요청
         val deferredResponse = async(Dispatchers.IO) {
             CommentRepository().getComments()
@@ -40,6 +45,14 @@ class CommentFragment : Fragment() {
             headerDate = comment.registDate
         }
         result
+    }
+
+    private fun initRecyclerView(comments : ArrayList<CommentListItem>) {
+        commentAdapter = CommentAdapter()
+        commentAdapter.commentLists = comments
+        binding.recyclerViewComment.adapter = commentAdapter
+        binding.recyclerViewComment.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewComment.addItemDecoration(GridViewDecoration(30))
     }
 
 }

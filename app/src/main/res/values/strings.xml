@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Gongmozootopia</string>
     <string name="autoLogin">AUTO_LOGIN</string>
+
+    <string name="UNDEFINED">미정</string>
+    <string name="IPO">공모주</string>
+    <string name="unclaimedStock">실권주</string>
+    <string name="priceBand">%,d ~ %,d원</string>
+    <string name="confirmPrice">%,d원</string>
+    <string name="confirmPriceTitle">확정공모가</string>
+    <string name="offerPriceTitle">모집가액</string>
+    <string name="stockPriceBandTitle">공모가밴드</string>
+    <string name="exShareHolderIpoDay">구주주청약일</string>
+    <string name="forecastDay">수요예측일</string>
+    <string name="dateForm">%s ~ %s</string>
 </resources>
