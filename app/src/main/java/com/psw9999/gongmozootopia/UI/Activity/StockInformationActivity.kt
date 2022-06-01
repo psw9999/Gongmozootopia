@@ -68,7 +68,7 @@ class StockInformationActivity : BaseActivity() {
             })
             binding.linearLayoutUnderwritersCount.addView(TextView(this).apply{
                 text = when(stockKinds) {
-                    "스팩주" -> resources.getString(R.string.noneData)
+                    "실권주" -> resources.getString(R.string.noneData)
                     else -> resources.getString(R.string.stockAllotment, underwriter.indTotalMin, underwriter.indTotalMax)
                 }
                 gravity = Gravity.CENTER
