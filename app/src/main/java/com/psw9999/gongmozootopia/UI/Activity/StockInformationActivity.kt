@@ -1,6 +1,7 @@
 package com.psw9999.gongmozootopia.UI.Activity
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -39,84 +40,41 @@ class StockInformationActivity : BaseActivity() {
                 StockInfoRepository().getStockInfo(ipoIndex)
             }
             // 2. 증권사와 배정수량 가져오기
-//            val deferredUnderwriters = async(Dispatchers.IO) {
-//                underwriters = UnderwriterRepository().getUnderwriters(ipoIndex)
-//            }
+            val deferredUnderwriters = async(Dispatchers.IO) {
+                UnderwriterRepository().getUnderwriters(ipoIndex)
+            }
 
             // TODO : 3. DB에서 팔로잉데이터 가져오기
+            //...
 
-
+            // 4. View Binding
             launch {
                 loadingOn()
-                val stockInfo  = deferredStockInfo.await()
-                //val underwriters = deferredUnderwriters.await()
+                val stockInfo = deferredStockInfo.await()
                 binding.stockInfo = stockInfo
-                //initToolbar()
+                addUnderwriterView(deferredUnderwriters.await(), stockInfo.stockKinds)
                 loadingOff()
             }
         }
     }
 
-//    private fun addUnderwriterView(underwriters : ArrayList<UnderwriterResponse>) {
-//        val constraintSet = ConstraintSet()
-//        var beforeUnderwriterID = binding.divisionUnderwritersTitle.id
-//        var underwritersTitles = mutableListOf<Int>()
-//        var underwriterPair = Pair(0, -1)
-//        // underwriters 데이터가 없는 경우 -> "업데이트 예정" textView 써주기
-//
-//        // 증권사 먼저 동적으로 생성 (문자열이 가장 긴 길이를 알아야 함.)
-//        underwriters.forEachIndexed { i, underwriter ->
-//            val underwriterName_textView = TextView(this)
-//            underwritersTitles.add(View.generateViewId())
-//            underwriterName_textView.id = underwritersTitles[i]
-//            underwriterName_textView.text = underwriter.underName
-//            underwriterName_textView.setTextAppearance(R.style.StockInfo_underwriter)
-//            underwriterName_textView.setBackgroundResource(R.drawable.bg_textview_register_underwriter)
-//            binding.constraintLayoutUnderwriters.addView(underwriterName_textView)
-//            constraintSet.clone(binding.constraintLayoutUnderwriters)
-//            constraintSet.connect(underwriterName_textView.id, ConstraintSet.TOP, beforeUnderwriterID, ConstraintSet.BOTTOM, dpToPx(this, 15F).toInt())
-//            beforeUnderwriterID = underwriterName_textView.id
-//            if (underwriterPair.second < underwriter.underName.length) {
-//                underwriterPair = Pair(underwriterName_textView.id, underwriter.underName.length)
-//            }
-//            constraintSet.applyTo(binding.constraintLayoutUnderwriters)
-//        }
-//
-//        beforeUnderwriterID = binding.divisionUnderwritersTitle.id
-//
-//        // 수량 동적 생성
-//        underwriters.forEachIndexed { i, underwriter ->
-//            val underwriterQuantity_textView = TextView(this)
-//            underwriterQuantity_textView.id = View.generateViewId()
-//            underwriterQuantity_textView.text = "${underwriter.indTotalMax} ~ ${underwriter.indTotalMin} 주"
-//            underwriterQuantity_textView.setTextAppearance(R.style.StockInfo_content)
-//            binding.constraintLayoutUnderwriters.addView(underwriterQuantity_textView)
-//            constraintSet.clone(binding.constraintLayoutUnderwriters)
-//            constraintSet.connect(underwriterQuantity_textView.id, ConstraintSet.TOP, underwritersTitles[i], ConstraintSet.TOP, dpToPx(this, 0F).toInt())
-//            constraintSet.connect(underwriterQuantity_textView.id, ConstraintSet.BOTTOM, underwritersTitles[i], ConstraintSet.BOTTOM, dpToPx(this, 0F).toInt())
-//            constraintSet.connect(underwriterQuantity_textView.id, ConstraintSet.START, underwriterPair.first, ConstraintSet.END, dpToPx(this, 20F).toInt())
-//            beforeUnderwriterID = underwriterQuantity_textView.id
-//            constraintSet.applyTo(binding.constraintLayoutUnderwriters)
-//        }
-//    }
-
-    private fun unitCalculate(value : Long) : String {
-        var tempStr : String = ""
-        var value = value
-        var share = 1000000000000L
-        val unitArray = arrayOf<String>("조","억","만")
-        // 조, 억, 만원까지 표시
-        repeat(3) { i ->
-            var temp = value/share
-            if(temp != 0L) {
-                tempStr += " ${temp}${unitArray[i]}"
-                value %= share
-                if (value < 0) value *= -1
-            }
-            share /= 10000L
+    private fun addUnderwriterView(underwriters : ArrayList<UnderwriterResponse>, stockKinds : String) {
+        underwriters.sortBy{it.indTotalMin}
+        underwriters.forEach { underwriter ->
+            binding.linearLayoutUnderwritersTitle.addView(TextView(this).apply{
+                text = underwriter.underName
+                gravity = Gravity.CENTER
+                setTextAppearance(R.style.StockInfo_content)
+            })
+            binding.linearLayoutUnderwritersCount.addView(TextView(this).apply{
+                text = when(stockKinds) {
+                    "스팩주" -> resources.getString(R.string.noneData)
+                    else -> resources.getString(R.string.stockAllotment, underwriter.indTotalMin, underwriter.indTotalMax)
+                }
+                gravity = Gravity.CENTER
+                setTextAppearance(R.style.StockInfo_content)
+            })
         }
-        tempStr += "원"
-        return tempStr
     }
 
 //    private fun initToolbar() {
@@ -147,4 +105,26 @@ class StockInformationActivity : BaseActivity() {
 //            }
 //        }
 //    }
+
+    companion object {
+        @JvmStatic
+        fun unitCalculate(value : Long) : String {
+            var tempStr : String = ""
+            var value = value
+            var share = 1000000000000L
+            val unitArray = arrayOf<String>("조","억","만")
+            // 조, 억, 만원까지 표시
+            repeat(3) { i ->
+                var temp = value/share
+                if(temp != 0L) {
+                    tempStr += " ${temp}${unitArray[i]}"
+                    value %= share
+                    if (value < 0) value *= -1
+                }
+                share /= 10000L
+            }
+            tempStr += "원"
+            return tempStr
+        }
+    }
 }

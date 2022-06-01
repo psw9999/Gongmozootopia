@@ -7,12 +7,9 @@ import retrofit2.await
 
 class UnderwriterRepository {
     private val dbsgAPI = ServerImpl.APIService
-    private lateinit var underwriters : ArrayList<UnderwriterResponse>
 
     suspend fun getUnderwriters(ipoIndex : Long) : ArrayList<UnderwriterResponse>  {
-            val request = dbsgAPI.getUnderwriter(ipoIndex)
-            var response = request.await()
-            underwriters = response
-        return underwriters
+        val request = dbsgAPI.getUnderwriter(ipoIndex)
+        return request.await()
     }
 }

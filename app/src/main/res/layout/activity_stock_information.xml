@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity"/>
         <variable
             name="stockInfo"
             type="com.psw9999.gongmozootopia.data.StockInfoResponse" />
@@ -17,7 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".UI.Activity.StockInformationActivity">
 
             <com.google.android.material.appbar.AppBarLayout
@@ -267,6 +268,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:visibility="@{stockInfo.stockKinds.equals(@string/SPAC) ? View.GONE : View.VISIBLE}"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -329,7 +331,7 @@
                         style="@style/StockInfo.secondTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="영업이익"
+                        android:text="순이익"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView_companySalesTitle" />
 
@@ -338,7 +340,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.sector != null ? stockInfo.sector : @string/UNDEFINED}"
+                        android:text="@{stockInfo.sector != null ? stockInfo.sector : @string/noneData}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_sectorTitle" />
 
@@ -347,7 +349,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.stockExchange != null ? stockInfo.stockExchange : @string/UNDEFINED}"
+                        android:text="@{stockInfo.stockExchange != null ? stockInfo.stockExchange : @string/noneData}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_stockMarketTitle" />
 
@@ -356,7 +358,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="@{stockInfo.sales == -1L ? @string/noneData : StockInformationActivity.unitCalculate(stockInfo.sales)}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_companySalesTitle" />
 
@@ -366,7 +368,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text=""
+                        android:text="@{stockInfo.profits == -1L ? @string/noneData : StockInformationActivity.unitCalculate(stockInfo.profits)}"
                         app:layout_constraintStart_toEndOf="@id/textView_companyProfitTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_companyProfitTitle" />
 
@@ -412,12 +414,63 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/division_underwritersTitle"
+                        android:id="@+id/division_underwritersTop"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="10dp"
                         android:background="@color/barGrayColor"
                         app:layout_constraintTop_toBottomOf="@id/textView_stockFirmTitle" />
+
+                    <GridLayout
+                        android:id="@+id/gridLayout_underwriters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintTop_toBottomOf="@id/division_underwritersTop"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout_underwritersTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                style="@style/StockInfo.secondTitle"
+                                android:text="주관 증권사" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout_underwritersCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="2"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/StockInfo.secondTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="0dp"
+                                android:text="일반청약자 배정물량" />
+                        </LinearLayout>
+                    </GridLayout>
+
+                    <View
+                        android:id="@+id/division_underwritersBot"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/barGrayColor"
+                        app:layout_constraintTop_toBottomOf="@+id/gridLayout_underwriters" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

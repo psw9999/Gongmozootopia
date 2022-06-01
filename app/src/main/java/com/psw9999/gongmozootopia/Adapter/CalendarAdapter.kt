@@ -265,7 +265,6 @@ class CalendarFragment : Fragment() {
                         })
                     }
                     cnt++
-
                 }
                 befLabelView = tempLabelView
             }
