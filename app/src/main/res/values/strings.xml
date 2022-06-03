@@ -16,5 +16,9 @@
     <string name="dateForm">%s ~ %s</string>
     <string name="noneData">-</string>
     <string name="stockAllotment">%,d ~ %,d주</string>
+    <string name="institution">%.2f : 1</string>
+    <string name="percent">%.2f %%</string>
+
+
 
 </resources>

@@ -1,5 +1,7 @@
 package com.psw9999.gongmozootopia.data
 
+import com.google.gson.annotations.SerializedName
+
 data class StockInfoResponse(
     val ipoIndex: Long,
     val stockName: String,
@@ -17,7 +19,7 @@ data class StockInfoResponse(
     var ipoRefundDate: String?,
     var ipoDebutDate: String?,
     val lockUpPercent: Float?,
-    val ipoInstitutionalAcceptanceRate: Float?,
+    @SerializedName("ipoInstitutionalAcceptanceRate") val ipoInstitution: Float?,
     val ipoPrice: Long?,
     val ipoPriceLow: Long?,
     val ipoPriceHigh: Long?,

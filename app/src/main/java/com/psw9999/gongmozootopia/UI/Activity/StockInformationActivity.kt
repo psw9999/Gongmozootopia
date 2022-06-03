@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginTop
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
@@ -59,14 +61,18 @@ class StockInformationActivity : BaseActivity() {
     }
 
     private fun addUnderwriterView(underwriters : ArrayList<UnderwriterResponse>, stockKinds : String) {
-        underwriters.sortBy{it.indTotalMin}
+        underwriters.sortByDescending{it.indTotalMin}
+        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        layoutParams.setMargins(0, dpToPx(10F, this), 0, 0)
         underwriters.forEach { underwriter ->
             binding.linearLayoutUnderwritersTitle.addView(TextView(this).apply{
+                setLayoutParams(layoutParams)
                 text = underwriter.underName
                 gravity = Gravity.CENTER
                 setTextAppearance(R.style.StockInfo_content)
             })
             binding.linearLayoutUnderwritersCount.addView(TextView(this).apply{
+                setLayoutParams(layoutParams)
                 text = when(stockKinds) {
                     "실권주" -> resources.getString(R.string.noneData)
                     else -> resources.getString(R.string.stockAllotment, underwriter.indTotalMin, underwriter.indTotalMax)

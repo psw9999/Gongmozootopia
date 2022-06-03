@@ -21,6 +21,10 @@ class BaseApplication : Application(){
             return (size * (context.resources
                 .displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT))
         }
+        fun dpToPx(size : Float, context : Context): Int {
+            return (size * (context.resources
+                .displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+        }
     }
 
     override fun onCreate() {

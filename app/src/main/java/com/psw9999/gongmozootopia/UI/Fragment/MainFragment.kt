@@ -96,7 +96,6 @@ class MainFragment : Fragment() {
         stockAdapter.setOnStockClickListener(object : StockListAdapter.OnStockClickListener {
             override fun stockCardClick(pos: Int) {
                 stockInfoIntent.apply {
-                    putExtra("isFollowing",filterdStockData[pos].isFollowing)
                     putExtra("ipoIndex",filterdStockData[pos].ipoIndex)
                 }
                 startActivity(stockInfoIntent)

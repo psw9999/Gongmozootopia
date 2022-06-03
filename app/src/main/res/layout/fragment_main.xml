@@ -33,70 +33,6 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-<!--        <com.google.android.material.tabs.TabLayout-->
-<!--            android:id="@+id/tabLayout_mainFragment"-->
-<!--            style="@style/MainTabTheme"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/mainActivity_appbarLayout">-->
-<!--        </com.google.android.material.tabs.TabLayout>-->
-
-<!--        <com.google.android.material.chip.ChipGroup-->
-<!--            android:id="@+id/chipGroup_stockType"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            app:singleSelection="true"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/cardView_login"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/recyclerView_stock"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/mainActivity_appbarLayout">-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_stockAll"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipBackgroundColor="@color/selector_chip"-->
-<!--                android:checked="true"-->
-<!--                android:text="전체"-->
-<!--                android:textSize="12dp"-->
-<!--                app:chipMinTouchTargetSize="0dp" />-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_IPO"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipBackgroundColor="@color/selector_chip"-->
-<!--                android:text="공모주"-->
-<!--                android:textSize="12dp"-->
-<!--                app:chipMinTouchTargetSize="0dp" />-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_rightIssue"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipBackgroundColor="@color/selector_chip"-->
-<!--                android:text="실권주"-->
-<!--                android:textSize="12dp"-->
-<!--                app:chipMinTouchTargetSize="0dp"/>-->
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:id="@+id/chip_SPAC"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--                app:chipBackgroundColor="@color/selector_chip"-->
-<!--                android:text="스팩주"-->
-<!--                android:textSize="12dp"-->
-<!--                app:chipMinTouchTargetSize="0dp"/>-->
-
-<!--        </com.google.android.material.chip.ChipGroup>-->
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView_login"
             android:layout_width="0dp"
@@ -162,20 +98,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView_login" />
-
-<!--        <com.google.android.material.chip.Chip-->
-<!--            android:id="@+id/chip_following"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/cardView_login"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/recyclerView_stock"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tabLayout_mainFragment"-->
-<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--            app:chipBackgroundColor="@color/selector_chip"-->
-<!--            android:text="팔로잉"-->
-<!--            android:textSize="12dp"-->
-<!--            app:chipMinTouchTargetSize="0dp"/>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
