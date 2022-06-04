@@ -15,6 +15,7 @@ import kotlinx.coroutines.*
 import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
+import java.time.LocalDate
 
 class LoadingActivity : AppCompatActivity() {
 
@@ -40,7 +41,51 @@ class LoadingActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Default).launch {
                 // 1. stockList 수신
                 val deferredStockData = async(Dispatchers.IO) {
-                    StockRepository().getStockData()
+                    val stockResponse = StockRepository().getStockData()
+
+                    arrayListOf<StockResponse>().apply {
+                        for (data in stockResponse) {
+                            if (data.stockKinds == null || data.ipoIndex == null || data.stockExchange == null) continue
+
+                            var index = 0
+                            try {
+                                val timeDate = arrayOf(
+                                    data.ipoStartDate,
+                                    data.ipoEndDate,
+                                    data.ipoDebutDate,
+                                    data.ipoRefundDate
+                                )
+                                for (i in timeDate.indices) {
+                                    LocalDate.parse(timeDate[i])
+                                    index++
+                                }
+                            }catch(e : Exception){
+                                if (index == 0 || index == 1) {
+                                    continue
+                                }
+                                else if (index == 2) {
+                                    data.ipoDebutDate = null
+                                    data.ipoRefundDate = null
+                                }
+                                else {
+                                    data.ipoDebutDate = null
+                                }
+                            }
+
+                            data.underwriter?.let{ underwriter ->
+                                val words = Regex("증권|투자|금융")
+                                var sb = StringBuilder()
+                                underwriter.split(",").forEach { temp ->
+                                    if (temp.contains(words)) {
+                                        sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").replace("(주)","").plus(","))
+                                    }
+                                }
+                                if (sb.isEmpty()) data.underwriter = null
+                                else data.underwriter = sb.substring(0, sb.length-1)
+                            }
+                            this.add(data)
+                        }
+                    }
                 }
 
                 // 2. FollowingData 읽어오기
