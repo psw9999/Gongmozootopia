@@ -1,14 +1,11 @@
 package com.psw9999.gongmozootopia.Adapter
 
 import android.os.Bundle
-import android.os.Parcel
 import android.os.Parcelable
-import android.util.Log
 import android.view.*
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,10 +20,8 @@ import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDayIndex
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import com.psw9999.gongmozootopia.data.ScheduleResponse
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
 import kotlinx.coroutines.*
-import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 import java.util.ArrayList
 
@@ -44,7 +39,6 @@ class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 
     override fun getItemId(position: Int): Long =
         DateTime(start).plusMonths(position - START_POSITION).millis
-
 
     override fun containsItem(itemId: Long): Boolean {
         val date = DateTime(itemId)

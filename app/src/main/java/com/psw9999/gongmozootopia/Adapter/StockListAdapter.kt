@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.CustomView.UnderwriterView
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.Util.DiffUtilCallback
@@ -19,7 +19,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
     lateinit var mStockClickListener : OnStockClickListener
 
     interface OnStockClickListener {
-        fun stockFollowingClick(stockFollowingResponse: StockFollowingResponse)
+        fun stockFollowingClick(followingResponse: FollowingResponse)
         fun stockCardClick(pos : Int)
     }
 
@@ -55,13 +55,15 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
 
     inner class StockViewHolder(val binding : HolderStockBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.imageViewFavorit.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    mStockClickListener.stockFollowingClick(
-                        StockFollowingResponse(stockData[adapterPosition].ipoIndex, stockData[adapterPosition].stockName, !stockData[adapterPosition].isFollowing))
-                }
-                binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
-            }
+            // 팔로잉 클릭 리스너
+//            binding.imageViewFavorit.setOnClickListener {
+//                if (adapterPosition != RecyclerView.NO_POSITION) {
+//                    mStockClickListener.stockFollowingClick(
+//                        FollowingResponse(stockData[adapterPosition].ipoIndex, stockData[adapterPosition].stockName, !stockData[adapterPosition].isFollowing))
+//                }
+//                binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
+//            }
+            // 종목 카드 클릭 리스너
             binding.cardViewStock.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     mStockClickListener.stockCardClick(adapterPosition)
@@ -70,27 +72,25 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         }
 
         fun binding(stockData : StockResponse) {
-            with(binding) {
-                stockItem = stockData
-                with(stockData) {
-                    //TODO : adapterBinding을 통해 xml내에서 해결하기
-                    imageViewFavorit.isSelected = isFollowing
-                    chipGroupAlarm.removeAllViews()
-                    underwriter?.let {
-                        for(name in it.split(',')) {
-                            chipGroupAlarm.addView(UnderwriterView(mContext).apply {
-                                this.text = name
-                                if (!stockFirmFollowing.containsKey(name) || (!stockFirmFollowing[name]!!)) {
-                                    this.setChipBackgroundColorResource(R.color.white)
-                                    this.setChipStrokeColorResource(R.color.chip_underwriter)
-                                    this.setTextAppearance(R.style.Chip_Unregistered_StockFirm_TextTheme)
-                                } else {
-                                    this.setChipBackgroundColorResource(R.color.chip_underwriter)
-                                    this.setChipStrokeColorResource(R.color.chip_underwriter)
-                                    this.setTextAppearance(R.style.Chip_Registered_StockFirm_TextTheme)
-                                }
-                            })
-                        }
+            binding.stockItem = stockData
+            // DB에서 following 읽어오는 로직
+            // binding.isFollowing = ..
+            with(stockData) {
+                binding.chipGroupAlarm.removeAllViews()
+                underwriter?.let {
+                    for (name in it.split(',')) {
+                        binding.chipGroupAlarm.addView(UnderwriterView(mContext).apply {
+                            this.text = name
+                            if (!stockFirmFollowing.containsKey(name) || (!stockFirmFollowing[name]!!)) {
+                                this.setChipBackgroundColorResource(R.color.white)
+                                this.setChipStrokeColorResource(R.color.chip_underwriter)
+                                this.setTextAppearance(R.style.Chip_Unregistered_StockFirm_TextTheme)
+                            } else {
+                                this.setChipBackgroundColorResource(R.color.chip_underwriter)
+                                this.setChipStrokeColorResource(R.color.chip_underwriter)
+                                this.setTextAppearance(R.style.Chip_Registered_StockFirm_TextTheme)
+                            }
+                        })
                     }
                 }
             }

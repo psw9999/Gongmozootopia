@@ -7,7 +7,6 @@ import android.os.Bundle
 import com.kakao.sdk.common.KakaoSdk
 import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.data.StockResponse
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.stockDatabase
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.Util.NetworkStatus
@@ -21,14 +20,13 @@ class LoadingActivity : AppCompatActivity() {
 
     private val mainIntent by lazy { Intent(this, MainActivity::class.java) }
     lateinit var stockData : ArrayList<StockResponse>
-    lateinit var stockFollowingIndex : List<Long>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 카카오 로그인 SDK 초기화
-        KakaoSdk.init(this, "f23fe6f5f5fc7a04094619143ffa9832")
+        // KakaoSdk.init(this, "f23fe6f5f5fc7a04094619143ffa9832")
 
         // 네트워크 상태 즉시 체크
         val connectivityManager = getSystemService(ConnectivityManager::class.java)
@@ -42,66 +40,13 @@ class LoadingActivity : AppCompatActivity() {
                 // 1. stockList 수신
                 val deferredStockData = async(Dispatchers.IO) {
                     val stockResponse = StockRepository().getStockData()
-
-                    arrayListOf<StockResponse>().apply {
-                        for (data in stockResponse) {
-                            if (data.stockKinds == null || data.ipoIndex == null || data.stockExchange == null) continue
-
-                            var index = 0
-                            try {
-                                val timeDate = arrayOf(
-                                    data.ipoStartDate,
-                                    data.ipoEndDate,
-                                    data.ipoDebutDate,
-                                    data.ipoRefundDate
-                                )
-                                for (i in timeDate.indices) {
-                                    LocalDate.parse(timeDate[i])
-                                    index++
-                                }
-                            }catch(e : Exception){
-                                if (index == 0 || index == 1) {
-                                    continue
-                                }
-                                else if (index == 2) {
-                                    data.ipoDebutDate = null
-                                    data.ipoRefundDate = null
-                                }
-                                else {
-                                    data.ipoDebutDate = null
-                                }
-                            }
-
-                            data.underwriter?.let{ underwriter ->
-                                val words = Regex("증권|투자|금융")
-                                var sb = StringBuilder()
-                                underwriter.split(",").forEach { temp ->
-                                    if (temp.contains(words)) {
-                                        sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").replace("(주)","").plus(","))
-                                    }
-                                }
-                                if (sb.isEmpty()) data.underwriter = null
-                                else data.underwriter = sb.substring(0, sb.length-1)
-                            }
-                            this.add(data)
-                        }
-                    }
+                    stockDataFiltering(stockResponse)
                 }
 
-                // 2. FollowingData 읽어오기
-                val deferredStockFollowing = async(Dispatchers.IO) {
-                    stockData = deferredStockData.await()
-                    stockDatabase.stockFollowingDAO().getAllFollowingIndex()
-                }
-
-                // 3. FollowingData 및 D-day 체크하기
                 launch {
-                    stockFollowingIndex = deferredStockFollowing.await()
+                    stockData = deferredStockData.await()
                     stockData.forEach { data ->
                         scheduleCheck(data)
-                        if (data.ipoIndex in stockFollowingIndex) {
-                            data.isFollowing = true
-                        }
                     }
                     mainIntent.apply {
                         putExtra(STOCK_DATA,stockData)
@@ -115,6 +60,52 @@ class LoadingActivity : AppCompatActivity() {
         }
         // 네트워크 상태를 체크하는 콜백 등록
         networkStatus.registerNetworkCallback()
+    }
+
+    private suspend fun stockDataFiltering(stockData : ArrayList<StockResponse>) : ArrayList<StockResponse> {
+        return arrayListOf<StockResponse>().apply {
+            for (data in stockData) {
+                if (data.stockKinds == null || data.ipoIndex == null || data.stockExchange == null) continue
+
+                var index = 0
+                try {
+                    val timeDate = arrayOf(
+                        data.ipoStartDate,
+                        data.ipoEndDate,
+                        data.ipoDebutDate,
+                        data.ipoRefundDate
+                    )
+                    for (i in timeDate.indices) {
+                        LocalDate.parse(timeDate[i])
+                        index++
+                    }
+                }catch(e : Exception){
+                    if (index == 0 || index == 1) {
+                        continue
+                    }
+                    else if (index == 2) {
+                        data.ipoDebutDate = null
+                        data.ipoRefundDate = null
+                    }
+                    else {
+                        data.ipoDebutDate = null
+                    }
+                }
+
+                data.underwriter?.let{ underwriter ->
+                    val words = Regex("증권|투자|금융")
+                    var sb = StringBuilder()
+                    underwriter.split(",").forEach { temp ->
+                        if (temp.contains(words)) {
+                            sb.append(temp.replace("증권","").replace("투자","").replace("금융","").replace("㈜","").replace("(주)","").plus(","))
+                        }
+                    }
+                    if (sb.isEmpty()) data.underwriter = null
+                    else data.underwriter = sb.substring(0, sb.length-1)
+                }
+                this.add(data)
+            }
+        }
     }
 
     private fun scheduleCheck(stockData : StockResponse){

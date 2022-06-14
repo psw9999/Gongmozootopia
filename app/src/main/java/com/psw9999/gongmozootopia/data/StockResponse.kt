@@ -16,7 +16,6 @@ data class StockResponse(
     @SerializedName("ipoRefundDate") var ipoRefundDate : String?,
     @SerializedName("ipoDebutDate") var ipoDebutDate : String?,
     @SerializedName("underwriter") var underwriter : String?,
-    var isFollowing : Boolean = false,
     var currentSchedule : String?,
     var scheduleDday : String?
 ) : Parcelable

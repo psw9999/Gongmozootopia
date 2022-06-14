@@ -3,10 +3,10 @@ package com.psw9999.gongmozootopia.data
 import com.google.gson.annotations.SerializedName
 
 data class StockInfoResponse(
-    val ipoIndex: Long,
-    val stockName: String,
-    val stockExchange: String,
-    val stockKinds: String,
+    @SerializedName("ipoIndex") val ipoIndex: Long,
+    @SerializedName("stockName") val stockName: String,
+    @SerializedName("stockExchange") val stockExchange: String,
+    @SerializedName("stockKinds") val stockKinds: String,
     var sector : String?,
     val profits: Long,
     val sales: Long,

@@ -10,14 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.Adapter.StockListAdapter
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.UI.BottomSheet.LoginBottomSheet
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity.Companion.STOCK_DATA
-import com.psw9999.gongmozootopia.viewModel.StockFollowingViewModel
+import com.psw9999.gongmozootopia.viewModel.FollowingViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentMainBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 
@@ -31,7 +31,6 @@ class MainFragment : Fragment() {
     private var followingFilterEnabled = false
 
     private val configurationViewModel : ConfigurationViewModel by viewModels()
-    private val stockFollowingViewModel : StockFollowingViewModel by viewModels()
 
     private val stockInfoIntent by lazy {
         Intent(mContext, StockInformationActivity::class.java)
@@ -77,13 +76,13 @@ class MainFragment : Fragment() {
             stockFiltering()
         })
 
-        //TODO : 필터링된 데이터에 팔로잉을 넣는게 맞는지 확인필요. (나중에 필터링 풀리면 팔로잉된게 안보일까봐)
-        stockFollowingViewModel.stockFollowingIndexData.observe(viewLifecycleOwner, Observer { stockFollowingIndex ->
-            filterdStockData.forEach { data ->
-                data.isFollowing = data.ipoIndex in stockFollowingIndex
-            }
-            stockAdapter.updateStockData(filterdStockData)
-        })
+//        //TODO : 필터링된 데이터에 팔로잉을 넣는게 맞는지 확인필요. (나중에 필터링 풀리면 팔로잉된게 안보일까봐)
+//        followingViewModel.stockFollowingIndexData.observe(viewLifecycleOwner, Observer { stockFollowingIndex ->
+//            filterdStockData.forEach { data ->
+//                data.isFollowing = data.ipoIndex in stockFollowingIndex
+//            }
+//            stockAdapter.updateStockData(filterdStockData)
+//        })
         initStockRecyclerView()
         onClickSetting()
     }
@@ -101,13 +100,13 @@ class MainFragment : Fragment() {
                 startActivity(stockInfoIntent)
             }
 
-            override fun stockFollowingClick(stockFollowingResponse: StockFollowingResponse) {
-                if (stockFollowingResponse.isFollowing) {
-                    stockFollowingViewModel.addStock(stockFollowingResponse)
-                    Snackbar.make(view!!, "${stockFollowingResponse.stockName}의 팔로잉을 설정하였습니다.",Snackbar.LENGTH_SHORT).show()
+            override fun stockFollowingClick(followingResponse: FollowingResponse) {
+                if (followingResponse.isFollowing) {
+                    //followingViewModel.addStock(followingResponse)
+                    Snackbar.make(view!!, "${followingResponse.stockName}의 팔로잉을 설정하였습니다.",Snackbar.LENGTH_SHORT).show()
                 }else{
-                    stockFollowingViewModel.deleteStock(stockFollowingResponse.ipoIndex)
-                    Snackbar.make(view!!, "${stockFollowingResponse.stockName}의 팔로잉을 해제하였습니다.",Snackbar.LENGTH_SHORT).show()
+                    //followingViewModel.deleteStock(followingResponse.ipoIndex)
+                    Snackbar.make(view!!, "${followingResponse.stockName}의 팔로잉을 해제하였습니다.",Snackbar.LENGTH_SHORT).show()
                 }
             }
         })
@@ -137,7 +136,8 @@ class MainFragment : Fragment() {
 
     private fun stockFiltering() {
         filterdStockData = stockData.filter { data->
-            data.stockKinds in kindFilteringList && (data.isFollowing || !followingFilterEnabled)
+            //data.stockKinds in kindFilteringList && (data.isFollowing || !followingFilterEnabled)
+            data.stockKinds in kindFilteringList && (!followingFilterEnabled)
         }
         stockAdapter.updateStockData(filterdStockData)
     }

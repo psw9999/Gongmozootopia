@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.psw9999.gongmozootopia.DAO.StockFollowingDAO
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
+import com.psw9999.gongmozootopia.DAO.FollowingDAO
+import com.psw9999.gongmozootopia.data.FollowingResponse
 
-@Database(entities = [StockFollowingResponse::class], version = 1, exportSchema = false)
+@Database(entities = [FollowingResponse::class], version = 1, exportSchema = false)
 abstract class StockDatabase : RoomDatabase() {
 
-    abstract fun stockFollowingDAO() : StockFollowingDAO
+    abstract fun stockFollowingDAO() : FollowingDAO
 
     companion object{
         /* @Volatile = 접근가능한 변수의 값을 cache를 통해 사용하지 않고

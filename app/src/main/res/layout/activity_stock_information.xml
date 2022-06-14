@@ -7,8 +7,8 @@
         <import type="android.view.View"/>
         <import type="com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity"/>
         <variable
-            name="stockInfo"
-            type="com.psw9999.gongmozootopia.data.StockInfoResponse" />
+            name="viewModel"
+            type="com.psw9999.gongmozootopia.viewModel.StockInfoViewModel" />
     </data>
 
     <ScrollView
@@ -26,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingRight="10dp"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -35,10 +34,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     app:contentInsetStartWithNavigation="0dp"
-                    app:title="@{stockInfo.stockName}"
+                    app:menu="@menu/appbar_stock_info"
+                    app:title="@{viewModel.stockInfo.stockName}"
                     app:titleCentered="true"
-                    app:titleTextAppearance="@style/AppBarTitleSize">
-
+                    app:titleTextAppearance="@style/AppBarTitleSize"
+                    app:is_following="@{viewModel.isFollowing}">
                 </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -83,7 +83,7 @@
                         style="@style/StockInfo.secondTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.stockKinds.equals(@string/IPO) ? @string/confirmPriceTitle : @string/offerPriceTitle}"
+                        android:text="@{viewModel.stockInfo.stockKinds.equals(@string/IPO) ? @string/confirmPriceTitle : @string/offerPriceTitle}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/division_stockPrice" />
 
@@ -93,7 +93,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="공모가밴드"
-                        android:visibility="@{stockInfo.stockKinds.equals(@string/IPO) ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/IPO) ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView_confirmStockPriceTitle" />
 
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="@{stockInfo.ipoPrice == 0L ? @string/UNDEFINED : @string/confirmPrice(stockInfo.ipoPrice)}"
+                        android:text="@{viewModel.stockInfo.ipoPrice == 0L ? @string/UNDEFINED : @string/confirmPrice(viewModel.stockInfo.ipoPrice)}"
                         app:layout_constraintStart_toEndOf="@id/textView_confirmStockPriceTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_confirmStockPriceTitle" />
 
@@ -112,8 +112,8 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.ipoPriceLow == 0L ? @string/UNDEFINED : @string/priceBand(stockInfo.ipoPriceLow, stockInfo.ipoPriceHigh)}"
-                        android:visibility="@{stockInfo.stockKinds.equals(@string/IPO) ? View.VISIBLE : View.GONE}"
+                        android:text="@{viewModel.stockInfo.ipoPriceLow == 0L ? @string/UNDEFINED : @string/priceBand(viewModel.stockInfo.ipoPriceLow, viewModel.stockInfo.ipoPriceHigh)}"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/IPO) ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="@id/textView_confirmStockPrice"
                         app:layout_constraintTop_toTopOf="@id/textView_stockPriceBandTitle" />
 
@@ -155,7 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="구주주청약일"
-                        android:visibility="@{ stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.VISIBLE : View.GONE }"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.VISIBLE : View.GONE }"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/division_ipoSchedule" />
 
@@ -165,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="수요예측일"
-                        android:visibility="@{ stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE }"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE }"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView_exShareHolderTitle" />
 
@@ -202,8 +202,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{stockInfo.exStartDate != null &amp;&amp; stockInfo.exEndDate != null ? @string/dateForm(stockInfo.exStartDate, stockInfo.exEndDate) : @string/UNDEFINED}"
-                        android:visibility="@{ stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.VISIBLE : View.GONE }"
+                        android:text="@{viewModel.stockInfo.exStartDate != null &amp;&amp; viewModel.stockInfo.exEndDate != null ? @string/dateForm(viewModel.stockInfo.exStartDate, viewModel.stockInfo.exEndDate) : @string/UNDEFINED}"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.VISIBLE : View.GONE }"
                         app:layout_constraintStart_toEndOf="@id/textView_ipoScheduleTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_exShareHolderTitle" />
 
@@ -213,8 +213,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{(stockInfo.ipoForecastStart != null) &amp;&amp; (stockInfo.ipoForecastEnd != null) ? @string/dateForm(stockInfo.ipoForecastStart, stockInfo.ipoForecastEnd) : @string/UNDEFINED}"
-                        android:visibility="@{ stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE }"
+                        android:text="@{(viewModel.stockInfo.ipoForecastStart != null) &amp;&amp; (viewModel.stockInfo.ipoForecastEnd != null) ? @string/dateForm(viewModel.stockInfo.ipoForecastStart, viewModel.stockInfo.ipoForecastEnd) : @string/UNDEFINED}"
+                        android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE }"
                         app:layout_constraintStart_toEndOf="@id/textView_ipoScheduleTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_ipoForecastDayTitle" />
 
@@ -224,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{(stockInfo.ipoStartDate != null) &amp;&amp; (stockInfo.ipoEndDate != null) ? @string/dateForm(stockInfo.ipoStartDate, stockInfo.ipoEndDate): @string/UNDEFINED}"
+                        android:text="@{(viewModel.stockInfo.ipoStartDate != null) &amp;&amp; (viewModel.stockInfo.ipoEndDate != null) ? @string/dateForm(viewModel.stockInfo.ipoStartDate, viewModel.stockInfo.ipoEndDate): @string/UNDEFINED}"
                         app:layout_constraintStart_toEndOf="@id/textView_ipoScheduleTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_ipoStartDayTitle" />
 
@@ -234,7 +234,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{stockInfo.ipoRefundDate != null ? stockInfo.ipoRefundDate : @string/UNDEFINED}"
+                        android:text="@{viewModel.stockInfo.ipoRefundDate != null ? viewModel.stockInfo.ipoRefundDate : @string/UNDEFINED}"
                         app:layout_constraintStart_toEndOf="@id/textView_ipoScheduleTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_ipoRefundDayTitle" />
 
@@ -244,7 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@{stockInfo.ipoDebutDate != null ? stockInfo.ipoDebutDate : @string/UNDEFINED}"
+                        android:text="@{viewModel.stockInfo.ipoDebutDate != null ? viewModel.stockInfo.ipoDebutDate : @string/UNDEFINED}"
                         app:layout_constraintStart_toEndOf="@id/textView_ipoScheduleTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_ipoDebutDayTitle" />
 
@@ -254,7 +254,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/StockInfo.cardView"
                 android:id="@+id/cardView_companyInfo"
-                android:visibility="@{stockInfo.stockKinds.equals(@string/SPAC) ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/SPAC) ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardView_ipoSchedule">
@@ -322,7 +322,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.sector != null ? stockInfo.sector : @string/noneData}"
+                        android:text="@{viewModel.stockInfo.sector != null ? viewModel.stockInfo.sector : @string/noneData}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_sectorTitle" />
 
@@ -331,7 +331,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.stockExchange != null ? stockInfo.stockExchange : @string/noneData}"
+                        android:text="@{viewModel.stockInfo.stockExchange != null ? viewModel.stockInfo.stockExchange : @string/noneData}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_stockMarketTitle" />
 
@@ -340,7 +340,7 @@
                         style="@style/StockInfo.content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{stockInfo.sales == -1L ? @string/noneData : StockInformationActivity.unitCalculate(stockInfo.sales)}"
+                        android:text="@{viewModel.stockInfo.sales == -1L ? @string/noneData : StockInformationActivity.unitCalculate(viewModel.stockInfo.sales)}"
                         app:layout_constraintStart_toStartOf="@id/textView_companyProfit"
                         app:layout_constraintTop_toTopOf="@id/textView_companySalesTitle" />
 
@@ -350,7 +350,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="@{stockInfo.profits == -1L ? @string/noneData : StockInformationActivity.unitCalculate(stockInfo.profits)}"
+                        android:text="@{viewModel.stockInfo.profits == -1L ? @string/noneData : StockInformationActivity.unitCalculate(viewModel.stockInfo.profits)}"
                         app:layout_constraintStart_toEndOf="@id/textView_companyProfitTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_companyProfitTitle" />
 
@@ -454,7 +454,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView_IpoInfo"
                 style="@style/StockInfo.cardView"
-                android:visibility="@{stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.stockInfo.stockKinds.equals(@string/unclaimedStock) ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -506,7 +506,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="@{(stockInfo.ipoInstitution != null) &amp;&amp; (stockInfo.ipoInstitution != -1) ? @string/institution(stockInfo.ipoInstitution) : @string/noneData}"
+                        android:text="@{(viewModel.stockInfo.ipoInstitution != null) &amp;&amp; (viewModel.stockInfo.ipoInstitution != -1) ? @string/institution(viewModel.stockInfo.ipoInstitution) : @string/noneData}"
                         app:layout_constraintStart_toEndOf="@id/textView_lockUpPercentTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_IpoInstitutionCompetitionTitle" />
 
@@ -516,7 +516,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="@{(stockInfo.lockUpPercent != null) &amp;&amp; (stockInfo.lockUpPercent != -1) ? @string/percent(stockInfo.lockUpPercent) : @string/noneData}"
+                        android:text="@{(viewModel.stockInfo.lockUpPercent != null) &amp;&amp; (viewModel.stockInfo.lockUpPercent != -1) ? @string/percent(viewModel.stockInfo.lockUpPercent) : @string/noneData}"
                         app:layout_constraintStart_toEndOf="@id/textView_lockUpPercentTitle"
                         app:layout_constraintTop_toTopOf="@id/textView_lockUpPercentTitle" />
 

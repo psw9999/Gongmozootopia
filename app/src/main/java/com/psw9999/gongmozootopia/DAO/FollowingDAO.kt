@@ -2,13 +2,14 @@ package com.psw9999.gongmozootopia.DAO
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
+import com.psw9999.gongmozootopia.data.FollowingResponse
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface StockFollowingDAO {
+interface FollowingDAO {
     // 팔로잉 공모주 추가
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addStock(stockFollowingResponse : StockFollowingResponse)
+    fun addStock(followingResponse : FollowingResponse)
 
     // 팔로잉된 데이터의 인덱스 가져오기
     @Query("SELECT ipoIndex FROM stock_following")
@@ -20,7 +21,7 @@ interface StockFollowingDAO {
 
     // 특정 주식 팔로잉 데이터 가져오기
     @Query("SELECT is_following FROM stock_following WHERE ipoIndex = :ipoIndex")
-    fun getStockFollowing(ipoIndex : Long) : Boolean
+    fun getFollowingFlow(ipoIndex : Long) : Flow<Boolean>
 
     // 특정 주식 팔로잉 데이터 업데이트
     @Query("UPDATE stock_following SET is_following = :isFollowing WHERE ipoIndex = :ipoIndex")

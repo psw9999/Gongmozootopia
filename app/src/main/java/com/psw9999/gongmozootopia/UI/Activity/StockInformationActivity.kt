@@ -1,63 +1,43 @@
 package com.psw9999.gongmozootopia.UI.Activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
-import android.view.View
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.marginTop
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.data.StockFollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
-import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
-import com.psw9999.gongmozootopia.base.BaseActivity
-import com.psw9999.gongmozootopia.data.StockInfoResponse
-import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.Repository.UnderwriterRepository
-import com.psw9999.gongmozootopia.viewModel.StockFollowingViewModel
+import com.psw9999.gongmozootopia.base.BaseActivity
+import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
+import com.psw9999.gongmozootopia.data.FollowingResponse
+import com.psw9999.gongmozootopia.data.StockInfoResponse
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
+import com.psw9999.gongmozootopia.viewModel.StockInfoViewModel
+import com.psw9999.gongmozootopia.viewModel.StockInfoViewModelFactory
 import kotlinx.coroutines.*
-import java.text.NumberFormat
 
 class StockInformationActivity : BaseActivity() {
 
     val binding by lazy { ActivityStockInformationBinding.inflate(layoutInflater)}
-    val stockFollowingViewModel : StockFollowingViewModel by viewModels()
-    //lateinit var underwriters : ArrayList<UnderwriterResponse>
     private var ipoIndex : Long = -1
+
+    private val viewModelFactory by lazy {
+        StockInfoViewModelFactory(application, ipoIndex)
+    }
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(StockInfoViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        ipoIndex = intent!!.getLongExtra("ipoIndex", -1)
-
-        CoroutineScope(Dispatchers.Main).launch {
-            // 1. 공모가, 공모스케줄, 기업정보 가져오기
-            val deferredStockInfo = async(Dispatchers.IO) {
-                StockInfoRepository().getStockInfo(ipoIndex)
-            }
-            // 2. 증권사와 배정수량 가져오기
-            val deferredUnderwriters = async(Dispatchers.IO) {
-                UnderwriterRepository().getUnderwriters(ipoIndex)
-            }
-
-            // TODO : 3. DB에서 팔로잉데이터 가져오기
-            //...
-
-            // 4. View Binding
-            launch {
-                loadingOn()
-                val stockInfo = deferredStockInfo.await()
-                binding.stockInfo = stockInfo
-                addUnderwriterView(deferredUnderwriters.await(), stockInfo.stockKinds)
-                loadingOff()
-            }
-        }
+        loadDatas()
     }
 
     private fun addUnderwriterView(underwriters : ArrayList<UnderwriterResponse>, stockKinds : String) {
@@ -83,36 +63,62 @@ class StockInformationActivity : BaseActivity() {
         }
     }
 
-//    private fun initToolbar() {
-//        with(binding.stockInfoAppbar) {
-//            inflateMenu(R.menu.appbar_stock_info)
-//            navigationIcon = getDrawable(R.drawable.baseline_navigate_before_24)
-//            setNavigationOnClickListener {
-//                finish()
-//            }
-//            with(menu.findItem(R.id.action_following).actionView) {
-//                this as ImageButton
-//                this.setImageResource(R.drawable.imgbtn_favorit_states)
-//                this.setBackgroundResource(R.color.white)
-//                if (stockInfo.isFollowing) this.isSelected = true
-//                setOnClickListener {
-//                    this.isSelected = (!this.isSelected)
-//                    stockInfo.isFollowing = (!stockInfo.isFollowing)
-//                    if (stockInfo.isFollowing) {
-//                        this.isSelected = true
-//                        stockFollowingViewModel.addStock(StockFollowingResponse(ipoIndex = stockInfo.ipoIndex, stockName = stockInfo.stockName, isFollowing = true))
-//                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 설정하였습니다.", Snackbar.LENGTH_SHORT).show()
-//                    }else{
-//                        this.isSelected = false
-//                        stockFollowingViewModel.deleteStock(stockInfo.ipoIndex)
-//                        Snackbar.make(this, "${stockInfo.stockName}의 팔로잉을 해제하였습니다.", Snackbar.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun initToolbar() {
+        with(binding.stockInfoAppbar) {
+            // 팔로잉 버튼 클릭 이벤트
+            setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.action_following -> {
+                        if (viewModel.isFollowing.value == true) {
+                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 해제하였습니다.", Snackbar.LENGTH_SHORT).show()
+                            viewModel.deleteFollowing(viewModel.stockInfo!!.ipoIndex)
+                        }else{
+                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 설정하였습니다.", Snackbar.LENGTH_SHORT).show()
+                            viewModel.addFollowing(FollowingResponse(ipoIndex= ipoIndex, stockName = viewModel.stockInfo!!.stockName, isFollowing = true))
+                            Log.d(TAG, "${viewModel.isFollowing}")
+                        }
+                        true
+                    }
+                    else -> true
+                }
+            }
+
+            // 뒤로가기 버튼 설정
+            navigationIcon = getDrawable(R.drawable.baseline_navigate_before_24)
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+    }
+
+    private fun loadDatas() {
+        CoroutineScope(Dispatchers.Main).launch{
+            ipoIndex = intent!!.getLongExtra("ipoIndex", -1)
+            // 종목의 상세정보 Load
+            val deferredStockInfo = async(Dispatchers.IO) {
+                StockInfoRepository().getStockInfo(ipoIndex)
+            }
+            // 주간 증권사 정보 Load
+            val deferredUnderwriterInfo = async(Dispatchers.IO) {
+                UnderwriterRepository().getUnderwriters(ipoIndex)
+            }
+            launch {
+                loadingOn()
+                ipoIndex = intent!!.getLongExtra("ipoIndex", -1)
+                viewModel.stockInfo = deferredStockInfo.await()
+                viewModel.underwriterInfo= deferredUnderwriterInfo.await()
+                //viewModel.getFollowing(ipoIndex)
+                binding.viewModel = viewModel
+                binding.lifecycleOwner = this@StockInformationActivity
+                initToolbar()
+                addUnderwriterView(viewModel.underwriterInfo, viewModel.stockInfo.stockKinds)
+                loadingOff()
+            }
+        }
+    }
 
     companion object {
+        const val TAG = "STOCK_INFORMATION_ACTIVITY"
         @JvmStatic
         fun unitCalculate(value : Long) : String {
             var tempStr : String = ""
@@ -134,3 +140,4 @@ class StockInformationActivity : BaseActivity() {
         }
     }
 }
+
