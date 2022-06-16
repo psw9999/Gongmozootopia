@@ -13,8 +13,9 @@ import com.psw9999.gongmozootopia.Util.DiffUtilCallback
 import com.psw9999.gongmozootopia.databinding.HolderStockBinding
 
 class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>() {
-    var stockData = listOf<StockResponse>()
-    var stockFirmFollowing = mapOf<String,Boolean>()
+    private var stockList = listOf<StockResponse>()
+    private var stockFirmFollowing = mapOf<String,Boolean>()
+
     lateinit var mContext : Context
     lateinit var mStockClickListener : OnStockClickListener
 
@@ -33,10 +34,10 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         return StockViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = stockData.size
+    override fun getItemCount(): Int = stockList.size
 
     override fun onBindViewHolder(holder: StockListAdapter.StockViewHolder, position: Int) {
-        holder.binding(stockData[position])
+        holder.binding(stockList[position])
     }
 
     fun setAdapterStockFirmData(stockFirmFollowing : Map<String,Boolean>) {
@@ -44,11 +45,15 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
         notifyDataSetChanged()
     }
 
-    fun updateStockData(stockData : List<StockResponse>?) {
+    fun setStockList(stockList : List<StockResponse>) {
+        this.stockList = stockList
+    }
+
+    fun updateStockList(stockData : List<StockResponse>?) {
         stockData?.let {
-            val diffCallback = DiffUtilCallback(this.stockData, stockData)
+            val diffCallback = DiffUtilCallback(this.stockList, stockData)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
-            this.stockData = stockData
+            this.stockList = stockData
             diffResult.dispatchUpdatesTo(this@StockListAdapter)
         }
     }
@@ -56,14 +61,15 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
     inner class StockViewHolder(val binding : HolderStockBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             // 팔로잉 클릭 리스너
-//            binding.imageViewFavorit.setOnClickListener {
-//                if (adapterPosition != RecyclerView.NO_POSITION) {
-//                    mStockClickListener.stockFollowingClick(
-//                        FollowingResponse(stockData[adapterPosition].ipoIndex, stockData[adapterPosition].stockName, !stockData[adapterPosition].isFollowing))
-//                }
-//                binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
-//            }
-            // 종목 카드 클릭 리스너
+            binding.imageViewFavorit.setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    mStockClickListener.stockFollowingClick(
+                        FollowingResponse(stockList[adapterPosition].ipoIndex, stockList[adapterPosition].stockName, !stockList[adapterPosition].isFollowing))
+                        binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
+                }
+            }
+
+            // 카드 클릭 리스너
             binding.cardViewStock.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     mStockClickListener.stockCardClick(adapterPosition)
@@ -73,8 +79,6 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
 
         fun binding(stockData : StockResponse) {
             binding.stockItem = stockData
-            // DB에서 following 읽어오는 로직
-            // binding.isFollowing = ..
             with(stockData) {
                 binding.chipGroupAlarm.removeAllViews()
                 underwriter?.let {

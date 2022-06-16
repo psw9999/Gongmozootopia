@@ -1,5 +1,6 @@
 package com.psw9999.gongmozootopia.Util
 
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import com.google.android.material.appbar.MaterialToolbar
@@ -16,4 +17,11 @@ object BindingConversion {
             }
         )
     }
+
+    @BindingAdapter("is_following")
+    @JvmStatic
+    fun setFollowingImage(imageView : ImageView, isFollowing : Boolean) {
+        imageView.isSelected = isFollowing
+    }
+
 }

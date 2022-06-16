@@ -3,26 +3,24 @@ package com.psw9999.gongmozootopia.viewModel
 import android.app.Application
 import androidx.lifecycle.*
 import com.psw9999.gongmozootopia.Repository.FollowingRepository
-import com.psw9999.gongmozootopia.Room.StockDatabase
+import com.psw9999.gongmozootopia.Room.FollowingDatabase
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockInfoResponse
 import com.psw9999.gongmozootopia.data.UnderwriterResponse
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class StockInfoViewModel(application : Application, private val ipoIndex : Long) : AndroidViewModel(application) {
+class StockInfoViewModel(application : Application, ipoIndex : Long) : AndroidViewModel(application) {
 
-    private val repository : FollowingRepository
     lateinit var stockInfo : StockInfoResponse
     lateinit var underwriterInfo : ArrayList<UnderwriterResponse>
-    private val _isFollowing : MutableLiveData<Boolean> = MutableLiveData()
-    var isFollowing : LiveData<Boolean>
+
+    private val repository : FollowingRepository
+    val isFollowing : LiveData<Boolean>
 
         init {
-            val stockFollowingDAO = StockDatabase.getDatabase(application)!!.stockFollowingDAO()
-            repository = FollowingRepository(stockFollowingDAO, ipoIndex)
+            val followingDAO = FollowingDatabase.getDatabase(application)!!.followingDAO()
+            repository = FollowingRepository(followingDAO, ipoIndex)
             isFollowing = repository.followingFlow.asLiveData()
         }
 

@@ -7,7 +7,7 @@
     android:fillViewport="true"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".UI.Fragment.MainFragment">
+    tools:context=".UI.Fragment.StockListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

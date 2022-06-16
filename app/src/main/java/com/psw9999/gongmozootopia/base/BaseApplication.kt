@@ -8,8 +8,6 @@ import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatDialog
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.SettingRepository
-import com.psw9999.gongmozootopia.Room.StockDatabase
-import com.psw9999.gongmozootopia.Util.SharedPreferences
 
 class BaseApplication : Application(){
     companion object {

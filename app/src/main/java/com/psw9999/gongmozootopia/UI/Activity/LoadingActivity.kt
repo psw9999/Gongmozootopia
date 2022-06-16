@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kakao.sdk.common.KakaoSdk
+import com.psw9999.gongmozootopia.Repository.FollowingListRepository
 import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
@@ -25,6 +25,7 @@ class LoadingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         // 카카오 로그인 SDK 초기화
         // KakaoSdk.init(this, "f23fe6f5f5fc7a04094619143ffa9832")
 
@@ -40,7 +41,7 @@ class LoadingActivity : AppCompatActivity() {
                 // 1. stockList 수신
                 val deferredStockData = async(Dispatchers.IO) {
                     val stockResponse = StockRepository().getStockData()
-                    stockDataFiltering(stockResponse)
+                    stockListCheck(stockResponse)
                 }
 
                 launch {
@@ -62,9 +63,9 @@ class LoadingActivity : AppCompatActivity() {
         networkStatus.registerNetworkCallback()
     }
 
-    private suspend fun stockDataFiltering(stockData : ArrayList<StockResponse>) : ArrayList<StockResponse> {
+    private fun stockListCheck(stockList : ArrayList<StockResponse>) : ArrayList<StockResponse> {
         return arrayListOf<StockResponse>().apply {
-            for (data in stockData) {
+            for (data in stockList) {
                 if (data.stockKinds == null || data.ipoIndex == null || data.stockExchange == null) continue
 
                 var index = 0
@@ -108,7 +109,7 @@ class LoadingActivity : AppCompatActivity() {
         }
     }
 
-    private fun scheduleCheck(stockData : StockResponse){
+    private fun scheduleCheck(stockData : StockResponse) {
         var fmt : DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
         val ipoStartDday : Int =
             stockData.ipoStartDate?.let {Days.daysBetween(today, fmt.parseDateTime(stockData.ipoStartDate)).days}?:-1

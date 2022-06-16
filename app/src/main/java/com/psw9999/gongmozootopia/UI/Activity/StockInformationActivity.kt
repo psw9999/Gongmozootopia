@@ -70,12 +70,11 @@ class StockInformationActivity : BaseActivity() {
                 when(it.itemId) {
                     R.id.action_following -> {
                         if (viewModel.isFollowing.value == true) {
-                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 해제하였습니다.", Snackbar.LENGTH_SHORT).show()
                             viewModel.deleteFollowing(viewModel.stockInfo!!.ipoIndex)
+                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 해제하였습니다.", Snackbar.LENGTH_SHORT).show()
                         }else{
-                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 설정하였습니다.", Snackbar.LENGTH_SHORT).show()
                             viewModel.addFollowing(FollowingResponse(ipoIndex= ipoIndex, stockName = viewModel.stockInfo!!.stockName, isFollowing = true))
-                            Log.d(TAG, "${viewModel.isFollowing}")
+                            Snackbar.make(this, "${viewModel.stockInfo!!.stockName}의 팔로잉을 설정하였습니다.", Snackbar.LENGTH_SHORT).show()
                         }
                         true
                     }
@@ -107,7 +106,6 @@ class StockInformationActivity : BaseActivity() {
                 ipoIndex = intent!!.getLongExtra("ipoIndex", -1)
                 viewModel.stockInfo = deferredStockInfo.await()
                 viewModel.underwriterInfo= deferredUnderwriterInfo.await()
-                //viewModel.getFollowing(ipoIndex)
                 binding.viewModel = viewModel
                 binding.lifecycleOwner = this@StockInformationActivity
                 initToolbar()

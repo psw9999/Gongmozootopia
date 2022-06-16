@@ -11,19 +11,19 @@ interface FollowingDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addStock(followingResponse : FollowingResponse)
 
-    // 팔로잉된 데이터의 인덱스 가져오기
+    // 모든 팔로잉 데이터 가져오기
     @Query("SELECT ipoIndex FROM stock_following")
-    fun getAllFollowingIndex() : List<Long>
+    fun getFollowingList() : List<Long>
 
-    // 팔로잉된 데이터의 인덱스 가져오기(LiveData)
+    // 모든 팔로잉 데이터 가져오기
     @Query("SELECT ipoIndex FROM stock_following")
-    fun getAllFollowingLiveData() : LiveData<List<Long>>
+    fun getFollowingListFlow() : Flow<List<Long>>
 
-    // 특정 주식 팔로잉 데이터 가져오기
+    // 특정 팔로잉 데이터 가져오기
     @Query("SELECT is_following FROM stock_following WHERE ipoIndex = :ipoIndex")
     fun getFollowingFlow(ipoIndex : Long) : Flow<Boolean>
 
-    // 특정 주식 팔로잉 데이터 업데이트
+    // 특정 팔로잉 데이터 업데이트
     @Query("UPDATE stock_following SET is_following = :isFollowing WHERE ipoIndex = :ipoIndex")
     fun updateStockFollowing(ipoIndex : Long, isFollowing : Boolean)
 

@@ -1,16 +1,14 @@
 package com.psw9999.gongmozootopia.Repository
 
-import androidx.lifecycle.LiveData
 import com.psw9999.gongmozootopia.DAO.FollowingDAO
 import com.psw9999.gongmozootopia.data.FollowingResponse
+import com.psw9999.gongmozootopia.data.StockResponse
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 
-class FollowingRepository(private val followingDAO : FollowingDAO, private val ipoIndex : Long) {
+class FollowingListRepository(private val followingDAO : FollowingDAO) {
 
-    val followingFlow : Flow<Boolean>
-        get() = followingDAO.getFollowingFlow(ipoIndex)
+    val followingListFlow : Flow<List<Long>>
+        get() = followingDAO.getFollowingListFlow()
 
     fun addFollowing(followingResponse: FollowingResponse) {
         followingDAO.addStock(followingResponse)
@@ -19,5 +17,4 @@ class FollowingRepository(private val followingDAO : FollowingDAO, private val i
     fun deleteFollowing(ipoIndex: Long) {
         followingDAO.deleteStock(ipoIndex)
     }
-
 }

@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.psw9999.gongmozootopia.Adapter.MainViewPager
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Fragment.CommentFragment
-import com.psw9999.gongmozootopia.UI.Fragment.MainFragment
+import com.psw9999.gongmozootopia.UI.Fragment.StockListFragment
 import com.psw9999.gongmozootopia.UI.Fragment.CalendarFragment
 import com.psw9999.gongmozootopia.UI.Fragment.ConfigurationFragment
 import com.psw9999.gongmozootopia.databinding.ActivityMainBinding
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         viewPager2 = binding.viewPager2Main
         val pagerAdapter = MainViewPager(this)
         pagerAdapter.fragmentList = listOf(
-            MainFragment().apply {
+            StockListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(STOCK_DATA,
                         intent.getParcelableArrayListExtra(STOCK_DATA))

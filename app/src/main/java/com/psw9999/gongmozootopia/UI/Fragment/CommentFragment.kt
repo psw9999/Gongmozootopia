@@ -22,6 +22,7 @@ class CommentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommentBinding.inflate(inflater, container, false)
+        //TODO : 수정 필요
         val comment = deferredComment.getCompleted()
         Log.d("comment","$comment")
         initRecyclerView(comment)

@@ -8,22 +8,22 @@ import com.psw9999.gongmozootopia.DAO.FollowingDAO
 import com.psw9999.gongmozootopia.data.FollowingResponse
 
 @Database(entities = [FollowingResponse::class], version = 1, exportSchema = false)
-abstract class StockDatabase : RoomDatabase() {
+abstract class FollowingDatabase : RoomDatabase() {
 
-    abstract fun stockFollowingDAO() : FollowingDAO
+    abstract fun followingDAO() : FollowingDAO
 
     companion object{
         /* @Volatile = 접근가능한 변수의 값을 cache를 통해 사용하지 않고
         thread가 직접 main memory에 접근 하게하여 동기화. */
 
         @Volatile
-        private var INSTANCE : StockDatabase? = null
+        private var INSTANCE : FollowingDatabase? = null
 
-        fun getDatabase(context: Context) : StockDatabase? {
+        fun getDatabase(context: Context) : FollowingDatabase? {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    StockDatabase::class.java,
+                    FollowingDatabase::class.java,
                     "stock_following"
                 )
                     .fallbackToDestructiveMigration()

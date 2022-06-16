@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_followingFilter"
-        android:checkable="true"
-        android:icon="@drawable/star_border"
-        android:title="followingFilter"
-        app:showAsAction="always"></item>
+<!--    <item-->
+<!--        android:id="@+id/action_followingFilter"-->
+<!--        android:checkable="true"-->
+<!--        android:icon="@drawable/star_border"-->
+<!--        android:title="followingFilter"-->
+<!--        app:showAsAction="always"></item>-->
 </menu>
