@@ -1,11 +1,12 @@
 package com.psw9999.gongmozootopia.Adapter
 
 import android.content.Context
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.psw9999.gongmozootopia.CustomView.UnderwriterView
+import com.psw9999.gongmozootopia.customView.UnderwriterView
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.data.StockResponse
@@ -85,15 +86,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
                     for (name in it.split(',')) {
                         binding.chipGroupAlarm.addView(UnderwriterView(mContext).apply {
                             this.text = name
-                            if (!stockFirmFollowing.containsKey(name) || (!stockFirmFollowing[name]!!)) {
-                                this.setChipBackgroundColorResource(R.color.white)
-                                this.setChipStrokeColorResource(R.color.chip_underwriter)
-                                this.setTextAppearance(R.style.Chip_Unregistered_StockFirm_TextTheme)
-                            } else {
-                                this.setChipBackgroundColorResource(R.color.chip_underwriter)
-                                this.setChipStrokeColorResource(R.color.chip_underwriter)
-                                this.setTextAppearance(R.style.Chip_Registered_StockFirm_TextTheme)
-                            }
+                            this.isChecked = stockFirmFollowing.getOrDefault(name, false)
                         })
                     }
                 }

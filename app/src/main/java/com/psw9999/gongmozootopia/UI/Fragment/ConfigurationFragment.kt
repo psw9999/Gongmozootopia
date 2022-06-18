@@ -67,6 +67,7 @@ class ConfigurationFragment : Fragment() {
         configurationViewModel.isSpacEnabled.observeOnce(viewLifecycleOwner, Observer {
             binding.switchSpacStockFiltering.isChecked = it
         })
+
         binding.chipGroupStockFirm.children.forEach { chip ->
             (chip as Chip).setOnClickListener {
                 configurationViewModel.setStockFirmData(chip.tag!! as String, chip.isChecked)

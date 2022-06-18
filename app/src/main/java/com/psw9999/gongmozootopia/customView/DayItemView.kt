@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.CustomView
+package com.psw9999.gongmozootopia.customView
 
 import android.content.Context
 import android.graphics.Canvas

@@ -28,17 +28,8 @@
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
-    <style name="chip_underwriter" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="closeIconVisible">false</item>
-        <item name="chipIconVisible">false</item>
-        <item name="android:focusable">false</item>
-        <item name="android:clickable">false</item>
-        <item name="chipCornerRadius">8dp</item>
-        <item name="chipStrokeColor">@color/chip_underwriter</item>
-        <item name="chipStrokeWidth">1.5dp</item>
-        <item name="chipBackgroundColor">@color/white</item>
-        <item name="chipMinHeight">0dp</item>
-        <item name="chipMinTouchTargetSize">0dp</item>
+    <style name="chip_underwriter" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name = "chipBackgroundColor">@color/bg_color_chip_state</item>
     </style>
 
     <style name="chip_background" parent="Widget.MaterialComponents.Chip.Action">

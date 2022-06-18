@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 네트워크 상태 체크를 위한 권한 설정 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name="com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity"></activity>
         <activity android:name="com.psw9999.gongmozootopia.UI.Activity.MainActivity" />
         <activity android:name="com.psw9999.gongmozootopia.UI.Activity.LoadingActivity">

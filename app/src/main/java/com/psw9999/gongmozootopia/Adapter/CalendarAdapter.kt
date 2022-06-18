@@ -12,7 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.psw9999.gongmozootopia.CustomView.CalendarLabelView
+import com.psw9999.gongmozootopia.customView.CalendarLabelView
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
 import com.psw9999.gongmozootopia.Util.CalendarUtils
