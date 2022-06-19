@@ -40,27 +40,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNavigation() {
-        //TODO : OnNavigationItemSelectedListener 왜 Deprecated?
-        binding.bottomNavigationMain.setOnNavigationItemSelectedListener {
+        binding.bottomNavigationMain.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.notification -> {
                     setPageIndex(3)
-                    return@setOnNavigationItemSelectedListener true
                 }
                 R.id.setting -> {
                     setPageIndex(2)
-                    return@setOnNavigationItemSelectedListener true
                 }
                 R.id.calendar -> {
                     setPageIndex(1)
-                    return@setOnNavigationItemSelectedListener true
                 }
                 else -> {
                     setPageIndex(0)
-                    return@setOnNavigationItemSelectedListener true
                 }
             }
+            true
         }
+
     }
 
     private fun setPageIndex(index: Int) {

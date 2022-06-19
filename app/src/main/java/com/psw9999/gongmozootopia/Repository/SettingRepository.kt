@@ -20,7 +20,9 @@ import java.io.IOException
 class SettingRepository(var context: Context) {
     private val IS_FORFEITED_ENABLED = booleanPreferencesKey("forfeitedStock_Enabled")
     private val IS_SPAC_ENABLED = booleanPreferencesKey("spacStock_Enabled")
-    private val stockFirmList = listOf("미래", "한국", "키움", "NH", "삼성", "메리츠", "하나", "KB", "대신", "신영", "신한", "IBK", "DB", "한화")
+    private val stockFirmList =
+        listOf("DB","IBK", "KB", "NH", "SK", "대신", "메리츠", "미래에셋", "삼성", "상상인", "신영", "신한", "유안타", "유진", "키움",
+            "하나", "하이", "한국", "한화", "현대차")
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     private fun isStockFirmRegistered(stockFirmName : String) : Preferences.Key<Boolean>

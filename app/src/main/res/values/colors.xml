@@ -35,11 +35,4 @@
     <color name="CalendarLabel.IpoRefundDay">#FF9800</color>
     <color name="CalendarLabel.IpoDebutDay">#3F51B5</color>
 
-    <color name = "bg_color_chip_state">
-        <selector xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:color="@color/chip_underwriter" android:state_checked="true" />
-            <item android:color="@color/white" android:state_checked="false" />
-        </selector>
-    </color>
-
 </resources>

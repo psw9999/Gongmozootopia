@@ -28,12 +28,23 @@
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
-    <style name="chip_underwriter" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name = "chipBackgroundColor">@color/bg_color_chip_state</item>
+    <style name="Chip_TextTheme" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
-    <style name="chip_background" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="backgroundColor">@color/white</item>
+    <style name="chip_underwriter" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="textEndPadding">3dp</item>
+        <item name="textStartPadding">3dp</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="chipStrokeColor">@color/chip_underwriter</item>
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipBackgroundColor">@color/underwriter_chip_bg_color</item>
+        <item name="android:textColor">@color/underwriter_chip_text_color</item>
+        <item name="android:textAppearance">@style/Chip_TextTheme</item>
     </style>
 
 
@@ -117,7 +128,6 @@
             <item name="android:checked">true</item>
         </style>
     <style name="Configuration"/>
-
         <style name="Configuration.Title" parent="TextAppearance.AppCompat">
             <item name="android:textSize">14dp</item>
             <item name="android:textColor">@color/configuration_head</item>

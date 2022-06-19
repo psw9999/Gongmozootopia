@@ -38,7 +38,6 @@ class StockListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let { it ->
             stockListViewModel._stockList.value = it.getParcelableArrayList<StockResponse>(STOCK_DATA) as ArrayList<StockResponse>
-            Log.d(TAG, "${stockListViewModel.stockList}")
         }
     }
 
@@ -59,6 +58,7 @@ class StockListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         configurationViewModel.stockFirmData.observe(viewLifecycleOwner, Observer {
+            Log.d("TAG","$it")
             stockAdapter.setAdapterStockFirmData(it)
         })
 

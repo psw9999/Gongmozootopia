@@ -58,7 +58,7 @@ class ConfigurationFragment : Fragment() {
     private fun initConfiguration() {
         configurationViewModel.stockFirmData.observeOnce(viewLifecycleOwner, Observer {
             binding.chipGroupStockFirm.children.forEach { chip ->
-                (chip as Chip).isChecked = it[chip.tag]!!
+                (chip as Chip).isChecked = it.getOrDefault(chip.tag, false)
             }
         })
         configurationViewModel.isForfeitedEnabled.observeOnce(viewLifecycleOwner, Observer {
