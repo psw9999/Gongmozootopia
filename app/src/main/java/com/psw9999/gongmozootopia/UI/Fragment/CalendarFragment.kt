@@ -8,14 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.Adapter.CalendarAdapter
-import com.psw9999.gongmozootopia.Adapter.CalendarListAdapter
+import com.psw9999.gongmozootopia.adapter.CalendarAdapter
+import com.psw9999.gongmozootopia.adapter.CalendarListAdapter
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
 import com.psw9999.gongmozootopia.Util.CalendarUtils

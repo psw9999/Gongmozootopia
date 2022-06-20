@@ -3,7 +3,7 @@ package com.psw9999.gongmozootopia.UI.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
-import com.psw9999.gongmozootopia.Adapter.MainViewPager
+import com.psw9999.gongmozootopia.adapter.MainViewPager
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.UI.Fragment.CommentFragment
 import com.psw9999.gongmozootopia.UI.Fragment.StockListFragment

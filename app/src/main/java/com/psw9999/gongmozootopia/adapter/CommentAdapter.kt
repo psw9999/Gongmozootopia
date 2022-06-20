@@ -1,7 +1,6 @@
-package com.psw9999.gongmozootopia.Adapter
+package com.psw9999.gongmozootopia.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.psw9999.gongmozootopia.R

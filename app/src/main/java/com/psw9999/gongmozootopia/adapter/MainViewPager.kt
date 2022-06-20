@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Adapter
+package com.psw9999.gongmozootopia.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

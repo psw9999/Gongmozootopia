@@ -2,7 +2,11 @@ package com.psw9999.gongmozootopia.viewModel
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.psw9999.gongmozootopia.Repository.FollowingListRepository
+import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.Room.FollowingDatabase
 import com.psw9999.gongmozootopia.data.StockResponse
@@ -10,32 +14,33 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class StockListViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository : FollowingListRepository
+    private val followingRepository : FollowingListRepository
+    private val stockListRepository  = StockRepository()
 
     val kindsFilteringArray = arrayOf("공모주","실권주","스팩주")
 
-    // 추후 Paging3 구현을 위해 MutableLiveData로 구현.
-    val _stockList : MutableLiveData<ArrayList<StockResponse>> = MutableLiveData()
-    val stockList : List<StockResponse>
-        get() =followingListFiltering()
+    val _stockList : MutableLiveData<PagingData<StockResponse>>
+        = stockListRepository.getStockDataByPaging().cachedIn(viewModelScope) as MutableLiveData<PagingData<StockResponse>>
+    val stockList : LiveData<PagingData<StockResponse>>
+        get() = _stockList
 
     val followingList : LiveData<List<Long>>
 
     init {
         val followingDAO = FollowingDatabase.getDatabase(application)!!.followingDAO()
-        repository = FollowingListRepository(followingDAO)
-        followingList = repository.followingListFlow.asLiveData()
+        followingRepository = FollowingListRepository(followingDAO)
+        followingList = followingRepository.followingListFlow.asLiveData()
     }
 
     fun addFollowing(followingResponse: FollowingResponse) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addFollowing(followingResponse)
+            followingRepository.addFollowing(followingResponse)
         }
     }
 
     fun deleteFollowing(ipoIndex : Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteFollowing(ipoIndex)
+            followingRepository.deleteFollowing(ipoIndex)
         }
     }
 

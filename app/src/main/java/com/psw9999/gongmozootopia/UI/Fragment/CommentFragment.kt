@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.psw9999.gongmozootopia.Adapter.CommentAdapter
+import com.psw9999.gongmozootopia.adapter.CommentAdapter
 import com.psw9999.gongmozootopia.Repository.CommentRepository
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.data.CommentListItem

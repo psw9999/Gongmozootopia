@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.Adapter
+package com.psw9999.gongmozootopia.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList

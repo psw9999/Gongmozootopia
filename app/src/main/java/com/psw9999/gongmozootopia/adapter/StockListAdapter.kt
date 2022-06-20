@@ -1,15 +1,12 @@
-package com.psw9999.gongmozootopia.Adapter
+package com.psw9999.gongmozootopia.adapter
 
 import android.content.Context
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.psw9999.gongmozootopia.customView.UnderwriterView
 import com.psw9999.gongmozootopia.data.FollowingResponse
-import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.Util.DiffUtilCallback
 import com.psw9999.gongmozootopia.databinding.HolderStockBinding
@@ -17,8 +14,6 @@ import com.psw9999.gongmozootopia.databinding.HolderStockBinding
 class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>() {
     private var stockList = listOf<StockResponse>()
     private var stockFirmFollowing = mapOf<String,Boolean>()
-
-    lateinit var mContext : Context
     lateinit var mStockClickListener : OnStockClickListener
 
     interface OnStockClickListener {
@@ -31,8 +26,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : StockListAdapter.StockViewHolder {
-        mContext = parent.context
-        var binding = HolderStockBinding.inflate(LayoutInflater.from(mContext),parent,false)
+        var binding = HolderStockBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return StockViewHolder(binding)
     }
 
@@ -85,7 +79,7 @@ class StockListAdapter : RecyclerView.Adapter<StockListAdapter.StockViewHolder>(
                 binding.chipGroupAlarm.removeAllViews()
                 underwriter?.let {
                     for (name in it.split(',')) {
-                        binding.chipGroupAlarm.addView(UnderwriterView(mContext).apply {
+                        binding.chipGroupAlarm.addView(UnderwriterView(binding.chipGroupAlarm.context).apply {
                             this.text = name
                             this.isChecked = stockFirmFollowing.getOrDefault(name, false)
                         })
