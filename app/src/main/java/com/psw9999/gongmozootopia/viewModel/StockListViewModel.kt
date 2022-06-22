@@ -19,11 +19,8 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
 
     val kindsFilteringArray = arrayOf("공모주","실권주","스팩주")
 
-    val _stockList : MutableLiveData<PagingData<StockResponse>>
-        = stockListRepository.getStockDataByPaging().cachedIn(viewModelScope) as MutableLiveData<PagingData<StockResponse>>
-    val stockList : LiveData<PagingData<StockResponse>>
-        get() = _stockList
-
+    val _stockList
+        = stockListRepository.getStockDataByPaging().cachedIn(viewModelScope)
     val followingList : LiveData<List<Long>>
 
     init {
@@ -44,7 +41,7 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun followingListFiltering() = _stockList.value!!.filter { stock ->
-        stock.stockKinds in kindsFilteringArray
-    }
+//    fun followingListFiltering() = _stockList.value!!.filter { stock ->
+//        stock.stockKinds in kindsFilteringArray
+//    }
 }

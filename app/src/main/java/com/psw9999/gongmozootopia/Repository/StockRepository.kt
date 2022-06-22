@@ -20,10 +20,8 @@ class StockRepository {
     }
 
     fun getStockDataByPaging() : Flow<PagingData<StockResponse>> {
-        return Pager(
-            config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = StockListPagingSource()
-        ).flow
+        return Pager(PagingConfig(pageSize = 10)) {
+            StockListPagingSource(dbsgAPI)
+        }.flow
     }
-
 }

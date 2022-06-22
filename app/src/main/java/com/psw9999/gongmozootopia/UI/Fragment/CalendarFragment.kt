@@ -67,6 +67,7 @@ class CalendarFragment : Fragment() {
                 scheduleViewModel.currentScheduleMoth.value =
                     (DateTime(CalendarUtils.today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
             }
+
             imgBtnNextBtn.setOnClickListener {
                 viewPager2Calendar.currentItem++
                 scheduleViewModel.currentScheduleMoth.value =

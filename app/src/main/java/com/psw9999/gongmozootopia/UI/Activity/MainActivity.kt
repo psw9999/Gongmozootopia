@@ -28,12 +28,13 @@ class MainActivity : AppCompatActivity() {
         viewPager2 = binding.viewPager2Main
         val pagerAdapter = MainViewPager(this)
         pagerAdapter.fragmentList = listOf(
-            StockListFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(STOCK_DATA,
-                        intent.getParcelableArrayListExtra(STOCK_DATA))
-                }
-            }
+//            StockListFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelableArrayList(STOCK_DATA,
+//                        intent.getParcelableArrayListExtra(STOCK_DATA))
+//                }
+//            }
+            StockListFragment()
             ,CalendarFragment(),ConfigurationFragment(),CommentFragment())
         viewPager2.adapter = pagerAdapter
         viewPager2.isUserInputEnabled = false
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     private fun setPageIndex(index: Int) {

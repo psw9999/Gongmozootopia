@@ -45,13 +45,13 @@ class LoadingActivity : AppCompatActivity() {
                 }
 
                 launch {
-                    stockData = deferredStockData.await()
-                    stockData.forEach { data ->
-                        scheduleCheck(data)
-                    }
-                    mainIntent.apply {
-                        putExtra(STOCK_DATA,stockData)
-                    }
+//                    stockData = deferredStockData.await()
+//                    stockData.forEach { data ->
+//                        scheduleCheck(data)
+//                    }
+//                    mainIntent.apply {
+//                        putExtra(STOCK_DATA,stockData)
+//                    }
                     startActivity(mainIntent)
                     finish()
                 }

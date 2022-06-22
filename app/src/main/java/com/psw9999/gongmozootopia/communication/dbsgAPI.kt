@@ -15,6 +15,13 @@ interface dbsgAPI {
     @GET("/api/v1/ipo")
     fun getStockList() : retrofit2.Call<ArrayList<StockResponse>>
 
+    @GET("/api/v1/ipo")
+    fun getStockList(
+        @Query("page") page : Int,
+        @Query("num") num : Int = 10,
+        @Query("queryString") queryString : String = "stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null"
+    ) : retrofit2.Call<ArrayList<StockResponse>>
+
     @GET("/api/v1/ipo/detail/{ipoIndex}")
     fun getStockInfo(@Path("ipoIndex") ipoIndex : Long) : retrofit2.Call<StockInfoResponse>
 

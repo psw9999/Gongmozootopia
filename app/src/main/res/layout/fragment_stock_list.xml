@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,93 +10,99 @@
     android:orientation="vertical"
     tools:context=".UI.Fragment.StockListFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/mainActivity_appbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/mainActivity_appbarLayout"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mainActivity_appbar"
+            style="@style/AppTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="40dp"
+            app:title="공모주토피아"
+            app:titleTextAppearance="@style/AppBarTitleSize"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/mainActivity_appbar"
-                style="@style/AppTheme"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:title="공모주토피아"
-                app:titleTextAppearance="@style/AppBarTitleSize">
-            </com.google.android.material.appbar.MaterialToolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView_login"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="1dp"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView_stockList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivity_appbarLayout">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView_login"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:visibility="gone"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="1dp"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView_stock"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mainActivity_appbarLayout">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView_loginGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:text="모든 기기에 설정을 동기화하세요. 지금 로그인할까요?"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView_loginGuide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="25dp"
-                    android:text="모든 기기에 설정을 동기화하세요. 지금 로그인할까요?"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login_later"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="나중에 하기"
+                android:textColor="#4CAF50"
+                app:layout_constraintEnd_toStartOf="@id/button_login"
+                app:layout_constraintTop_toBottomOf="@+id/textView_loginGuide" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_login_later"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="나중에 하기"
-                    android:textColor="#4CAF50"
-                    app:layout_constraintEnd_toStartOf="@id/button_login"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_loginGuide" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="로그인"
+                android:textColor="#4CAF50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/button_login_later" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_login"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:text="로그인"
-                    android:textColor="#4CAF50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/button_login_later" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_stockList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintBottom_toTopOf="@id/append_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_login" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_stock"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:nestedScrollingEnabled="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView_login" />
+    <ProgressBar
+        android:id="@+id/append_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_stockList" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

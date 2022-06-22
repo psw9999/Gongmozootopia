@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.psw9999.gongmozootopia.adapter.CommentAdapter
 import com.psw9999.gongmozootopia.Repository.CommentRepository
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
+import com.psw9999.gongmozootopia.base.BaseApplication
 import com.psw9999.gongmozootopia.data.CommentListItem
 import com.psw9999.gongmozootopia.databinding.FragmentCommentBinding
 import kotlinx.coroutines.*
@@ -53,7 +54,11 @@ class CommentFragment : Fragment() {
         commentAdapter.commentLists = comments
         binding.recyclerViewComment.adapter = commentAdapter
         binding.recyclerViewComment.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewComment.addItemDecoration(GridViewDecoration(30))
+        binding.recyclerViewComment.addItemDecoration((GridViewDecoration(
+            BaseApplication.dpToPx(
+                requireContext(),
+                10F
+            ).toInt())))
     }
 
 }
