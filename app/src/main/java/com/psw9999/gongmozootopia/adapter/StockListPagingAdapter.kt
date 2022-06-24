@@ -1,19 +1,22 @@
 package com.psw9999.gongmozootopia.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.psw9999.gongmozootopia.Util.DiffUtilCallback
 import com.psw9999.gongmozootopia.customView.UnderwriterView
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.databinding.HolderStockBinding
 
+const val TAG = "StockListPagingAdapter"
+
 class StockListPagingAdapter :
     PagingDataAdapter<StockResponse, StockListPagingAdapter.StockViewHolder>(diffCallback = differ) {
-    private var stockFirmFollowing = mapOf<String,Boolean>()
+    private var stockFirmEnableMap = mapOf<String,Boolean>()
+    private var stockFollowingList = listOf<Long>()
     lateinit var mStockClickListener : OnStockClickListener
 
     companion object {
@@ -23,8 +26,7 @@ class StockListPagingAdapter :
             }
 
             override fun areContentsTheSame(oldItem: StockResponse, newItem: StockResponse): Boolean {
-                return oldItem.stockName == newItem.stockName &&
-                        oldItem.stockExchange == newItem.stockExchange
+                return oldItem.stockName == newItem.stockName
             }
         }
     }
@@ -36,6 +38,17 @@ class StockListPagingAdapter :
 
     fun setOnStockClickListener (mListener : OnStockClickListener) {
         this.mStockClickListener = mListener
+    }
+
+    fun setFollowingList(followingList : List<Long>) {
+        this.stockFollowingList = followingList
+        notifyDataSetChanged()
+    }
+
+    fun setStockFirmMap(stockFirmFollowing : Map<String,Boolean>) {
+        this.stockFirmEnableMap = stockFirmFollowing
+        // 수정 필요..
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
@@ -55,8 +68,8 @@ class StockListPagingAdapter :
             binding.imageViewFavorit.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     getItem(bindingAdapterPosition)?.let {
-                        mStockClickListener.stockFollowingClick(FollowingResponse(it.ipoIndex, it.stockName, it.isFollowing))
-                        binding.imageViewFavorit.isSelected = !binding.imageViewFavorit.isSelected
+                        mStockClickListener.stockFollowingClick(
+                            FollowingResponse(it.ipoIndex, it.stockName, it.ipoIndex in stockFollowingList))
                     }
                 }
             }
@@ -71,14 +84,16 @@ class StockListPagingAdapter :
         }
 
         fun binding(stockData : StockResponse) {
+            Log.d(TAG, "binding")
             binding.stockItem = stockData
+            binding.imageViewFavorit.isSelected = stockData.ipoIndex in stockFollowingList
             with(stockData) {
                 binding.chipGroupAlarm.removeAllViews()
                 underwriter?.let {
                     for (name in it.split(',')) {
                         binding.chipGroupAlarm.addView(UnderwriterView(binding.chipGroupAlarm.context).apply {
                             this.text = name
-                            this.isChecked = stockFirmFollowing.getOrDefault(name, false)
+                            this.isChecked = stockFirmEnableMap.getOrDefault(name, false)
                         })
                     }
                 }

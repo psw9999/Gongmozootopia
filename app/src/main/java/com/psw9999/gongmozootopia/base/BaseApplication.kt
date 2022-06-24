@@ -7,13 +7,13 @@ import android.graphics.drawable.ColorDrawable
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatDialog
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.Repository.SettingRepository
+import com.psw9999.gongmozootopia.Repository.ConfigurationRepository
 
 class BaseApplication : Application(){
     companion object {
-        lateinit var settingsManager : SettingRepository
         lateinit var loadingDialog : AppCompatDialog
         lateinit var instance : BaseApplication
+        lateinit var configurationManager : ConfigurationRepository
         fun dpToPx (context : Context, size : Float) : Float {
             return (size * (context.resources
                 .displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT))
@@ -27,7 +27,7 @@ class BaseApplication : Application(){
     override fun onCreate() {
         super.onCreate()
         instance = this
-        settingsManager = SettingRepository(applicationContext)
+        configurationManager = ConfigurationRepository(applicationContext)
     }
 
     fun loadingOn(activity : Activity) {

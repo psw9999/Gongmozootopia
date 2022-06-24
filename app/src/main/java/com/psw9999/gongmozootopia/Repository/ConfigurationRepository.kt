@@ -9,15 +9,13 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class SettingRepository(var context: Context) {
+class ConfigurationRepository(private val context: Context) {
     private val IS_FORFEITED_ENABLED = booleanPreferencesKey("forfeitedStock_Enabled")
     private val IS_SPAC_ENABLED = booleanPreferencesKey("spacStock_Enabled")
     private val stockFirmList =
@@ -40,7 +38,7 @@ class SettingRepository(var context: Context) {
                 stockFirmMap[firmName] = isFirmEnabled
             }
             stockFirmMap
-        }
+        }.flowOn(Dispatchers.IO)
 
     suspend fun setStockFirmEnable(firmName : String, isEnabled : Boolean) {
         context.dataStore.edit { preferences ->
@@ -56,7 +54,7 @@ class SettingRepository(var context: Context) {
         .map { preferences->
             var isForfeitedEnabled =  preferences[IS_FORFEITED_ENABLED]?: false
             isForfeitedEnabled
-        }
+        }.flowOn(Dispatchers.IO)
 
     suspend fun setForfeitedEnabled(isEnabled: Boolean) {
         context.dataStore.edit { preferences ->
@@ -72,7 +70,7 @@ class SettingRepository(var context: Context) {
         .map { preferences->
             var isSpacEnabled = preferences[IS_SPAC_ENABLED]?: false
             isSpacEnabled
-        }
+        }.flowOn(Dispatchers.IO)
 
     suspend fun setSpacEnabled(isEnabled: Boolean) {
         context.dataStore.edit { preferences ->

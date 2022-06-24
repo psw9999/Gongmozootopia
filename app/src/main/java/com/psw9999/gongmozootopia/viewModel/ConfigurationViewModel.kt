@@ -1,36 +1,48 @@
 package com.psw9999.gongmozootopia.viewModel
 
+import android.app.Application
 import androidx.lifecycle.*
-import com.psw9999.gongmozootopia.base.BaseApplication.Companion.settingsManager
+import com.psw9999.gongmozootopia.base.BaseApplication.Companion.configurationManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class ConfigurationViewModel : ViewModel(){
-    val stockFirmData : LiveData<Map<String,Boolean>>
-        get() = settingsManager.stockFirmFlow.asLiveData()
+class ConfigurationViewModel : ViewModel() {
+
+    val stockFirmMap : LiveData<Map<String, Boolean>>
+        get() = configurationManager.stockFirmFlow.distinctUntilChanged().asLiveData()
 
     fun setStockFirmData(stockName : String, isEnabled: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingsManager.setStockFirmEnable(stockName, isEnabled)
+            configurationManager.setStockFirmEnable(stockName, isEnabled)
         }
     }
 
-    val isForfeitedEnabled : LiveData<Boolean>
-        get() = settingsManager.forfeitedStockFlow.asLiveData()
+    val forfeitedFlow : Flow<Boolean>
+        get() = configurationManager.forfeitedStockFlow
 
     fun setForfeitedEnabled(isEnabled : Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingsManager.setForfeitedEnabled(isEnabled)
+            configurationManager.setForfeitedEnabled(isEnabled)
         }
     }
 
-    val isSpacEnabled : LiveData<Boolean>
-        get() = settingsManager.spacStockFlow.asLiveData()
+    val spacFlow : Flow<Boolean>
+        get() = configurationManager.spacStockFlow
 
     fun setSpacEnabled(isEnabled : Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            settingsManager.setSpacEnabled(isEnabled)
+            configurationManager.setSpacEnabled(isEnabled)
         }
     }
 
+    val kindFilterFlow : Flow<Array<String>> =
+        configurationManager.forfeitedStockFlow.combine(configurationManager.spacStockFlow) { forfeited, spac ->
+            val filterArray = arrayOf("공모주", "실권주", "스팩주")
+            if (!forfeited) filterArray[1] = ""
+            if (!spac) filterArray[2] = ""
+            filterArray
+        }
 }

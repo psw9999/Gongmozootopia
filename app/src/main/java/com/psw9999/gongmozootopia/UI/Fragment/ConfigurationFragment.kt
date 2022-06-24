@@ -22,6 +22,12 @@ import com.google.android.material.chip.Chip
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.Util.AlarmReceiver
 import com.psw9999.gongmozootopia.databinding.FragmentConfigurationBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 
 class ConfigurationFragment : Fragment() {
@@ -47,26 +53,21 @@ class ConfigurationFragment : Fragment() {
     ): View? {
         binding = FragmentConfigurationBinding.inflate(inflater,container,false)
         testAlarmInit()
+        initConfiguration()
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initConfiguration()
-    }
-
     private fun initConfiguration() {
-        configurationViewModel.stockFirmData.observeOnce(viewLifecycleOwner, Observer {
+        configurationViewModel.stockFirmMap.observeOnce(viewLifecycleOwner, Observer {
             binding.chipGroupStockFirm.children.forEach { chip ->
                 (chip as Chip).isChecked = it.getOrDefault(chip.tag, false)
             }
         })
-        configurationViewModel.isForfeitedEnabled.observeOnce(viewLifecycleOwner, Observer {
-            binding.switchForfeitedStockFiltering.isChecked = it
-        })
-        configurationViewModel.isSpacEnabled.observeOnce(viewLifecycleOwner, Observer {
-            binding.switchSpacStockFiltering.isChecked = it
-        })
+
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.switchForfeitedStockFiltering.isChecked = configurationViewModel.forfeitedFlow.first()
+            binding.switchSpacStockFiltering.isChecked = configurationViewModel.spacFlow.first()
+        }
 
         binding.chipGroupStockFirm.children.forEach { chip ->
             (chip as Chip).setOnClickListener {

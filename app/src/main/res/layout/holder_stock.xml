@@ -66,8 +66,7 @@
                     android:layout_margin="10dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat = "@drawable/imgbtn_favorit_states"
-                    is_following="@{stockItem.following}"/>
+                    app:srcCompat = "@drawable/imgbtn_favorit_states" />
 
                 <TextView
                     android:id="@+id/textView_stockName"

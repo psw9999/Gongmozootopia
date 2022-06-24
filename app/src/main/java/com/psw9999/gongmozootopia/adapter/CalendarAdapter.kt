@@ -2,6 +2,7 @@ package com.psw9999.gongmozootopia.adapter
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.*
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -136,17 +137,17 @@ class CalendarFragment : Fragment() {
             onBindLabel()
         })
 
-        configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) kindFilteringArray[1] = "실권주"
-            else kindFilteringArray[1] = ""
-            onBindLabel()
-        })
-
-        configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
-            if(it) kindFilteringArray[2] = "스팩주"
-            else kindFilteringArray[2] = ""
-            onBindLabel()
-        })
+//        configurationViewModel.isForfeitedEnabled.observe(viewLifecycleOwner, Observer {
+//            if(it) kindFilteringArray[1] = "실권주"
+//            else kindFilteringArray[1] = ""
+//            onBindLabel()
+//        })
+//
+//        configurationViewModel.isSpacEnabled.observe(viewLifecycleOwner, Observer {
+//            if(it) kindFilteringArray[2] = "스팩주"
+//            else kindFilteringArray[2] = ""
+//            onBindLabel()
+//        })
         setOnClickListener()
         return viewBinding.root
     }
@@ -231,6 +232,7 @@ class CalendarFragment : Fragment() {
 
     // 스케줄 라벨 Bind
     private fun onBindLabel() {
+        Log.d("CalendarFragment","Binding")
         for ((i, gridLayout) in rows.withIndex()) {
             // 갱신시 이전 라벨뷰 삭제 (달력 일자 View 제외)
             gridLayout.removeViews(7,gridLayout.childCount-7)

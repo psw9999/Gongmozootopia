@@ -3,10 +3,12 @@ package com.psw9999.gongmozootopia.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.psw9999.gongmozootopia.DAO.FollowingDAO
 import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.communication.dbsgAPI
 import com.psw9999.gongmozootopia.data.StockResponse
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import org.joda.time.DateTime
 import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
@@ -26,7 +28,6 @@ class StockListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, StockResponse> {
         // If params.key is null, it is the first load, so we start loading with STARTING_KEY
         val position = params.key ?: STARTING_PAGE_INDEX
-
         return try {
             val response = service.getStockList(
                 page = position,
@@ -34,6 +35,7 @@ class StockListPagingSource(
             )
 
             val stockList = response.await().onEach {
+                //TODO : default 단에서 수행하도록 수정하기
                 scheduleCheck(it)
                 underwriterCheck(it)
             }

@@ -21,6 +21,10 @@ interface FollowingDAO {
 
     // 특정 팔로잉 데이터 가져오기
     @Query("SELECT is_following FROM stock_following WHERE ipoIndex = :ipoIndex")
+    fun getFollowing(ipoIndex : Long) : Boolean
+
+    // 특정 팔로잉 데이터 가져오기
+    @Query("SELECT is_following FROM stock_following WHERE ipoIndex = :ipoIndex")
     fun getFollowingFlow(ipoIndex : Long) : Flow<Boolean>
 
     // 특정 팔로잉 데이터 업데이트
