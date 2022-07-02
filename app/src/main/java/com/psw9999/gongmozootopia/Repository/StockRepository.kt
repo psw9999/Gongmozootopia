@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.await
 import java.time.LocalDate
 
-class StockRepository() {
+class StockRepository {
     private val dbsgAPI = ServerImpl.APIService
 
     suspend fun getStockData() : ArrayList<StockResponse> {
@@ -24,5 +24,10 @@ class StockRepository() {
         return Pager(PagingConfig(pageSize = 10)) {
             StockListPagingSource(dbsgAPI)
         }.flow
+    }
+
+    suspend fun getTodayStockData() : ArrayList<StockResponse> {
+        val request = dbsgAPI.getStockList()
+        return request.await()
     }
 }

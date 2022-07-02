@@ -13,7 +13,13 @@ interface dbsgAPI {
     ) : retrofit2.Call<LoginData>
 
     @GET("/api/v1/ipo")
-    fun getStockList() : retrofit2.Call<ArrayList<StockResponse>>
+    fun getStockList(
+        @Query("queryString") queryString : String =
+                        "(ipo_start_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
+                        "(ipo_end_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
+                        "(ipo_refund_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
+                        "(ipo_debut_date BETWEEN '2022-06-30' AND '2022-06-30') and stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null"
+    ) : retrofit2.Call<ArrayList<StockResponse>>
 
     @GET("/api/v1/ipo")
     fun getStockList(

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.filter
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
@@ -22,12 +23,13 @@ import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.adapter.StockListPagingAdapter
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.data.FollowingResponse
+import com.psw9999.gongmozootopia.data.StockListItem
+import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.viewModel.StockListViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
 
 class StockListFragment : Fragment() {
     private lateinit var binding : FragmentStockListBinding
@@ -53,15 +55,26 @@ class StockListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                stockListViewModel.stockList.combine(configurationViewModel.kindFilterFlow) { stockList, kindFilter ->
-                    stockList.filter { it.stockKinds in kindFilter }
+                stockListViewModel.stockList.combine(configurationViewModel.kindFilterFlow) { stockList, kindFiltering ->
+                    stockList.filter { stockListItem ->
+                        when (stockListItem) {
+                            is StockListItem.StockItem -> {
+                                stockListItem.stock.stockKinds in kindFiltering
+                            }
+                            else -> {
+                                true
+                            }
+                        }
+                    }
                 }.collectLatest {
                     stockListAdapter.submitData(it)
                 }
             }
         }
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -83,7 +96,6 @@ class StockListFragment : Fragment() {
     }
 
     private fun onClickSetting() {
-        Log.d(TAG, "onClickSetting")
         stockListAdapter.setOnStockClickListener(object : StockListPagingAdapter.OnStockClickListener {
             override fun stockCardClick(ipoIndex: Long) {
                 stockInfoIntent.apply {
@@ -111,5 +123,4 @@ class StockListFragment : Fragment() {
         binding.recyclerViewStockList.addItemDecoration(GridViewDecoration(dpToPx(requireContext(),10F).toInt()))
         onClickSetting()
     }
-
 }

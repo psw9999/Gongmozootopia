@@ -18,5 +18,6 @@ data class StockResponse(
     @SerializedName("underwriter") var underwriter : String?,
     var isFollowing : Boolean = false,
     var currentSchedule : String?,
-    var scheduleDday : String?
+    var scheduleDday : String?,
+    var scheduleState : Int
 ) : Parcelable
