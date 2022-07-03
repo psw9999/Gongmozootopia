@@ -11,6 +11,8 @@ import androidx.paging.map
 import com.psw9999.gongmozootopia.Repository.FollowingListRepository
 import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.Room.FollowingDatabase
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.fmt
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockListItem
 import com.psw9999.gongmozootopia.data.StockResponse
@@ -55,11 +57,13 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
                         return@insertSeparators StockListItem.SeparatorItem("오늘 일정입니다.")
                     }
 
-                    if (after.stock.scheduleState > 0) {
-                        if (before.stock.scheduleState == 0) {
-                            StockListItem.SeparatorItem("나머지 일정입니다.")
-                        }else{
-                            null
+                    if (before.stock.scheduleState != after.stock.scheduleState) {
+                        when(after.stock.scheduleState) {
+                            1 -> StockListItem.SeparatorItem("청약 예정 종목입니다.")
+                            2 -> StockListItem.SeparatorItem("환불 예정 종목입니다.")
+                            3 -> StockListItem.SeparatorItem("상장 예정 종목입니다.")
+                            4 -> StockListItem.SeparatorItem("상장 완료 종목입니다.")
+                            else -> null
                         }
                     } else {
                         null
@@ -81,8 +85,6 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun scheduleCheck(stockData : StockResponse) {
-        val fmt : DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
-        val today = DateTime().toLocalDate()
         val ipoStartDday : Int =
             stockData.ipoStartDate?.let { Days.daysBetween(today, fmt.parseDateTime(stockData.ipoStartDate).toLocalDate()).days}?:-1
         val ipoEndDday : Int =
@@ -131,13 +133,13 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
             }
             else {
                 stockData.scheduleDday = "D-$debutDday"
-                stockData.scheduleState = 4
+                stockData.scheduleState = 3
             }
         }
         else {
             stockData.currentSchedule = "상장완료"
             stockData.scheduleDday = ""
-            stockData.scheduleState = 5
+            stockData.scheduleState = 4
         }
     }
 
@@ -154,4 +156,5 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
             else stockData.underwriter = sb.substring(0, sb.length-1)
         }
     }
+
 }

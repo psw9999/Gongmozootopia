@@ -19,6 +19,7 @@
     <string name="institution">%.2f : 1</string>
     <string name="percent">%.2f %%</string>
 
+    <string name="getTodayIpoList"> (ipo_start_date BETWEEN %s AND %s) OR (ipo_end_date BETWEEN %s AND %s) OR (ipo_refund_date BETWEEN %s AND %s) OR (ipo_debut_date BETWEEN %s AND %s) and stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null</string>
 
 
 </resources>

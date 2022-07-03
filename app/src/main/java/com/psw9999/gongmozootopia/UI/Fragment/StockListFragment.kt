@@ -1,5 +1,6 @@
 package com.psw9999.gongmozootopia.UI.Fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentStockListBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
@@ -49,6 +51,7 @@ class StockListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStockListBinding.inflate(inflater,container,false)
+        Log.d("today","$today")
         return binding.root
     }
 
@@ -74,7 +77,6 @@ class StockListFragment : Fragment() {
                 }
             }
         }
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

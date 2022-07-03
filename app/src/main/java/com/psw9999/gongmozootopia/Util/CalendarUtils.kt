@@ -6,11 +6,15 @@ import androidx.annotation.IntRange
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
 import org.joda.time.Days
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 class CalendarUtils {
     companion object {
         const val WEEKS_PER_MONTH = 6
-        val today = DateTime()
+
+        val today = DateTime().toLocalDate()
+        val fmt : DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
 
         fun getMonthList(dateTime: DateTime): List<DateTime> {
             val list = mutableListOf<DateTime>()
@@ -53,6 +57,4 @@ class CalendarUtils {
             }
         }
     }
-
-
 }

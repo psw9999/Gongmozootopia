@@ -6,26 +6,21 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface dbsgAPI {
-
     @GET("/login/kakaoAccessToken")
     fun getPost(
         @Query("accessToken") accessToken : String
     ) : retrofit2.Call<LoginData>
 
     @GET("/api/v1/ipo")
-    fun getStockList(
-        @Query("queryString") queryString : String =
-                        "(ipo_start_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
-                        "(ipo_end_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
-                        "(ipo_refund_date BETWEEN '2022-06-30' AND '2022-06-30') OR" +
-                        "(ipo_debut_date BETWEEN '2022-06-30' AND '2022-06-30') and stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null"
+    fun getIpoList(
+        @Query("queryString") queryString : String
     ) : retrofit2.Call<ArrayList<StockResponse>>
 
     @GET("/api/v1/ipo")
-    fun getStockList(
+    fun getIpoList(
         @Query("page") page : Int,
         @Query("num") num : Int = 10,
-        @Query("queryString") queryString : String = "stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null"
+        @Query("queryString") queryString : String
     ) : retrofit2.Call<ArrayList<StockResponse>>
 
     @GET("/api/v1/ipo/detail/{ipoIndex}")

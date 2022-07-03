@@ -3,20 +3,11 @@ package com.psw9999.gongmozootopia.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.psw9999.gongmozootopia.DAO.FollowingDAO
-import com.psw9999.gongmozootopia.Util.CalendarUtils
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.fmt
+import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.communication.dbsgAPI
 import com.psw9999.gongmozootopia.data.StockResponse
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
-import org.joda.time.DateTime
-import org.joda.time.Days
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import retrofit2.HttpException
 import retrofit2.await
-import java.io.IOException
-import java.lang.Integer.max
 
 private const val STARTING_PAGE_INDEX = 1
 private const val NETWORK_PAGE_SIZE = 10
@@ -29,37 +20,21 @@ class StockListPagingSource(
         // If params.key is null, it is the first load, so we start loading with STARTING_KEY
         //val position = params.key ?: STARTING_PAGE_INDEX
         val position = params.key
-//        return try {
-//            val response = service.getStockList(
-//                page = position!!,
-//                num = params.loadSize
-//            )
-//            val stockList = response.await()
-//            val nextKey =
-//                if (stockList.isEmpty()) {
-//                    null
-//                } else {
-//                    position + (params.loadSize / NETWORK_PAGE_SIZE)
-//                }
-//            LoadResult.Page(
-//                data = stockList,
-//                prevKey = when (position) {
-//                    STARTING_PAGE_INDEX -> null
-//                    else -> position - 1
-//                    },
-//                nextKey = nextKey
-//            )
-//        } catch (exception: IOException) {
-//            LoadResult.Error(exception)
-//        } catch (exception: HttpException) {
-//            LoadResult.Error(exception)
-//        } catch (e: Exception) {
-//            LoadResult.Error(e)
-//        }
         return when (position) {
             null -> {
-                val response = service.getStockList()
-                val stockList = response.await()
+                val stockList = ArrayList<StockResponse>().apply {
+                    val temp = service.getIpoList(todayStockQuery).await()
+                    Log.d("temp","$temp, $todayStockQuery")
+                    // 1. 오늘 일정있는 종목 불러오기
+                    this.addAll(temp)
+                    // 2. 청약 예정 종목 불러오기
+                    this.addAll(service.getIpoList(ipoStockQuery).await())
+                    // 3. 환불 예정 종목 불러오기
+                    this.addAll(service.getIpoList(refundStockQuery).await())
+                    // 4. 상장 예정 종목 불러오기
+                    this.addAll(service.getIpoList(debutStockQuery).await())
+                }
+
                 LoadResult.Page(
                     data = stockList,
                     prevKey = null,
@@ -67,9 +42,10 @@ class StockListPagingSource(
                 )
             }
             else -> {
-                val response = service.getStockList(
+                val response = service.getIpoList(
                     page = position!!,
-                    num = params.loadSize
+                    num = params.loadSize,
+                    queryString = completeStock
                 )
                 val stockList = response.await()
                 val nextKey =
@@ -99,5 +75,20 @@ class StockListPagingSource(
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
+    }
+
+    companion object {
+        val todayString = today.toString(fmt)
+        val filteringQuery = "stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null and  ipo_cancel_bool = \"N\""
+        val todayStockQuery =
+                "('$todayString' BETWEEN ipo_start_date AND ipo_end_date) "
+        val ipoStockQuery =
+            "ipo_start_date > $todayString and $filteringQuery"
+        val refundStockQuery =
+            "ipo_end_date < $todayString and ipo_refund_date > $todayString and $filteringQuery"
+        val debutStockQuery =
+            "ipo_refund_date < $todayString and ipo_debut_date > $todayString and $filteringQuery"
+        val completeStock =
+            "ipo_debut_date < $todayString and $filteringQuery"
     }
 }
