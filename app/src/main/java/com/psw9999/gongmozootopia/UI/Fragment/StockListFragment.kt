@@ -1,12 +1,9 @@
 package com.psw9999.gongmozootopia.UI.Fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -14,29 +11,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.filter
-import androidx.paging.map
+import androidx.paging.insertSeparators
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
-import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentStockListBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.adapter.StockListPagingAdapter
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
+import com.psw9999.gongmozootopia.base.BaseFragment
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockListItem
-import com.psw9999.gongmozootopia.data.StockResponse
+import com.psw9999.gongmozootopia.paging.StockScheduleQuery
 import com.psw9999.gongmozootopia.viewModel.StockListViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 
-class StockListFragment : Fragment() {
-    private lateinit var binding : FragmentStockListBinding
+class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockListBinding :: inflate) {
     private lateinit var stockListAdapter : StockListPagingAdapter
-
     private val stockListViewModel : StockListViewModel by viewModels()
     private val configurationViewModel : ConfigurationViewModel by viewModels()
 
@@ -44,34 +38,36 @@ class StockListFragment : Fragment() {
         Intent(requireContext(), StockInformationActivity::class.java)
     }
 
-    private val TAG = "StockListFragment"
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentStockListBinding.inflate(inflater,container,false)
-        Log.d("today","$today")
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 stockListViewModel.stockList.combine(configurationViewModel.kindFilterFlow) { stockList, kindFiltering ->
-                    stockList.filter { stockListItem ->
-                        when (stockListItem) {
-                            is StockListItem.StockItem -> {
-                                stockListItem.stock.stockKinds in kindFiltering
-                            }
-                            else -> {
-                                true
+                    stockList
+                        .filter { stockListItem ->
+                            when (stockListItem) {
+                                is StockListItem.StockItem -> {
+                                    stockListItem.stock.stockKinds in kindFiltering
+                                }
+                                else -> {
+                                    true
+                                }
                             }
                         }
-                    }
+                        .insertSeparators { before, after ->
+                            if (before is StockListItem.SeparatorItem && after is StockListItem.SeparatorItem) {
+                                when (before.headerText) {
+                                    StockScheduleQuery.TodaySchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.TodaySchedule.emptyGuide)
+                                    StockScheduleQuery.IpoExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.IpoExpectedSchedule.emptyGuide)
+                                    StockScheduleQuery.RefundExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.RefundExpectedSchedule.emptyGuide)
+                                    StockScheduleQuery.DebutExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.DebutExpectedSchedule.emptyGuide)
+                                    else -> null
+                                }
+                            } else {
+                                null
+                            }
+                        }
                 }.collectLatest {
                     stockListAdapter.submitData(it)
                 }

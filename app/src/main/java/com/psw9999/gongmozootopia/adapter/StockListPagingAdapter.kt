@@ -11,12 +11,7 @@ import com.psw9999.gongmozootopia.customView.UnderwriterView
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockListItem
 import com.psw9999.gongmozootopia.data.StockResponse
-import com.psw9999.gongmozootopia.databinding.HolderCommentListHeaderBinding
-import com.psw9999.gongmozootopia.databinding.HolderCommentListItemBinding
-import com.psw9999.gongmozootopia.databinding.HolderStockBinding
-import com.psw9999.gongmozootopia.databinding.HolderStockHeaderBinding
-
-const val TAG = "StockListPagingAdapter"
+import com.psw9999.gongmozootopia.databinding.*
 
 class StockListPagingAdapter :
     PagingDataAdapter<StockListItem, RecyclerView.ViewHolder>(diffCallback = differ) {
@@ -66,6 +61,13 @@ class StockListPagingAdapter :
                     false
                 )
             )
+            R.layout.holder_empty_stock -> EmptyStockViewHolder(
+                HolderEmptyStockBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
             else -> StockViewHolder(
                 HolderStockBinding.inflate(
                     LayoutInflater.from(
@@ -80,6 +82,7 @@ class StockListPagingAdapter :
         return when (getItem(position)) {
             is StockListItem.StockItem -> R.layout.holder_stock
             is StockListItem.SeparatorItem -> R.layout.holder_stock_header
+            is StockListItem.EmptyItem -> R.layout.holder_empty_stock
             null -> throw UnsupportedOperationException("Unknown view")
         }
     }
@@ -90,39 +93,51 @@ class StockListPagingAdapter :
             when(stockItem) {
                 is StockListItem.SeparatorItem -> (holder as StockHeaderViewHolder).binding(stockItem.headerText)
                 is StockListItem.StockItem -> (holder as StockViewHolder).binding(stockItem.stock)
+                is StockListItem.EmptyItem -> (holder as EmptyStockViewHolder).binding(stockItem.contentText)
             }
         }
     }
 
-    inner class StockHeaderViewHolder(val binding: HolderStockHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class EmptyStockViewHolder(val binding : HolderEmptyStockBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun binding(emptyGuide : String) {
+            binding.textViewEmpty.text = emptyGuide
+        }
+    }
+
+    class StockHeaderViewHolder(val binding: HolderStockHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun binding(headerText : String) {
             binding.separatorDescription.text = headerText
         }
     }
 
     inner class StockViewHolder(val binding : HolderStockBinding) : RecyclerView.ViewHolder(binding.root) {
-//        init {
-//            // 팔로잉 클릭 리스너
-//            binding.imageViewFavorit.setOnClickListener {
-//                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-//                    getItem(bindingAdapterPosition)?.let {
-//                        mStockClickListener.stockFollowingClick(
-//                            FollowingResponse(it.ipoIndex, it.stockName, it.ipoIndex in stockFollowingList))
-//                    }
-//                }
-//            }
-//            // 카드 클릭 리스너
-//            binding.cardViewStock.setOnClickListener {
-//                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-//                    getItem(bindingAdapterPosition)?.let {
-//                        mStockClickListener.stockCardClick(it.ipoIndex)
-//                    }
-//                }
-//            }
-//        }
+        init {
+            // 팔로잉 클릭 리스너
+            binding.imageViewFavorit.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { stockListItem ->
+                        if (stockListItem is StockListItem.StockItem) {
+                            with(stockListItem.stock) {
+                                mStockClickListener.stockFollowingClick(FollowingResponse(ipoIndex, stockName, ipoIndex in stockFollowingList))
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 카드 클릭 리스너
+            binding.cardViewStock.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { stockListItem ->
+                        if (stockListItem is StockListItem.StockItem) {
+                            mStockClickListener.stockCardClick(stockListItem.stock.ipoIndex)
+                        }
+                    }
+                }
+            }
+        }
 
         fun binding(stockData : StockResponse) {
-            Log.d(TAG, "binding")
             binding.stockItem = stockData
             binding.imageViewFavorit.isSelected = stockData.ipoIndex in stockFollowingList
             with(stockData) {
