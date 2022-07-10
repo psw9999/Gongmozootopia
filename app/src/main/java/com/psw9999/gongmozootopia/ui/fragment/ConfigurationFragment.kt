@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.ui.Fragment
+package com.psw9999.gongmozootopia.ui.fragment
 
 import android.app.AlarmManager
 import android.app.PendingIntent

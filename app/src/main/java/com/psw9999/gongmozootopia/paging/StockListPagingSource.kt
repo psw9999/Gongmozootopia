@@ -85,6 +85,7 @@ class StockListPagingSource(
         }
     }
 
+    // TODO : 간단히 수정 필요
     private fun scheduleCheck(stockData : StockResponse) {
         val ipoStartDday : Int =
             stockData.ipoStartDate?.let { Days.daysBetween(today, fmt.parseDateTime(stockData.ipoStartDate).toLocalDate()).days}?:-1
@@ -157,7 +158,8 @@ class StockListPagingSource(
 }
 
 enum class StockScheduleQuery(val title : String, val query : String, val emptyGuide : String) {
-    TodaySchedule("오늘의 진행 일정", "('${StockListPagingSource.todayString}' BETWEEN ipo_start_date AND ipo_end_date) AND ${StockListPagingSource.filteringQuery}", "오늘의 진행 일정이 없습니다."),
+    TodaySchedule("오늘의 진행 일정",
+        "('${StockListPagingSource.todayString}' BETWEEN ipo_start_date AND ipo_end_date) OR ('${StockListPagingSource.todayString}' = ipo_refund_date) OR ('${StockListPagingSource.todayString}' = ipo_debut_date) AND ${StockListPagingSource.filteringQuery}", "오늘의 진행 일정이 없습니다."),
     IpoExpectedSchedule("청약 예정 일정", "ipo_start_date > '${StockListPagingSource.todayString}' AND ${StockListPagingSource.filteringQuery}", "청약 예정 일정이 없습니다."),
     RefundExpectedSchedule("환불 예정 일정", "ipo_end_date < '${StockListPagingSource.todayString}' AND ipo_refund_date > '${StockListPagingSource.todayString}' AND ${StockListPagingSource.filteringQuery}", "환불 예정 일정이 없습니다."),
     DebutExpectedSchedule("상장 예정 일정","ipo_refund_date < '${StockListPagingSource.todayString}' AND ipo_debut_date > '${StockListPagingSource.todayString}' AND ${StockListPagingSource.filteringQuery}","상장 예정 일정이 없습니다.")

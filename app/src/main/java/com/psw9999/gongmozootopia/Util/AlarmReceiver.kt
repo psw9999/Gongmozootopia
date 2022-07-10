@@ -10,7 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.ui.activity.LoadingActivity
+import com.psw9999.gongmozootopia.ui.activity.HomeActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -31,7 +31,7 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun deliverNotification(context: Context) {
-        val contentIntent = Intent(context, LoadingActivity::class.java)
+        val contentIntent = Intent(context, HomeActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             NOTIFICATION_ID,

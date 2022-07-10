@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.ui.Fragment
+package com.psw9999.gongmozootopia.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -41,6 +41,10 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        observe()
+    }
+
+    private fun observe() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 stockListViewModel.stockList.combine(configurationViewModel.kindFilterFlow) { stockList, kindFiltering ->
@@ -77,20 +81,20 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 stockListAdapter.loadStateFlow.collectLatest {
+                    binding.loadingProgress.isVisible = it.source.refresh is LoadState.Loading
                     binding.appendProgress.isVisible = it.append is LoadState.Loading
                 }
             }
         }
 
         // TODO : 해당 옵저버 추가시 에뮬레이터에서 Skip frame 워닝 뜸.
-        stockListViewModel.followingList.observe(viewLifecycleOwner, Observer { followingList ->
+        stockListViewModel.followingList.observe(viewLifecycleOwner) { followingList ->
             stockListAdapter.setFollowingList(followingList)
-        })
+        }
 
-        configurationViewModel.stockFirmMap.observe(viewLifecycleOwner, Observer { stockFirmMap ->
+        configurationViewModel.stockFirmMap.observe(viewLifecycleOwner) { stockFirmMap ->
             stockListAdapter.setStockFirmMap(stockFirmMap)
-        })
-
+        }
     }
 
     private fun onClickSetting() {

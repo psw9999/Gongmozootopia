@@ -6,10 +6,10 @@ import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.databinding.ActivityHomeBinding
-import com.psw9999.gongmozootopia.ui.Fragment.CalendarFragment
-import com.psw9999.gongmozootopia.ui.Fragment.CommentFragment
-import com.psw9999.gongmozootopia.ui.Fragment.ConfigurationFragment
-import com.psw9999.gongmozootopia.ui.Fragment.StockListFragment
+import com.psw9999.gongmozootopia.ui.fragment.CalendarFragment
+import com.psw9999.gongmozootopia.ui.fragment.CommentFragment
+import com.psw9999.gongmozootopia.ui.fragment.ConfigurationFragment
+import com.psw9999.gongmozootopia.ui.fragment.StockListFragment
 import com.psw9999.gongmozootopia.viewModel.HomeViewModel
 
 class HomeActivity : AppCompatActivity() {

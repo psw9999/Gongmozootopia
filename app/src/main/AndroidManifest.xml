@@ -16,9 +16,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.psw9999.gongmozootopia.ui.activity.StockInformationActivity"></activity>
-        <activity android:name="com.psw9999.gongmozootopia.ui.activity.HomeActivity" />
-        <activity android:name="com.psw9999.gongmozootopia.ui.activity.LoadingActivity"
+        <activity android:name="com.psw9999.gongmozootopia.ui.activity.StockInformationActivity" />
+        <activity android:name="com.psw9999.gongmozootopia.ui.activity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +29,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <receiver android:name=".Util.AlarmReceiver"
-            android:exported="false"></receiver>
+        <receiver
+            android:name=".Util.AlarmReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>
