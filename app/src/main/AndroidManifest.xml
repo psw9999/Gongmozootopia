@@ -16,9 +16,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity"></activity>
-        <activity android:name="com.psw9999.gongmozootopia.UI.Activity.MainActivity" />
-        <activity android:name="com.psw9999.gongmozootopia.UI.Activity.LoadingActivity"
+        <activity android:name="com.psw9999.gongmozootopia.ui.activity.StockInformationActivity"></activity>
+        <activity android:name="com.psw9999.gongmozootopia.ui.activity.HomeActivity" />
+        <activity android:name="com.psw9999.gongmozootopia.ui.activity.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

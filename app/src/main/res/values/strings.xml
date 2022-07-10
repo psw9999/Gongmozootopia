@@ -21,5 +21,8 @@
 
     <string name="getTodayIpoList"> (ipo_start_date BETWEEN %s AND %s) OR (ipo_end_date BETWEEN %s AND %s) OR (ipo_refund_date BETWEEN %s AND %s) OR (ipo_debut_date BETWEEN %s AND %s) and stock_exchange is not null and stock_kinds is not null and ipo_start_date is not null</string>
 
-
+    <string name="BottomMenu_Home">홈</string>
+    <string name="BottomMenu_Calendar">캘린더</string>
+    <string name="BottomMenu_Comment">코멘트</string>
+    <string name="BottomMenu_Setting">설정</string>
 </resources>

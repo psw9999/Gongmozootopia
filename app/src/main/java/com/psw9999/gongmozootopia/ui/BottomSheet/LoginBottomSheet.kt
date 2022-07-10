@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.UI.BottomSheet
+package com.psw9999.gongmozootopia.ui.BottomSheet
 
 import android.os.Bundle
 import android.util.Log

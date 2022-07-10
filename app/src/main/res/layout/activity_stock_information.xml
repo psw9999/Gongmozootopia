@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity"/>
+        <import type="com.psw9999.gongmozootopia.ui.activity.StockInformationActivity"/>
         <variable
             name="viewModel"
             type="com.psw9999.gongmozootopia.viewModel.StockInfoViewModel" />
@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".UI.Activity.StockInformationActivity">
+            tools:context=".ui.activity.StockInformationActivity">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/stockInfo_appbarLayout"

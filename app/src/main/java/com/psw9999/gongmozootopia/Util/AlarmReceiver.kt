@@ -10,7 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.UI.Activity.LoadingActivity
+import com.psw9999.gongmozootopia.ui.activity.LoadingActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 

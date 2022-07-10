@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.UI.Fragment
+package com.psw9999.gongmozootopia.ui.Fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ import androidx.paging.filter
 import androidx.paging.insertSeparators
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
+import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
 import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.databinding.FragmentStockListBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration

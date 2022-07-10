@@ -53,6 +53,4 @@ class StockListViewModel(application: Application) : AndroidViewModel(applicatio
             followingRepository.deleteFollowing(ipoIndex)
         }
     }
-
-
 }

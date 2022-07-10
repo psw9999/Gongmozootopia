@@ -57,7 +57,9 @@
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="..\:/Users/82109/AndroidStudioProjects/IPO_Alarm/app/src/main/res/mipmap-anydpi-v26/logo.xml" value="0.2635" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.16134751773049646" />
         <entry key="app/src/main/res/layout/holder_empty_stock.xml" value="0.2898550724637681" />
+        <entry key="app/src/main/res/menu/main_bottom_navigation_items.xml" value="0.1" />
       </map>
     </option>
   </component>

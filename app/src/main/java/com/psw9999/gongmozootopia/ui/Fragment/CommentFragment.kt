@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.UI.Fragment
+package com.psw9999.gongmozootopia.ui.Fragment
 
 import android.os.Bundle
 import android.util.Log

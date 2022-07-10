@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.UI.Fragment
+package com.psw9999.gongmozootopia.ui.Fragment
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.psw9999.gongmozootopia.adapter.CalendarAdapter
 import com.psw9999.gongmozootopia.adapter.CalendarListAdapter
 import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.UI.Activity.StockInformationActivity
+import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
 import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.data.ScheduleResponse
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding

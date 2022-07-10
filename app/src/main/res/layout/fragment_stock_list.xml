@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".UI.Fragment.StockListFragment">
+    tools:context=".ui.Fragment.StockListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/mainActivity_appbarLayout"

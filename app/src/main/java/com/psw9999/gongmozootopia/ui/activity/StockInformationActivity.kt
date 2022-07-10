@@ -1,13 +1,10 @@
-package com.psw9999.gongmozootopia.UI.Activity
+package com.psw9999.gongmozootopia.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
@@ -16,7 +13,6 @@ import com.psw9999.gongmozootopia.base.BaseActivity
 import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.data.FollowingResponse
-import com.psw9999.gongmozootopia.data.StockInfoResponse
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
 import com.psw9999.gongmozootopia.viewModel.StockInfoViewModel
 import com.psw9999.gongmozootopia.viewModel.StockInfoViewModelFactory

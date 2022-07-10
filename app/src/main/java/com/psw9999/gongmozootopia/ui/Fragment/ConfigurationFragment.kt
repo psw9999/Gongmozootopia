@@ -1,4 +1,4 @@
-package com.psw9999.gongmozootopia.UI.Fragment
+package com.psw9999.gongmozootopia.ui.Fragment
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -24,9 +24,7 @@ import com.psw9999.gongmozootopia.Util.AlarmReceiver
 import com.psw9999.gongmozootopia.databinding.FragmentConfigurationBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 

@@ -1,25 +1,17 @@
-package com.psw9999.gongmozootopia.UI.Activity
+package com.psw9999.gongmozootopia.ui.activity
 
 import android.content.Intent
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.psw9999.gongmozootopia.Repository.FollowingListRepository
-import com.psw9999.gongmozootopia.Repository.StockRepository
 import com.psw9999.gongmozootopia.data.StockResponse
 import com.psw9999.gongmozootopia.databinding.ActivityLoadingBinding
-import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import com.psw9999.gongmozootopia.Util.NetworkStatus
 import kotlinx.coroutines.*
-import org.joda.time.Days
-import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import java.time.LocalDate
 
 class LoadingActivity : AppCompatActivity() {
 
-    private val mainIntent by lazy { Intent(this, MainActivity::class.java) }
-    lateinit var stockData : ArrayList<StockResponse>
+    private val mainIntent by lazy { Intent(this, HomeActivity::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Activity.MainActivity">
+    tools:context=".ui.activity.HomeActivity">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2Main"
-        android:layout_width="0dp"
+    <FrameLayout
+        android:id="@+id/home_container"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation_main"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </androidx.viewpager2.widget.ViewPager2>
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation_main"
+        app:layout_constraintTop_toTopOf="parent">
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_main"
