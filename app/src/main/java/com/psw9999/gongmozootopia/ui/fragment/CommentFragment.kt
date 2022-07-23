@@ -1,30 +1,23 @@
 package com.psw9999.gongmozootopia.ui.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.psw9999.gongmozootopia.Repository.CommentRepository
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.adapter.CommentAdapter
 import com.psw9999.gongmozootopia.base.BaseApplication
+import com.psw9999.gongmozootopia.base.BaseFragment
 import com.psw9999.gongmozootopia.data.CommentListItem
 import com.psw9999.gongmozootopia.databinding.FragmentCommentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 
-class CommentFragment : Fragment() {
-    lateinit var binding : FragmentCommentBinding
+class CommentFragment : BaseFragment<FragmentCommentBinding>(FragmentCommentBinding :: inflate) {
+
     lateinit var commentAdapter: CommentAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentCommentBinding.inflate(inflater, container, false)
-        return binding.root
+
+    override fun observe() {
+
     }
 
     private val deferredComment = CoroutineScope(Dispatchers.Default).async {
