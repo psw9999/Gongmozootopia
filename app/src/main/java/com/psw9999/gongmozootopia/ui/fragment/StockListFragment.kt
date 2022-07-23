@@ -28,10 +28,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockListBinding :: inflate) {
-    private lateinit var stockListAdapter : StockListPagingAdapter
-    private val stockListViewModel : StockListViewModel by viewModels()
-    private val configurationViewModel : ConfigurationViewModel by viewModels()
+class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockListBinding::inflate) {
+    private lateinit var stockListAdapter: StockListPagingAdapter
+    private val stockListViewModel: StockListViewModel by viewModels()
+    private val configurationViewModel: ConfigurationViewModel by viewModels()
 
     private val stockInfoIntent by lazy {
         Intent(requireContext(), StockInformationActivity::class.java)
@@ -60,10 +60,18 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
                         .insertSeparators { before, after ->
                             if (before is StockListItem.SeparatorItem && after is StockListItem.SeparatorItem) {
                                 when (before.headerText) {
-                                    StockScheduleQuery.TodaySchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.TodaySchedule.emptyGuide)
-                                    StockScheduleQuery.IpoExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.IpoExpectedSchedule.emptyGuide)
-                                    StockScheduleQuery.RefundExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.RefundExpectedSchedule.emptyGuide)
-                                    StockScheduleQuery.DebutExpectedSchedule.title -> StockListItem.EmptyItem(StockScheduleQuery.DebutExpectedSchedule.emptyGuide)
+                                    StockScheduleQuery.TodaySchedule.title -> StockListItem.EmptyItem(
+                                        StockScheduleQuery.TodaySchedule.emptyGuide
+                                    )
+                                    StockScheduleQuery.IpoExpectedSchedule.title -> StockListItem.EmptyItem(
+                                        StockScheduleQuery.IpoExpectedSchedule.emptyGuide
+                                    )
+                                    StockScheduleQuery.RefundExpectedSchedule.title -> StockListItem.EmptyItem(
+                                        StockScheduleQuery.RefundExpectedSchedule.emptyGuide
+                                    )
+                                    StockScheduleQuery.DebutExpectedSchedule.title -> StockListItem.EmptyItem(
+                                        StockScheduleQuery.DebutExpectedSchedule.emptyGuide
+                                    )
                                     else -> null
                                 }
                             } else {
@@ -107,10 +115,18 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
             override fun stockFollowingClick(followingResponse: FollowingResponse) {
                 if (!followingResponse.isFollowing) {
                     stockListViewModel.addFollowing(followingResponse)
-                    Snackbar.make(view!!, "${followingResponse.stockName}의 팔로잉을 설정하였습니다.",Snackbar.LENGTH_SHORT).show()
-                }else{
+                    Snackbar.make(
+                        view!!,
+                        "${followingResponse.stockName}의 팔로잉을 설정하였습니다.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
                     stockListViewModel.deleteFollowing(followingResponse.ipoIndex)
-                    Snackbar.make(view!!, "${followingResponse.stockName}의 팔로잉을 해제하였습니다.",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        view!!,
+                        "${followingResponse.stockName}의 팔로잉을 해제하였습니다.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
@@ -120,7 +136,9 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
         stockListAdapter = StockListPagingAdapter()
         binding.recyclerViewStockList.adapter = stockListAdapter
         binding.recyclerViewStockList.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewStockList.addItemDecoration(GridViewDecoration(dpToPx(requireContext(),10F).toInt()))
+        binding.recyclerViewStockList.addItemDecoration(
+            GridViewDecoration(dpToPx(requireContext(), 10F).toInt())
+        )
         onClickSetting()
     }
 }
