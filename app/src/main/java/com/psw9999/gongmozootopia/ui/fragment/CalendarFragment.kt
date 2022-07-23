@@ -1,14 +1,10 @@
 package com.psw9999.gongmozootopia.ui.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.adapter.CalendarAdapter
@@ -21,39 +17,31 @@ import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import org.joda.time.DateTime
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarBinding :: inflate) {
-    private lateinit var mContext: Context
     lateinit var calendarAdapter: CalendarAdapter
     lateinit var calendarListAdapter: CalendarListAdapter
     private val scheduleViewModel : ScheduleViewModel by activityViewModels()
 
     private val stockInfoIntent by lazy {
-        Intent(mContext, StockInformationActivity::class.java)
+        Intent(activityContext, StockInformationActivity::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         calendarAdapter = CalendarAdapter(this)
         with(binding) {
-            lifecycleOwner = this@CalendarFragment
-            binding.viewModel = scheduleViewModel
             viewPager2Calendar.adapter = calendarAdapter
             viewPager2Calendar.isUserInputEnabled = false
             viewPager2Calendar.setCurrentItem(CalendarAdapter.START_POSITION, false)
         }
         initScheduleRecyclerView()
         onClickSetting()
-        scheduleViewModel.selectedDay.observe(viewLifecycleOwner, Observer {
-            calendarListAdapter.selectedDay = it
-            calendarListAdapter.notifyDataSetChanged()
-        })
-        return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
+    override fun observe() {
+        scheduleViewModel.selectedDay.observe(viewLifecycleOwner) {
+            calendarListAdapter.selectedDay = it
+            calendarListAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun onClickSetting() {
@@ -70,13 +58,13 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                     (DateTime(CalendarUtils.today).plusMonths(viewPager2Calendar.currentItem - CalendarAdapter.START_POSITION)).toString("yyyy년 MM월")
             }
 
-            chipIpoFilter.setOnCheckedChangeListener { chip, isChecked ->
+            chipIpoFilter.setOnCheckedChangeListener { _, isChecked ->
                 scheduleViewModel.isIpoDayEnabled.value = isChecked
             }
-            chipRefundFilter.setOnCheckedChangeListener { chip, isChecked ->
+            chipRefundFilter.setOnCheckedChangeListener { _, isChecked ->
                 scheduleViewModel.isRefundDayEnabled.value = isChecked
             }
-            chipDebutFilter.setOnCheckedChangeListener { chip, isChecked ->
+            chipDebutFilter.setOnCheckedChangeListener { _, isChecked ->
                 scheduleViewModel.isDebutDayEnabled.value = isChecked
             }
         }
