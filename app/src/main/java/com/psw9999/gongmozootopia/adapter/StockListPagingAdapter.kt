@@ -1,6 +1,5 @@
 package com.psw9999.gongmozootopia.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -11,7 +10,9 @@ import com.psw9999.gongmozootopia.customView.UnderwriterView
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockListItem
 import com.psw9999.gongmozootopia.data.StockResponse
-import com.psw9999.gongmozootopia.databinding.*
+import com.psw9999.gongmozootopia.databinding.HolderEmptyStockBinding
+import com.psw9999.gongmozootopia.databinding.HolderStockBinding
+import com.psw9999.gongmozootopia.databinding.HolderStockHeaderBinding
 
 class StockListPagingAdapter :
     PagingDataAdapter<StockListItem, RecyclerView.ViewHolder>(diffCallback = differ) {

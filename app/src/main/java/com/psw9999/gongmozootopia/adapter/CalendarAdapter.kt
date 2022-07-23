@@ -13,18 +13,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.psw9999.gongmozootopia.customView.CalendarLabelView
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockScheduleRepository
 import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.getDayIndex
-import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
-import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
+import com.psw9999.gongmozootopia.customView.CalendarLabelView
 import com.psw9999.gongmozootopia.data.ScheduleResponse
 import com.psw9999.gongmozootopia.databinding.HolderCalendarBinding
-import kotlinx.coroutines.*
+import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
+import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
-import java.util.ArrayList
 
 class CalendarAdapter(fm : Fragment) : FragmentStateAdapter(fm){
 

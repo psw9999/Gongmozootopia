@@ -1,8 +1,8 @@
 package com.psw9999.gongmozootopia.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.databinding.ActivityHomeBinding

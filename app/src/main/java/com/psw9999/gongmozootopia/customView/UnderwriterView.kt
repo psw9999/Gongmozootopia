@@ -1,7 +1,6 @@
 package com.psw9999.gongmozootopia.customView
 
 import android.content.Context
-import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.core.view.updatePadding
 import com.google.android.material.chip.Chip
@@ -11,6 +10,7 @@ import com.psw9999.gongmozootopia.base.BaseApplication
 class UnderwriterView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = R.style.Widget_MaterialComponents_Chip_Choice
 ) : Chip(context, attrs, defStyle) {
+
     init {
         setEnsureMinTouchTargetSize(false)
         isClickable = false

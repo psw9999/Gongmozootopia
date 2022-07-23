@@ -2,7 +2,6 @@ package com.psw9999.gongmozootopia.Util
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import com.google.android.material.appbar.MaterialToolbar
 import com.psw9999.gongmozootopia.R
 

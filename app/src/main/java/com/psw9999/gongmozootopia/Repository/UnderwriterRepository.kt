@@ -1,8 +1,7 @@
 package com.psw9999.gongmozootopia.Repository
 
-import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.communication.ServerImpl
-import kotlinx.coroutines.runBlocking
+import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import retrofit2.await
 
 class UnderwriterRepository {

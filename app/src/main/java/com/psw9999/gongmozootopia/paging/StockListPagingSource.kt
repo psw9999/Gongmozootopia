@@ -1,6 +1,5 @@
 package com.psw9999.gongmozootopia.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.fmt
@@ -21,8 +20,7 @@ class StockListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, StockListItem> {
         // If params.key is null, it is the first load, so we start loading with STARTING_KEY
         //val position = params.key ?: STARTING_PAGE_INDEX
-        val position = params.key
-        return when (position) {
+        return when (val position = params.key) {
             null -> {
                 val stockListItem = ArrayList<StockListItem>().apply {
                     StockScheduleQuery.values()

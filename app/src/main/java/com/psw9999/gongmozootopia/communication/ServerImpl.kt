@@ -1,6 +1,5 @@
 package com.psw9999.gongmozootopia.communication
 
-import com.psw9999.gongmozootopia.base.BaseApplication
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response

@@ -2,7 +2,6 @@ package com.psw9999.gongmozootopia.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.psw9999.gongmozootopia.Util.CalendarUtils.Companion.today
 import org.joda.time.DateTime
 
 class ScheduleViewModel : ViewModel() {

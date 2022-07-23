@@ -2,11 +2,6 @@ package com.psw9999.gongmozootopia.Util
 
 import android.app.AlertDialog
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.lang.Exception
 import kotlin.system.exitProcess
 
 class NetworkStatus(val context : Context) {
@@ -29,30 +24,5 @@ class NetworkStatus(val context : Context) {
 
     fun closeNetworkDialog() {
         msgDlg?.dismiss()
-    }
-
-    // 네트워크 상태를 체크하는 콜백 함수
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun registerNetworkCallback() {
-        try {
-            val connMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-            connMgr.registerDefaultNetworkCallback(
-                object:ConnectivityManager.NetworkCallback(){
-                    override fun onAvailable(network: Network) {
-                        // 네트워크 연결시 실행되는 콜백
-                        closeNetworkDialog()
-                    }
-
-                    override fun onLost(network: Network) {
-                        // 네트워크 연결이 끊길시 발생하는 콜백
-                        showNetworkDialog()
-                    }
-
-                })
-        }catch(e : Exception){
-            showNetworkDialog()
-        }
-
     }
 }

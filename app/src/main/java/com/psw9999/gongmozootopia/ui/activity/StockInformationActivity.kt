@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.psw9999.gongmozootopia.R
 import com.psw9999.gongmozootopia.Repository.StockInfoRepository
 import com.psw9999.gongmozootopia.Repository.UnderwriterRepository
 import com.psw9999.gongmozootopia.base.BaseActivity
-import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.data.FollowingResponse
+import com.psw9999.gongmozootopia.data.UnderwriterResponse
 import com.psw9999.gongmozootopia.databinding.ActivityStockInformationBinding
 import com.psw9999.gongmozootopia.viewModel.StockInfoViewModel
 import com.psw9999.gongmozootopia.viewModel.StockInfoViewModelFactory
@@ -79,7 +80,7 @@ class StockInformationActivity : BaseActivity() {
             }
 
             // 뒤로가기 버튼 설정
-            navigationIcon = getDrawable(R.drawable.baseline_navigate_before_24)
+            navigationIcon = AppCompatResources.getDrawable(this@StockInformationActivity, R.drawable.baseline_navigate_before_24)
             setNavigationOnClickListener {
                 finish()
             }

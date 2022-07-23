@@ -1,19 +1,20 @@
 package com.psw9999.gongmozootopia.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.psw9999.gongmozootopia.adapter.CommentAdapter
 import com.psw9999.gongmozootopia.Repository.CommentRepository
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
+import com.psw9999.gongmozootopia.adapter.CommentAdapter
 import com.psw9999.gongmozootopia.base.BaseApplication
 import com.psw9999.gongmozootopia.data.CommentListItem
 import com.psw9999.gongmozootopia.databinding.FragmentCommentBinding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 class CommentFragment : Fragment() {
     lateinit var binding : FragmentCommentBinding
@@ -23,10 +24,6 @@ class CommentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommentBinding.inflate(inflater, container, false)
-        //TODO : 수정 필요
-        val comment = deferredComment.getCompleted()
-        Log.d("comment","$comment")
-        initRecyclerView(comment)
         return binding.root
     }
 

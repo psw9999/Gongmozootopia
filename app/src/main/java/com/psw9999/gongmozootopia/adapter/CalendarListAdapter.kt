@@ -77,9 +77,9 @@ class CalendarListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return scheduleDataList.size + 1
     }
 
-    inner class ScheduleHeaderViewHolder(val binding: HolderScheduleListHeaderBinding) : RecyclerView.ViewHolder(binding.root)
+    class ScheduleHeaderViewHolder(val binding: HolderScheduleListHeaderBinding) : RecyclerView.ViewHolder(binding.root)
 
-    inner class ScheduleItemViewHolder(val binding : HolderScheduleListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ScheduleItemViewHolder(val binding : HolderScheduleListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     companion object {
         const val TYPE_HEADER : Int = 0

@@ -24,7 +24,7 @@ class HomeViewModel : ViewModel() {
         return true
     }
 
-    fun changeCurrentFragment(bottomMenuType : BottomMenuType) {
+    private fun changeCurrentFragment(bottomMenuType : BottomMenuType) {
         if(this.currentFragment.value != bottomMenuType) _currentFragment.value = bottomMenuType
     }
 

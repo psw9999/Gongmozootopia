@@ -4,27 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.psw9999.gongmozootopia.Util.CalendarUtils
 import com.psw9999.gongmozootopia.adapter.CalendarAdapter
 import com.psw9999.gongmozootopia.adapter.CalendarListAdapter
-import com.psw9999.gongmozootopia.R
-import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
-import com.psw9999.gongmozootopia.Util.CalendarUtils
+import com.psw9999.gongmozootopia.base.BaseFragment
 import com.psw9999.gongmozootopia.data.ScheduleResponse
 import com.psw9999.gongmozootopia.databinding.FragmentCalendarBinding
+import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
 import com.psw9999.gongmozootopia.viewModel.ScheduleViewModel
 import org.joda.time.DateTime
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarBinding :: inflate) {
     private lateinit var mContext: Context
-    lateinit var binding : FragmentCalendarBinding
     lateinit var calendarAdapter: CalendarAdapter
     lateinit var calendarListAdapter: CalendarListAdapter
     private val scheduleViewModel : ScheduleViewModel by activityViewModels()
@@ -37,7 +34,6 @@ class CalendarFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
         calendarAdapter = CalendarAdapter(this)
         with(binding) {
             lifecycleOwner = this@CalendarFragment

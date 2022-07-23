@@ -2,7 +2,6 @@ package com.psw9999.gongmozootopia.Repository
 
 import com.psw9999.gongmozootopia.communication.ServerImpl
 import com.psw9999.gongmozootopia.data.ScheduleResponse
-import com.psw9999.gongmozootopia.data.StockResponse
 import retrofit2.await
 
 class StockScheduleRepository {

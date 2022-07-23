@@ -2,11 +2,10 @@ package com.psw9999.gongmozootopia.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -14,20 +13,20 @@ import androidx.paging.filter
 import androidx.paging.insertSeparators
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
-import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
-import com.psw9999.gongmozootopia.databinding.FragmentStockListBinding
 import com.psw9999.gongmozootopia.Util.GridViewDecoration
 import com.psw9999.gongmozootopia.adapter.StockListPagingAdapter
 import com.psw9999.gongmozootopia.base.BaseApplication.Companion.dpToPx
 import com.psw9999.gongmozootopia.base.BaseFragment
 import com.psw9999.gongmozootopia.data.FollowingResponse
 import com.psw9999.gongmozootopia.data.StockListItem
+import com.psw9999.gongmozootopia.databinding.FragmentStockListBinding
 import com.psw9999.gongmozootopia.paging.StockScheduleQuery
+import com.psw9999.gongmozootopia.ui.activity.StockInformationActivity
+import com.psw9999.gongmozootopia.viewModel.ConfigurationViewModel
 import com.psw9999.gongmozootopia.viewModel.StockListViewModel
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockListBinding :: inflate) {
     private lateinit var stockListAdapter : StockListPagingAdapter
@@ -41,10 +40,9 @@ class StockListFragment : BaseFragment<FragmentStockListBinding>(FragmentStockLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observe()
     }
 
-    private fun observe() {
+    override fun observe() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 stockListViewModel.stockList.combine(configurationViewModel.kindFilterFlow) { stockList, kindFiltering ->
