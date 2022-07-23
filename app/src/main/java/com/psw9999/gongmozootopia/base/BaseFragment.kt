@@ -1,5 +1,6 @@
 package com.psw9999.gongmozootopia.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,15 @@ typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VB : ViewBinding>(private val inflate : Inflate<VB>) : Fragment() {
     private var _binding: VB? = null
-    protected val binding get() = _binding!!
+    protected val binding = _binding!!
+
+    private lateinit var _activityContext : Context
+    protected val activityContext = _activityContext
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        _activityContext = context
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = inflate.invoke(inflater, container, false)
